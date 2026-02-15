@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, CheckCircle, Loader2, AlertCircle, Phone, Mail, MapPin } from 'lucide-react';
+import { Send, CheckCircle, Loader2, Phone, Mail, MapPin } from 'lucide-react';
 import { CONTACT_INFO } from '../constants';
 
 export const EnquiryForm: React.FC = () => {

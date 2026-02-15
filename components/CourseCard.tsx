@@ -1,6 +1,6 @@
 import React from 'react';
 import { Course } from '../types';
-import { Clock, CheckCircle2 } from 'lucide-react';
+import { Clock } from 'lucide-react';
 
 interface CourseCardProps {
   course: Course;

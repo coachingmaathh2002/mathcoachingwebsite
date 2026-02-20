@@ -128,9 +128,10 @@ export const EnquiryForm: React.FC = () => {
                       name="course"
                       id="course"
                       required
+                      defaultValue=""
                       className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink focus:border-transparent outline-none transition-all appearance-none"
                     >
-                      <option value="" disabled selected>Select a course</option>
+                      <option value="" disabled>Select a course</option>
                       <option value="Class 10">WB Board Class 10</option>
                       <option value="Class 11">WB Board Class 11</option>
                       <option value="Class 12">WB Board Class 12</option>

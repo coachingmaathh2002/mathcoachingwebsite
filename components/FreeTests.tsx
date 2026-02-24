@@ -13,12 +13,35 @@ interface FreeTestsProps {
 type ViewState = 'list' | 'auth' | 'test' | 'result';
 
 export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
-  const [view, setView] = useState<ViewState>('list');
+  const [view, setView] = useState<ViewState | 'review'>('list');
   const [selectedTest, setSelectedTest] = useState<Test | null>(null);
   const [user, setUser] = useState({ name: '', mobile: '' });
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [score, setScore] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 minutes in seconds
+
+  React.useEffect(() => {
+    let timer: ReturnType<typeof setInterval>;
+    if (view === 'test' && timeLeft > 0) {
+      timer = setInterval(() => {
+        setTimeLeft(prev => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [view, timeLeft]);
+
+  React.useEffect(() => {
+    if (view === 'test' && timeLeft === 0) {
+      handleSubmit();
+    }
+  }, [timeLeft, view]);
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
 
   const handleStartAuth = (test: Test) => {
     setSelectedTest(test);
@@ -31,11 +54,13 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
       setView('test');
       setAnswers({});
       setCurrentQuestionIndex(0);
+      setTimeLeft(20 * 60); // Reset timer to 20 minutes
       window.scrollTo(0, 0);
     }
   };
 
   const handleAnswer = (questionId: number, optionIndex: number) => {
+    if (view === 'review') return;
     setAnswers(prev => ({ ...prev, [questionId]: optionIndex }));
   };
 
@@ -62,6 +87,12 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
     });
     setScore(newScore);
     setView('result');
+    window.scrollTo(0, 0);
+  };
+
+  const handleReview = () => {
+    setView('review');
+    setCurrentQuestionIndex(0);
     window.scrollTo(0, 0);
   };
 
@@ -289,24 +320,37 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
         </div>
       )}
 
-      {/* VIEW: TEST */}
-      {view === 'test' && selectedTest && (
+      {/* VIEW: TEST OR REVIEW */}
+      {(view === 'test' || view === 'review') && selectedTest && (
         <div className="max-w-3xl mx-auto">
-          <div className="bg-dark-900 rounded-2xl p-6 mb-8 border border-white/10 flex justify-between items-center sticky top-24 z-30 shadow-xl backdrop-blur-md bg-opacity-90">
+          <div className="bg-dark-900 rounded-2xl p-6 mb-8 border border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sticky top-24 z-30 shadow-xl backdrop-blur-md bg-opacity-90">
             <div>
-              <h2 className="text-lg font-bold text-white">{selectedTest.title}</h2>
+              <h2 className="text-lg font-bold text-white">{selectedTest.title} {view === 'review' && <span className="text-brand-pink ml-2">(Review Mode)</span>}</h2>
               <p className="text-slate-400 text-sm">Student: <span className="text-brand-light">{user.name}</span></p>
             </div>
-            <div className="flex items-center gap-2 text-slate-300 bg-dark-950 px-4 py-2 rounded-lg border border-white/5">
-              <Clock size={18} className="text-brand-pink" />
-              <span className="font-mono">Q: {currentQuestionIndex + 1}/{selectedTest.questions.length}</span>
+            <div className="flex items-center gap-4">
+              {view === 'test' && (
+                <div className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${timeLeft < 60 ? 'bg-red-500/10 border-red-500/30 text-red-400 animate-pulse' : 'bg-dark-950 border-white/5 text-slate-300'}`}>
+                  <Clock size={18} className={timeLeft < 60 ? 'text-red-400' : 'text-brand-pink'} />
+                  <span className="font-mono font-bold">{formatTime(timeLeft)}</span>
+                </div>
+              )}
+              <div className="flex items-center gap-2 text-slate-300 bg-dark-950 px-4 py-2 rounded-lg border border-white/5">
+                <span className="font-mono">Q: {currentQuestionIndex + 1}/{selectedTest.questions.length}</span>
+              </div>
             </div>
           </div>
 
           <div className="bg-dark-900 rounded-2xl p-6 md:p-8 border border-white/5 min-h-[400px] flex flex-col justify-between">
             <div>
               <div className="flex gap-4 mb-6">
-                <span className="flex-shrink-0 w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center text-brand-light font-bold text-lg border border-white/5">
+                <span className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border ${
+                  view === 'review' 
+                    ? answers[selectedTest.questions[currentQuestionIndex].id] === selectedTest.questions[currentQuestionIndex].correctAnswer
+                      ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                      : 'bg-red-500/20 text-red-400 border-red-500/30'
+                    : 'bg-dark-800 text-brand-light border-white/5'
+                }`}>
                   {currentQuestionIndex + 1}
                 </span>
                 <div className="text-xl text-white font-medium pt-1 leading-relaxed">
@@ -315,30 +359,51 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
               </div>
 
               <div className="space-y-4 ml-0 md:ml-14">
-                {selectedTest.questions[currentQuestionIndex].options.map((option, optIndex) => (
-                  <label 
-                    key={optIndex}
-                    className={`flex items-center gap-4 p-5 rounded-xl border cursor-pointer transition-all ${
-                      answers[selectedTest.questions[currentQuestionIndex].id] === optIndex 
-                        ? 'bg-brand-pink/10 border-brand-pink text-white shadow-[0_0_15px_rgba(219,39,119,0.1)]' 
-                        : 'bg-dark-950 border-slate-800 text-slate-300 hover:border-slate-600 hover:bg-dark-800'
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name={`q-${selectedTest.questions[currentQuestionIndex].id}`}
-                      className="hidden"
-                      checked={answers[selectedTest.questions[currentQuestionIndex].id] === optIndex}
-                      onChange={() => handleAnswer(selectedTest.questions[currentQuestionIndex].id, optIndex)}
-                    />
-                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                      answers[selectedTest.questions[currentQuestionIndex].id] === optIndex ? 'border-brand-pink' : 'border-slate-600'
-                    }`}>
-                      {answers[selectedTest.questions[currentQuestionIndex].id] === optIndex && <div className="w-3 h-3 bg-brand-pink rounded-full" />}
-                    </div>
-                    <span className="text-lg"><Latex>{option}</Latex></span>
-                  </label>
-                ))}
+                {selectedTest.questions[currentQuestionIndex].options.map((option, optIndex) => {
+                  const isSelected = answers[selectedTest.questions[currentQuestionIndex].id] === optIndex;
+                  const isCorrect = selectedTest.questions[currentQuestionIndex].correctAnswer === optIndex;
+                  
+                  let optionClass = 'bg-dark-950 border-slate-800 text-slate-300 hover:border-slate-600 hover:bg-dark-800';
+                  let circleClass = 'border-slate-600';
+                  let innerCircleClass = 'bg-brand-pink';
+
+                  if (view === 'review') {
+                    if (isCorrect) {
+                      optionClass = 'bg-green-500/10 border-green-500 text-white shadow-[0_0_15px_rgba(34,197,94,0.1)]';
+                      circleClass = 'border-green-500';
+                      innerCircleClass = 'bg-green-500';
+                    } else if (isSelected && !isCorrect) {
+                      optionClass = 'bg-red-500/10 border-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.1)]';
+                      circleClass = 'border-red-500';
+                      innerCircleClass = 'bg-red-500';
+                    } else {
+                      optionClass = 'bg-dark-950 border-slate-800 text-slate-500 opacity-50';
+                    }
+                  } else if (isSelected) {
+                    optionClass = 'bg-brand-pink/10 border-brand-pink text-white shadow-[0_0_15px_rgba(219,39,119,0.1)]';
+                    circleClass = 'border-brand-pink';
+                  }
+
+                  return (
+                    <label 
+                      key={optIndex}
+                      className={`flex items-center gap-4 p-5 rounded-xl border transition-all ${view === 'review' ? 'cursor-default' : 'cursor-pointer'} ${optionClass}`}
+                    >
+                      <input
+                        type="radio"
+                        name={`q-${selectedTest.questions[currentQuestionIndex].id}`}
+                        className="hidden"
+                        checked={isSelected}
+                        onChange={() => handleAnswer(selectedTest.questions[currentQuestionIndex].id, optIndex)}
+                        disabled={view === 'review'}
+                      />
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${circleClass}`}>
+                        {isSelected && <div className={`w-3 h-3 rounded-full ${innerCircleClass}`} />}
+                      </div>
+                      <span className="text-lg"><Latex>{option}</Latex></span>
+                    </label>
+                  );
+                })}
               </div>
             </div>
 
@@ -353,13 +418,22 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
               </button>
 
               {currentQuestionIndex === selectedTest.questions.length - 1 ? (
-                <button
-                  onClick={handleSubmit}
-                  className="flex items-center gap-2 px-8 py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl font-bold shadow-lg transition-all hover:shadow-green-500/20"
-                >
-                  Submit Test
-                  <CheckCircle size={20} />
-                </button>
+                view === 'review' ? (
+                  <button
+                    onClick={() => setView('result')}
+                    className="flex items-center gap-2 px-8 py-3 bg-brand-pink hover:bg-brand-light text-white rounded-xl font-bold shadow-lg transition-all hover:shadow-brand-pink/20"
+                  >
+                    Back to Results
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleSubmit}
+                    className="flex items-center gap-2 px-8 py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl font-bold shadow-lg transition-all hover:shadow-green-500/20"
+                  >
+                    Submit Test
+                    <CheckCircle size={20} />
+                  </button>
+                )
               ) : (
                 <button
                   onClick={handleNext}
@@ -399,6 +473,12 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onClick={handleReview}
+                className="px-8 py-3 bg-dark-800 hover:bg-dark-700 text-white rounded-xl font-medium transition-colors border border-white/10 flex items-center justify-center gap-2"
+              >
+                Review Answers
+              </button>
               <button
                 onClick={downloadMarksheet}
                 className="px-8 py-3 bg-gradient-to-r from-brand-pink to-brand-purple hover:from-brand-light hover:to-brand-purple text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-brand-pink/20 flex items-center justify-center gap-2"

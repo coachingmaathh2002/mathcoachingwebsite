@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { tests, Test } from '../data/testData';
-import { ArrowLeft, CheckCircle, Clock, Play, User, Phone, Award, ChevronRight, ChevronLeft, Download } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Clock, Play, User, Phone, Award, ChevronRight, ChevronLeft, Download, History, BookOpen } from 'lucide-react';
 import 'katex/dist/katex.min.css';
 import Latex from 'react-latex-next';
 import jsPDF from 'jspdf';
@@ -12,14 +12,38 @@ interface FreeTestsProps {
 
 type ViewState = 'list' | 'auth' | 'test' | 'result';
 
+interface TestAttempt {
+  id: string;
+  testId: string;
+  testTitle: string;
+  topic: string;
+  score: number;
+  total: number;
+  date: string;
+  userName: string;
+}
+
 export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
   const [view, setView] = useState<ViewState | 'review'>('list');
+  const [activeTab, setActiveTab] = useState<'tests' | 'history'>('tests');
+  const [history, setHistory] = useState<TestAttempt[]>([]);
   const [selectedTest, setSelectedTest] = useState<Test | null>(null);
   const [user, setUser] = useState({ name: '', mobile: '' });
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [score, setScore] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 minutes in seconds
+
+  useEffect(() => {
+    const savedHistory = localStorage.getItem('rajSirTestHistory');
+    if (savedHistory) {
+      try {
+        setHistory(JSON.parse(savedHistory));
+      } catch (e) {
+        console.error('Failed to parse history', e);
+      }
+    }
+  }, []);
 
   React.useEffect(() => {
     let timer: ReturnType<typeof setInterval>;
@@ -86,6 +110,23 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
       }
     });
     setScore(newScore);
+    
+    // Save to history
+    const attempt: TestAttempt = {
+      id: Date.now().toString(),
+      testId: selectedTest.id,
+      testTitle: selectedTest.title,
+      topic: selectedTest.topic,
+      score: newScore,
+      total: selectedTest.questions.length,
+      date: new Date().toISOString(),
+      userName: user.name
+    };
+    
+    const updatedHistory = [attempt, ...history];
+    setHistory(updatedHistory);
+    localStorage.setItem('rajSirTestHistory', JSON.stringify(updatedHistory));
+    
     setView('result');
     window.scrollTo(0, 0);
   };
@@ -110,83 +151,157 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
+    const primaryColor: [number, number, number] = [219, 39, 119]; // Brand Pink
+    const darkColor: [number, number, number] = [30, 41, 59]; // Slate 800
+    const lightGray: [number, number, number] = [248, 250, 252]; // Slate 50
 
-    // Background
-    doc.setFillColor(255, 250, 250); // Very light pinkish white
-    doc.rect(0, 0, pageWidth, pageHeight, 'F');
+    // 1. Page Borders (Double Border for premium look)
+    doc.setDrawColor(...primaryColor);
+    doc.setLineWidth(1);
+    doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
+    doc.setLineWidth(0.3);
+    doc.rect(12, 12, pageWidth - 24, pageHeight - 24);
 
-    // Header Background
-    doc.setFillColor(219, 39, 119); // Brand Pink
-    doc.rect(0, 0, pageWidth, 40, 'F');
-
-    // Header Text
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(24);
-    doc.setFont("helvetica", "bold");
-    doc.text("Raj Sir Math Academy", pageWidth / 2, 20, { align: "center" });
+    // 2. Header Section
+    doc.setTextColor(...primaryColor);
+    doc.setFont("times", "bold");
+    doc.setFontSize(28);
+    doc.text("RAJ SIR MATH ACADEMY", pageWidth / 2, 35, { align: "center" });
     
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-    doc.text("Excellence in Mathematics", pageWidth / 2, 30, { align: "center" });
-
-    // Student Details Section
-    doc.setTextColor(30, 41, 59); // Dark Slate
-    doc.setFontSize(16);
-    doc.setFont("helvetica", "bold");
-    doc.text("OFFICIAL MARKSHEET", pageWidth / 2, 60, { align: "center" });
-
-    doc.setDrawColor(219, 39, 119);
-    doc.setLineWidth(0.5);
-    doc.line(20, 65, pageWidth - 20, 65);
-
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-    
-    const startY = 80;
-    const lineHeight = 10;
-
-    doc.text(`Student Name: ${user.name}`, 20, startY);
-    doc.text(`Mobile Number: ${user.mobile}`, 20, startY + lineHeight);
-    doc.text(`Test Topic: ${selectedTest.topic}`, 20, startY + lineHeight * 2);
-    doc.text(`Test Title: ${selectedTest.title}`, 20, startY + lineHeight * 3);
-    doc.text(`Date: ${new Date().toLocaleDateString()}`, pageWidth - 60, startY);
-
-    // Score Box
-    doc.setFillColor(240, 240, 240);
-    doc.roundedRect(pageWidth / 2 - 40, startY + 50, 80, 40, 3, 3, 'F');
-    
-    doc.setFontSize(14);
-    doc.text("Total Score", pageWidth / 2, startY + 65, { align: "center" });
-    
-    doc.setFontSize(22);
-    doc.setTextColor(219, 39, 119);
-    doc.setFont("helvetica", "bold");
-    doc.text(`${score} / 20`, pageWidth / 2, startY + 80, { align: "center" });
-
-    doc.setFontSize(12);
-    doc.setTextColor(30, 41, 59);
-    doc.setFont("helvetica", "normal");
-    const percentage = Math.round((score / 20) * 100);
-    doc.text(`(${percentage}%)`, pageWidth / 2, startY + 95, { align: "center" }); // Percentage below score
-
-    // Footer
-    const footerY = pageHeight - 40;
-    
-    doc.setDrawColor(200, 200, 200);
-    doc.line(20, footerY, pageWidth - 20, footerY);
-
-    doc.setFontSize(10);
-    doc.text("Authorized Signature", pageWidth - 60, footerY - 10);
-    // Placeholder for signature
+    doc.setTextColor(...darkColor);
     doc.setFont("times", "italic");
-    doc.text("Raj Sir", pageWidth - 50, footerY - 20);
+    doc.setFontSize(14);
+    doc.text("Premium Center for Mathematics Excellence", pageWidth / 2, 45, { align: "center" });
+
+    // Decorative line
+    doc.setDrawColor(...primaryColor);
+    doc.setLineWidth(0.5);
+    doc.line(40, 52, pageWidth - 40, 52);
+
+    // 3. Report Title
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.setTextColor(255, 255, 255);
+    doc.setFillColor(...primaryColor);
+    doc.rect(pageWidth / 2 - 55, 65, 110, 12, 'F');
+    doc.text("PERFORMANCE REPORT", pageWidth / 2, 73, { align: "center" });
+
+    // 4. Student Details Section (Boxed)
+    const startY = 95;
+    doc.setFillColor(...lightGray);
+    doc.setDrawColor(200, 200, 200);
+    doc.roundedRect(20, startY, pageWidth - 40, 45, 3, 3, 'FD');
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(...darkColor);
+    
+    // Column 1
+    doc.text("Student Name:", 25, startY + 12);
+    doc.text("Mobile Number:", 25, startY + 24);
+    doc.text("Test Date:", 25, startY + 36);
+    
+    // Column 2
+    doc.text("Topic:", pageWidth / 2, startY + 12);
+    doc.text("Test Title:", pageWidth / 2, startY + 24);
+    doc.text("Total Marks:", pageWidth / 2, startY + 36);
+
+    doc.setFont("helvetica", "normal");
+    doc.text(user.name.toUpperCase(), 60, startY + 12);
+    doc.text(user.mobile, 60, startY + 24);
+    doc.text(new Date().toLocaleDateString(), 60, startY + 36);
+    
+    doc.text(selectedTest.topic, pageWidth / 2 + 25, startY + 12);
+    // Truncate title if too long
+    const title = selectedTest.title.length > 30 ? selectedTest.title.substring(0, 27) + '...' : selectedTest.title;
+    doc.text(title, pageWidth / 2 + 25, startY + 24);
+    doc.text("20", pageWidth / 2 + 25, startY + 36);
+
+    // 5. Performance Metrics
+    const metricY = 160;
+    const percentage = Math.round((score / 20) * 100);
+    
+    // Calculate Grade and Remarks
+    let grade = 'F';
+    let remark = 'Needs Improvement';
+    let gradeColor: [number, number, number] = [239, 68, 68]; // Red
+    
+    if (percentage >= 90) { grade = 'A+'; remark = 'Outstanding Performance'; gradeColor = [34, 197, 94]; } // Green
+    else if (percentage >= 80) { grade = 'A'; remark = 'Excellent Work'; gradeColor = [34, 197, 94]; }
+    else if (percentage >= 70) { grade = 'B+'; remark = 'Very Good'; gradeColor = [234, 179, 8]; } // Yellow
+    else if (percentage >= 60) { grade = 'B'; remark = 'Good Effort'; gradeColor = [234, 179, 8]; }
+    else if (percentage >= 50) { grade = 'C'; remark = 'Average, Can do better'; gradeColor = [249, 115, 22]; } // Orange
+
+    // Score Breakdown
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.text("Score Breakdown", 20, metricY);
+    doc.setLineWidth(0.5);
+    doc.line(20, metricY + 2, 65, metricY + 2);
+
+    doc.setFontSize(12);
+    doc.text("Total Questions:", 25, metricY + 15);
+    doc.text("Correct Answers:", 25, metricY + 25);
+    doc.text("Incorrect Answers:", 25, metricY + 35);
+    doc.text("Accuracy:", 25, metricY + 45);
+
+    doc.setFont("helvetica", "normal");
+    doc.text("20", 70, metricY + 15);
+    doc.text(`${score}`, 70, metricY + 25);
+    doc.text(`${20 - score}`, 70, metricY + 35);
+    doc.text(`${percentage}%`, 70, metricY + 45);
+
+    // Grade Badge
+    doc.setFillColor(...gradeColor);
+    doc.circle(pageWidth - 55, metricY + 25, 22, 'F');
+    doc.setFillColor(255, 255, 255);
+    doc.circle(pageWidth - 55, metricY + 25, 20, 'F');
+    doc.setFillColor(...gradeColor);
+    doc.circle(pageWidth - 55, metricY + 25, 18, 'F');
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.text("GRADE", pageWidth - 55, metricY + 18, { align: "center" });
+    doc.setFontSize(24);
+    doc.text(grade, pageWidth - 55, metricY + 31, { align: "center" });
+
+    // Remarks
+    doc.setTextColor(...darkColor);
+    doc.setFontSize(12);
+    doc.setFont("times", "italic");
+    doc.text(`Remarks: ${remark}`, pageWidth - 55, metricY + 55, { align: "center" });
+
+    // 6. Footer
+    const footerY = pageHeight - 45;
+    
+    // Signature
+    doc.setDrawColor(...darkColor);
+    doc.setLineWidth(0.5);
+    doc.line(pageWidth - 70, footerY, pageWidth - 20, footerY);
+    
+    doc.setFont("times", "italic");
+    doc.setFontSize(16);
+    doc.setTextColor(...primaryColor);
+    doc.text("Raj Sir", pageWidth - 45, footerY - 5, { align: "center" });
     
     doc.setFont("helvetica", "normal");
-    doc.text(`Contact: ${CONTACT_INFO.phone}`, 20, footerY + 15);
-    doc.text(`Email: ${CONTACT_INFO.email}`, 20, footerY + 20);
-    doc.text(`Address: ${CONTACT_INFO.address}`, 20, footerY + 25);
+    doc.setFontSize(10);
+    doc.setTextColor(...darkColor);
+    doc.text("Authorized Signature", pageWidth - 45, footerY + 5, { align: "center" });
+    doc.text("Director, Raj Sir Math Academy", pageWidth - 45, footerY + 10, { align: "center" });
 
-    doc.save(`Marksheet_${user.name.replace(/\s+/g, '_')}_${selectedTest.id}.pdf`);
+    // Contact Info
+    doc.setFontSize(9);
+    doc.text(`Contact: ${CONTACT_INFO.phone}  |  Email: ${CONTACT_INFO.email}`, 20, footerY + 5);
+    doc.text(`Address: ${CONTACT_INFO.address}`, 20, footerY + 10);
+
+    // Official Document Note
+    doc.setFontSize(8);
+    doc.setTextColor(150, 150, 150);
+    doc.text("This is an electronically generated report card and does not require a physical seal.", pageWidth / 2, pageHeight - 15, { align: "center" });
+
+    doc.save(`RajSirMathAcademy_Report_${user.name.replace(/\s+/g, '_')}.pdf`);
   };
 
   // Group tests by topic
@@ -216,50 +331,128 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
       {/* VIEW: LIST */}
       {view === 'list' && (
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <h2 className="text-4xl font-display font-bold text-white mb-4">Test Your Knowledge</h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
               Select a topic below to start a free practice test. Each test contains 20 multiple choice questions in Bengali.
             </p>
           </div>
 
-          <div className="space-y-12">
-            {Object.entries(testsByTopic).map(([topic, topicTests]) => (
-              <div key={topic} className="animate-fade-in">
-                <h3 className="text-2xl font-bold text-brand-light mb-6 border-l-4 border-brand-pink pl-4">
-                  {topic}
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {topicTests.map(test => (
-                    <div 
-                      key={test.id}
-                      className="bg-dark-900 rounded-2xl p-6 border border-white/5 hover:border-brand-pink/50 transition-all hover:-translate-y-1 hover:shadow-lg group cursor-pointer"
-                      onClick={() => handleStartAuth(test)}
-                    >
-                      <div className="flex justify-between items-start mb-4">
-                        <div className="p-3 bg-dark-800 rounded-xl text-brand-pink group-hover:bg-brand-pink group-hover:text-white transition-colors">
-                          <Award size={24} />
+          <div className="flex justify-center mb-12">
+            <div className="bg-dark-900 p-1 rounded-xl border border-white/5 inline-flex">
+              <button
+                onClick={() => setActiveTab('tests')}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                  activeTab === 'tests' 
+                    ? 'bg-brand-pink text-white shadow-lg' 
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <BookOpen size={18} />
+                Available Tests
+              </button>
+              <button
+                onClick={() => setActiveTab('history')}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                  activeTab === 'history' 
+                    ? 'bg-brand-pink text-white shadow-lg' 
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <History size={18} />
+                My History
+              </button>
+            </div>
+          </div>
+
+          {activeTab === 'tests' ? (
+            <div className="space-y-12">
+              {Object.entries(testsByTopic).map(([topic, topicTests]) => (
+                <div key={topic} className="animate-fade-in">
+                  <h3 className="text-2xl font-bold text-brand-light mb-6 border-l-4 border-brand-pink pl-4">
+                    {topic}
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {topicTests.map(test => (
+                      <div 
+                        key={test.id}
+                        className="bg-dark-900 rounded-2xl p-6 border border-white/5 hover:border-brand-pink/50 transition-all hover:-translate-y-1 hover:shadow-lg group cursor-pointer"
+                        onClick={() => handleStartAuth(test)}
+                      >
+                        <div className="flex justify-between items-start mb-4">
+                          <div className="p-3 bg-dark-800 rounded-xl text-brand-pink group-hover:bg-brand-pink group-hover:text-white transition-colors">
+                            <Award size={24} />
+                          </div>
+                          <span className="text-xs font-mono text-slate-500 bg-dark-950 px-2 py-1 rounded border border-white/5">
+                            20 Questions
+                          </span>
                         </div>
-                        <span className="text-xs font-mono text-slate-500 bg-dark-950 px-2 py-1 rounded border border-white/5">
-                          20 Questions
-                        </span>
+                        <h4 className="text-xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors">
+                          {test.title}
+                        </h4>
+                        <p className="text-slate-400 text-sm mb-6">
+                          Test your understanding of {test.topic} concepts.
+                        </p>
+                        <div className="flex items-center gap-2 text-brand-light font-medium text-sm">
+                          <span>Start Test</span>
+                          <Play size={16} className="fill-current" />
+                        </div>
                       </div>
-                      <h4 className="text-xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors">
-                        {test.title}
-                      </h4>
-                      <p className="text-slate-400 text-sm mb-6">
-                        Test your understanding of {test.topic} concepts.
-                      </p>
-                      <div className="flex items-center gap-2 text-brand-light font-medium text-sm">
-                        <span>Start Test</span>
-                        <Play size={16} className="fill-current" />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="max-w-4xl mx-auto animate-fade-in">
+              {history.length === 0 ? (
+                <div className="bg-dark-900 rounded-2xl p-12 text-center border border-white/5">
+                  <History size={48} className="mx-auto text-slate-600 mb-4" />
+                  <h3 className="text-xl font-bold text-white mb-2">No Test History</h3>
+                  <p className="text-slate-400 mb-6">You haven't taken any tests yet. Start a test to see your history here.</p>
+                  <button 
+                    onClick={() => setActiveTab('tests')}
+                    className="px-6 py-3 bg-brand-pink hover:bg-brand-light text-white rounded-xl font-medium transition-colors"
+                  >
+                    Browse Tests
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {history.map((attempt) => (
+                    <div key={attempt.id} className="bg-dark-900 rounded-2xl p-6 border border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs font-bold px-2 py-1 bg-dark-800 text-brand-pink rounded border border-white/5 uppercase tracking-wider">
+                            {attempt.topic}
+                          </span>
+                          <span className="text-slate-500 text-sm">
+                            {new Date(attempt.date).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <h4 className="text-lg font-bold text-white">{attempt.testTitle}</h4>
+                        <p className="text-slate-400 text-sm">Student: {attempt.userName}</p>
+                      </div>
+                      
+                      <div className="flex items-center gap-6 bg-dark-950 px-6 py-4 rounded-xl border border-white/5 w-full sm:w-auto justify-between sm:justify-start">
+                        <div className="text-center">
+                          <p className="text-slate-500 text-xs mb-1 uppercase tracking-wider">Score</p>
+                          <p className="text-2xl font-bold text-brand-light">{attempt.score}<span className="text-sm text-slate-500">/{attempt.total}</span></p>
+                        </div>
+                        <div className="w-px h-10 bg-white/10 hidden sm:block"></div>
+                        <div className="text-center">
+                          <p className="text-slate-500 text-xs mb-1 uppercase tracking-wider">Percentage</p>
+                          <p className={`text-2xl font-bold ${attempt.score / attempt.total >= 0.8 ? 'text-green-400' : attempt.score / attempt.total >= 0.5 ? 'text-yellow-400' : 'text-red-400'}`}>
+                            {Math.round((attempt.score / attempt.total) * 100)}%
+                          </p>
+                        </div>
                       </div>
                     </div>
                   ))}
                 </div>
-              </div>
-            ))}
-          </div>
+              )}
+            </div>
+          )}
         </div>
       )}
 

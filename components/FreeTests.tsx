@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { tests, Test } from '../data/testData';
-import { ArrowLeft, CheckCircle, Clock, Play, User, Phone, Award, ChevronRight, ChevronLeft, Download, History, BookOpen } from 'lucide-react';
+import { paidStudents } from '../data/students';
+import { ArrowLeft, CheckCircle, Clock, Play, User, Phone, Award, ChevronRight, ChevronLeft, Download, History, BookOpen, Lock, Star } from 'lucide-react';
 import 'katex/dist/katex.min.css';
 import Latex from 'react-latex-next';
 import jsPDF from 'jspdf';
@@ -25,10 +27,13 @@ interface TestAttempt {
 
 export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
   const [view, setView] = useState<ViewState | 'review'>('list');
-  const [activeTab, setActiveTab] = useState<'tests' | 'history'>('tests');
+  const [activeTab, setActiveTab] = useState<'tests' | 'paid' | 'history'>('tests');
+  const [selectedExam, setSelectedExam] = useState<string | null>(null);
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const [history, setHistory] = useState<TestAttempt[]>([]);
   const [selectedTest, setSelectedTest] = useState<Test | null>(null);
-  const [user, setUser] = useState({ name: '', mobile: '' });
+  const [user, setUser] = useState({ name: '', mobile: '', password: '' });
+  const [authError, setAuthError] = useState('');
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [score, setScore] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -69,11 +74,27 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
 
   const handleStartAuth = (test: Test) => {
     setSelectedTest(test);
+    setAuthError('');
     setView('auth');
   };
 
   const handleStartTest = (e: React.FormEvent) => {
     e.preventDefault();
+    setAuthError('');
+    
+    if (selectedTest?.isPaid) {
+      const isValidStudent = paidStudents.find(
+        s => s.name.toLowerCase().trim() === user.name.toLowerCase().trim() && 
+             s.mobile.trim() === user.mobile.trim() && 
+             s.password === user.password
+      );
+      
+      if (!isValidStudent) {
+        setAuthError('Invalid credentials. Please check your name, mobile, and password.');
+        return;
+      }
+    }
+
     if (user.name && user.mobile) {
       setView('test');
       setAnswers({});
@@ -305,7 +326,10 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
   };
 
   // Group tests by topic
-  const testsByTopic = tests.reduce((acc, test) => {
+  const filteredTests = tests.filter(t => activeTab === 'paid' ? t.isPaid : !t.isPaid);
+  const exams = Array.from(new Set(filteredTests.map(t => t.exam)));
+  const examTests = selectedExam ? filteredTests.filter(t => t.exam === selectedExam) : [];
+  const testsByTopic = examTests.reduce((acc, test) => {
     if (!acc[test.topic]) acc[test.topic] = [];
     acc[test.topic].push(test);
     return acc;
@@ -324,24 +348,32 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
           <span>{view === 'list' ? 'Back to Home' : 'Back to Tests'}</span>
         </button>
         <h1 className="text-2xl font-display font-bold text-white hidden sm:block">
-          Free Mock Tests
+          Mock Tests
         </h1>
       </div>
 
-      {/* VIEW: LIST */}
-      {view === 'list' && (
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-8">
+      <AnimatePresence mode="wait">
+        {/* VIEW: LIST */}
+        {view === 'list' && (
+          <motion.div 
+            key="list"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="max-w-7xl mx-auto"
+          >
+            <div className="text-center mb-8">
             <h2 className="text-4xl font-display font-bold text-white mb-4">Test Your Knowledge</h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
-              Select a topic below to start a free practice test. Each test contains 20 multiple choice questions in Bengali.
+              Select an exam and topic below to start a practice test. Each test contains multiple choice questions in Bengali.
             </p>
           </div>
 
           <div className="flex justify-center mb-12">
-            <div className="bg-dark-900 p-1 rounded-xl border border-white/5 inline-flex">
+            <div className="bg-dark-900 p-1 rounded-xl border border-white/5 inline-flex flex-wrap justify-center gap-1">
               <button
-                onClick={() => setActiveTab('tests')}
+                onClick={() => { setActiveTab('tests'); setSelectedExam(null); setSelectedTopic(null); }}
                 className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
                   activeTab === 'tests' 
                     ? 'bg-brand-pink text-white shadow-lg' 
@@ -349,7 +381,18 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
                 }`}
               >
                 <BookOpen size={18} />
-                Available Tests
+                Free Tests
+              </button>
+              <button
+                onClick={() => { setActiveTab('paid'); setSelectedExam(null); setSelectedTopic(null); }}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                  activeTab === 'paid' 
+                    ? 'bg-brand-pink text-white shadow-lg' 
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <Lock size={18} />
+                Premium Tests
               </button>
               <button
                 onClick={() => setActiveTab('history')}
@@ -365,16 +408,157 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
             </div>
           </div>
 
-          {activeTab === 'tests' ? (
+          {/* Marketing Banner */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="max-w-4xl mx-auto mb-12 bg-gradient-to-r from-brand-pink/10 to-brand-purple/10 border border-brand-pink/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-lg"
+          >
+            <div>
+              <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                <Star className="text-yellow-400 fill-yellow-400" size={24} />
+                Unlock Premium Features!
+              </h3>
+              <p className="text-slate-300">
+                If you want step-by-step solutions, multiple attempts, or extra features, you should buy our Premium Tests.
+              </p>
+            </div>
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => { setActiveTab('paid'); setSelectedExam(null); setSelectedTopic(null); }}
+              className="px-6 py-3 bg-brand-pink hover:bg-brand-light text-white font-bold rounded-xl transition-colors whitespace-nowrap shadow-lg hover:shadow-brand-pink/20"
+            >
+              Explore Premium
+            </motion.button>
+          </motion.div>
+
+          {activeTab === 'tests' || activeTab === 'paid' ? (
             <div className="space-y-12">
-              {Object.entries(testsByTopic).map(([topic, topicTests]) => (
-                <div key={topic} className="animate-fade-in">
+              {!selectedExam ? (
+                <div className="animate-fade-in">
                   <h3 className="text-2xl font-bold text-brand-light mb-6 border-l-4 border-brand-pink pl-4">
-                    {topic}
+                    Select Exam
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {topicTests.map(test => (
-                      <div 
+                  <motion.div 
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+                    }}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  >
+                    {exams.map(exam => (
+                      <motion.div 
+                        variants={{
+                          hidden: { opacity: 0, y: 20 },
+                          visible: { opacity: 1, y: 0 }
+                        }}
+                        key={exam}
+                        className="bg-dark-900 rounded-2xl p-6 border border-white/5 hover:border-brand-pink/50 transition-all hover:-translate-y-1 hover:shadow-lg group cursor-pointer"
+                        onClick={() => setSelectedExam(exam)}
+                      >
+                        <div className="flex justify-between items-start mb-4">
+                          <div className="p-3 bg-dark-800 rounded-xl text-brand-pink group-hover:bg-brand-pink group-hover:text-white transition-colors">
+                            <BookOpen size={24} />
+                          </div>
+                        </div>
+                        <h4 className="text-xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors">
+                          {exam}
+                        </h4>
+                        <p className="text-slate-400 text-sm mb-6">
+                          View available tests for {exam}.
+                        </p>
+                        <div className="flex items-center gap-2 text-brand-light font-medium text-sm">
+                          <span>View Tests</span>
+                          <ChevronRight size={16} />
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
+              ) : !selectedTopic ? (
+                <div className="animate-fade-in">
+                  <button 
+                    onClick={() => setSelectedExam(null)}
+                    className="mb-6 flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
+                  >
+                    <ArrowLeft size={16} />
+                    <span>Back to Exams</span>
+                  </button>
+                  <h3 className="text-3xl font-bold text-white mb-8">
+                    {selectedExam} Topics
+                  </h3>
+                  <motion.div 
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+                    }}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  >
+                    {Object.keys(testsByTopic).sort().map((topic) => (
+                      <motion.div 
+                        variants={{
+                          hidden: { opacity: 0, y: 20 },
+                          visible: { opacity: 1, y: 0 }
+                        }}
+                        key={topic}
+                        className="bg-dark-900 rounded-2xl p-6 border border-white/5 hover:border-brand-pink/50 transition-all hover:-translate-y-1 hover:shadow-lg group cursor-pointer"
+                        onClick={() => setSelectedTopic(topic)}
+                      >
+                        <div className="flex justify-between items-start mb-4">
+                          <div className="p-3 bg-dark-800 rounded-xl text-brand-pink group-hover:bg-brand-pink group-hover:text-white transition-colors">
+                            <BookOpen size={24} />
+                          </div>
+                          <span className="text-xs font-mono text-slate-500 bg-dark-950 px-2 py-1 rounded border border-white/5">
+                            {testsByTopic[topic].length} Tests
+                          </span>
+                        </div>
+                        <h4 className="text-xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors">
+                          {topic}
+                        </h4>
+                        <p className="text-slate-400 text-sm mb-6">
+                          Explore tests for {topic}.
+                        </p>
+                        <div className="flex items-center gap-2 text-brand-light font-medium text-sm">
+                          <span>View Tests</span>
+                          <ChevronRight size={16} />
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
+              ) : (
+                <div className="animate-fade-in">
+                  <button 
+                    onClick={() => setSelectedTopic(null)}
+                    className="mb-6 flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
+                  >
+                    <ArrowLeft size={16} />
+                    <span>Back to Topics</span>
+                  </button>
+                  <h3 className="text-3xl font-bold text-white mb-8">
+                    {selectedTopic} Tests
+                  </h3>
+                  <motion.div 
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+                    }}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  >
+                    {testsByTopic[selectedTopic]?.map(test => (
+                      <motion.div 
+                        variants={{
+                          hidden: { opacity: 0, y: 20 },
+                          visible: { opacity: 1, y: 0 }
+                        }}
                         key={test.id}
                         className="bg-dark-900 rounded-2xl p-6 border border-white/5 hover:border-brand-pink/50 transition-all hover:-translate-y-1 hover:shadow-lg group cursor-pointer"
                         onClick={() => handleStartAuth(test)}
@@ -384,7 +568,7 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
                             <Award size={24} />
                           </div>
                           <span className="text-xs font-mono text-slate-500 bg-dark-950 px-2 py-1 rounded border border-white/5">
-                            20 Questions
+                            {test.questions.length} Questions
                           </span>
                         </div>
                         <h4 className="text-xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors">
@@ -397,11 +581,11 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
                           <span>Start Test</span>
                           <Play size={16} className="fill-current" />
                         </div>
-                      </div>
+                      </motion.div>
                     ))}
-                  </div>
+                  </motion.div>
                 </div>
-              ))}
+              )}
             </div>
           ) : (
             <div className="max-w-4xl mx-auto animate-fade-in">
@@ -453,12 +637,19 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
               )}
             </div>
           )}
-        </div>
+        </motion.div>
       )}
 
       {/* VIEW: AUTH */}
       {view === 'auth' && selectedTest && (
-        <div className="max-w-md mx-auto mt-12">
+        <motion.div 
+          key="auth"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.3 }}
+          className="max-w-md mx-auto mt-12"
+        >
           <div className="bg-dark-900 rounded-3xl p-8 border border-white/10 shadow-2xl">
             <div className="text-center mb-8">
               <div className="w-16 h-16 bg-brand-pink/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-pink">
@@ -467,6 +658,12 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
               <h2 className="text-2xl font-bold text-white">Student Details</h2>
               <p className="text-slate-400 text-sm mt-2">Enter your details to start the test</p>
             </div>
+
+            {authError && (
+              <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-xl text-red-400 text-sm text-center">
+                {authError}
+              </div>
+            )}
 
             <form onSubmit={handleStartTest} className="space-y-6">
               <div>
@@ -499,6 +696,23 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
                 </div>
               </div>
 
+              {selectedTest.isPaid && (
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-3.5 text-slate-500" size={18} />
+                    <input
+                      type="password"
+                      required
+                      value={user.password}
+                      onChange={e => setUser({...user, password: e.target.value})}
+                      className="w-full bg-dark-950 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:ring-2 focus:ring-brand-pink focus:border-transparent outline-none"
+                      placeholder="Enter your password"
+                    />
+                  </div>
+                </div>
+              )}
+
               <div className="pt-4">
                 <button
                   type="submit"
@@ -510,12 +724,19 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
               </div>
             </form>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* VIEW: TEST OR REVIEW */}
       {(view === 'test' || view === 'review') && selectedTest && (
-        <div className="max-w-3xl mx-auto">
+        <motion.div 
+          key="test"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -50 }}
+          transition={{ duration: 0.4 }}
+          className="max-w-3xl mx-auto"
+        >
           <div className="bg-dark-900 rounded-2xl p-6 mb-8 border border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sticky top-24 z-30 shadow-xl backdrop-blur-md bg-opacity-90">
             <div>
               <h2 className="text-lg font-bold text-white">{selectedTest.title} {view === 'review' && <span className="text-brand-pink ml-2">(Review Mode)</span>}</h2>
@@ -534,9 +755,16 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
             </div>
           </div>
 
-          <div className="bg-dark-900 rounded-2xl p-6 md:p-8 border border-white/5 min-h-[400px] flex flex-col justify-between">
-            <div>
-              <div className="flex gap-4 mb-6">
+          <div className="bg-dark-900 rounded-2xl p-6 md:p-8 border border-white/5 min-h-[400px] flex flex-col justify-between overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div 
+                key={currentQuestionIndex}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="flex gap-4 mb-6">
                 <span className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border ${
                   view === 'review' 
                     ? answers[selectedTest.questions[currentQuestionIndex].id] === selectedTest.questions[currentQuestionIndex].correctAnswer
@@ -598,9 +826,10 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
                   );
                 })}
               </div>
-            </div>
+            </motion.div>
+          </AnimatePresence>
 
-            <div className="flex justify-between mt-12 pt-6 border-t border-white/5">
+          <div className="flex justify-between mt-12 pt-6 border-t border-white/5">
               <button
                 onClick={handlePrev}
                 disabled={currentQuestionIndex === 0}
@@ -638,12 +867,19 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
               )}
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* VIEW: RESULT */}
       {view === 'result' && selectedTest && (
-        <div className="max-w-2xl mx-auto mt-12">
+        <motion.div 
+          key="result"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.5, type: 'spring' }}
+          className="max-w-2xl mx-auto mt-12"
+        >
           <div className="bg-dark-900 rounded-3xl p-8 md:p-12 border border-white/10 shadow-2xl text-center relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-pink to-brand-purple"></div>
             
@@ -686,9 +922,36 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
                 Back to Tests
               </button>
             </div>
+
+            {/* Marketing Banner in Result */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+              className="mt-12 bg-dark-950 border border-brand-pink/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6 text-left"
+            >
+              <div>
+                <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
+                  <Star className="text-yellow-400 fill-yellow-400" size={20} />
+                  Want Step-by-Step Solutions?
+                </h3>
+                <p className="text-slate-400 text-sm">
+                  Upgrade to Premium Tests for detailed solutions, unlimited attempts, and performance analytics.
+                </p>
+              </div>
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => { setView('list'); setActiveTab('paid'); setSelectedExam(null); setSelectedTopic(null); }}
+                className="px-6 py-2 bg-brand-pink hover:bg-brand-light text-white font-bold rounded-xl transition-colors whitespace-nowrap text-sm"
+              >
+                Get Premium
+              </motion.button>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
 
     </div>
   );

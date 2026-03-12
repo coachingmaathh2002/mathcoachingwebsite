@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
 interface HeaderProps {
-  onNavigate: (view: 'home' | 'tests') => void;
+  onNavigate: (view: 'home' | 'tests' | 'study-materials') => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
@@ -21,9 +21,11 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
 
   const navLinks = [
     { name: 'Home', href: '#', action: () => onNavigate('home') },
-    { name: 'Free Tests', href: '#tests', action: () => onNavigate('tests') },
+    { name: 'Mock Tests', href: '#tests', action: () => onNavigate('tests') },
+    { name: 'Study Materials', href: '#study-materials', action: () => onNavigate('study-materials') },
     { name: 'Courses', href: '#courses', action: () => onNavigate('home') },
     { name: 'About Us', href: '#about', action: () => onNavigate('home') },
+    { name: 'Testimonials', href: '#testimonials', action: () => onNavigate('home') },
     { name: 'Contact', href: '#contact', action: () => onNavigate('home') },
   ];
 
@@ -32,7 +34,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
     setIsMenuOpen(false);
     link.action();
 
-    if (link.href === '#tests') return;
+    if (link.href === '#tests' || link.href === '#study-materials') return;
 
     if (link.href === '#') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -85,7 +87,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link)}
-                className={`text-slate-300 hover:text-brand-light font-medium transition-colors relative group text-sm uppercase tracking-wide ${link.name === 'Free Tests' ? 'text-brand-light font-bold' : ''}`}
+                className={`text-slate-300 hover:text-brand-light font-medium transition-colors relative group text-sm uppercase tracking-wide ${link.name === 'Mock Tests' ? 'text-brand-light font-bold' : ''}`}
               >
                 {link.name}
                 <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-brand-pink to-brand-purple transition-all duration-300 group-hover:w-full box-shadow-[0_0_10px_currentColor]"></span>

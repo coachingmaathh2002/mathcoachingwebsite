@@ -9,6 +9,8 @@ export interface Test {
   id: string;
   title: string;
   topic: string;
+  exam: string;
+  isPaid?: boolean;
   questions: Question[];
 }
 
@@ -16,7 +18,8 @@ export const tests: Test[] = [
   {
     id: 't1',
     title: 'Sets: Basics & Operations',
-    topic: 'Sets',
+    topic: '১. সেট',
+    exam: 'WB Class-XI First Semester',
     questions: [
       { id: 1, text: "নিচের কোনটি একটি সেট?", options: ["একটি ক্লাসের লম্বা ছাত্রদের সংগ্রহ", "মৌলিক সংখ্যাগুলির সংগ্রহ", "একটি শহরের ধনী ব্যক্তিদের সংগ্রহ", "একটি বাগানের সুন্দর ফুলের সংগ্রহ"], correctAnswer: 1 },
       { id: 2, text: "$A = \\{1, 2, 3\\}$ হলে, $A$ এর সাবসেট সংখ্যা কত?", options: ["3", "6", "8", "9"], correctAnswer: 2 },
@@ -43,7 +46,8 @@ export const tests: Test[] = [
   {
     id: 't2',
     title: 'Relations & Functions: Fundamentals',
-    topic: 'Relations & Functions',
+    topic: '২. সম্বন্ধ ও চিত্রণ',
+    exam: 'WB Class-XI First Semester',
     questions: [
       { id: 1, text: "কার্তেসীয় গুণজ $A \\times B$ এর উপাদানগুলো কী আকারের?", options: ["$(a, b)$", "$\\{a, b\\}$", "$[a, b]$", "$a + b$"], correctAnswer: 0 },
       { id: 2, text: "যদি $n(A) = 3$ এবং $n(B) = 2$ হয়, তবে $n(A \\times B)$ কত?", options: ["5", "6", "9", "8"], correctAnswer: 1 },
@@ -70,7 +74,8 @@ export const tests: Test[] = [
   {
     id: 't3',
     title: 'Trigonometric Functions: Level 1',
-    topic: 'Trigonometric Functions',
+    topic: '৩. ত্রিকোণমিতিক অপেক্ষক',
+    exam: 'WB Class-XI First Semester',
     questions: [
       { id: 1, text: "1 রেডিয়ান = কত ডিগ্রি (প্রায়)?", options: ["$57.3^\\circ$", "$180^\\circ$", "$90^\\circ$", "$45^\\circ$"], correctAnswer: 0 },
       { id: 2, text: "$\\pi$ রেডিয়ান = ?", options: ["$90^\\circ$", "$180^\\circ$", "$270^\\circ$", "$360^\\circ$"], correctAnswer: 1 },
@@ -97,7 +102,8 @@ export const tests: Test[] = [
   {
     id: 't4',
     title: 'Complex Numbers: Introduction',
-    topic: 'Complex Numbers',
+    topic: '৪. জটিল রাশি',
+    exam: 'WB Class-XI First Semester',
     questions: [
       { id: 1, text: "$i$ এর মান কত?", options: ["$\\sqrt{-1}$", "-1", "1", "0"], correctAnswer: 0 },
       { id: 2, text: "$i^2$ এর মান কত?", options: ["1", "-1", "$i$", "$-i$"], correctAnswer: 1 },
@@ -124,7 +130,8 @@ export const tests: Test[] = [
   {
     id: 't5',
     title: 'Linear Inequalities',
-    topic: 'Linear Inequalities',
+    topic: '৬. রৈখিক অসমীকরণ',
+    exam: 'WB Class-XI First Semester',
     questions: [
       { id: 1, text: "$x > 5$ অসমতাটির অর্থ কী?", options: ["$x$ এর মান 5 এর সমান", "$x$ এর মান 5 এর চেয়ে বড়", "$x$ এর মান 5 এর চেয়ে ছোট", "$x$ এর মান 5 অথবা তার বড়"], correctAnswer: 1 },
       { id: 2, text: "$3x < 9$ অসমতাটির সমাধান কী?", options: ["$x < 3$", "$x > 3$", "$x = 3$", "$x \\le 3$"], correctAnswer: 0 },
@@ -151,7 +158,8 @@ export const tests: Test[] = [
   {
     id: 't6',
     title: 'Permutations & Combinations',
-    topic: 'Permutations & Combinations',
+    topic: '৭. বিন্যাস ও সমবায়',
+    exam: 'WB Class-XI First Semester',
     questions: [
       { id: 1, text: "$5!$ এর মান কত?", options: ["120", "24", "720", "60"], correctAnswer: 0 },
       { id: 2, text: "$0!$ এর মান কত?", options: ["0", "1", "অসংজ্ঞায়িত", "10"], correctAnswer: 1 },
@@ -178,7 +186,8 @@ export const tests: Test[] = [
   {
     id: 't7',
     title: 'Limits & Derivatives: Basics',
-    topic: 'Calculus',
+    topic: '৮. সীমা ও অবকলন',
+    exam: 'WB Class-XI First Semester',
     questions: [
       { id: 1, text: "$\\lim_{x \\to a} \\frac{x^n - a^n}{x - a} = ?$", options: ["$na^{n-1}$", "$na^n$", "$n a^{n+1}$", "$a^n$"], correctAnswer: 0 },
       { id: 2, text: "$\\lim_{x \\to 0} \\frac{\\sin x}{x} = ?$", options: ["0", "1", "$\\infty$", "$\\pi$"], correctAnswer: 1 },
@@ -207,6 +216,7 @@ export const tests: Test[] = [
     id: 't8',
     title: 'Sets: Advanced Problems',
     topic: 'Sets',
+    exam: 'WBJEE',
     questions: [
       { id: 1, text: "$A \\Delta B$ (Symmetric Difference) এর সূত্র কোনটি?", options: ["$(A - B) \\cup (B - A)$", "$(A \\cup B) - (A \\cap B)$", "উভয়ই", "কোনোটিই নয়"], correctAnswer: 2 },
       { id: 2, text: "বন্টন বিধি (Distributive Law) কোনটি?", options: ["$A \\cup (B \\cap C) = (A \\cup B) \\cap (A \\cup C)$", "$A \\cup B = B \\cup A$", "$A \\cup (B \\cup C) = (A \\cup B) \\cup C$", "কোনোটিই নয়"], correctAnswer: 0 },
@@ -233,7 +243,8 @@ export const tests: Test[] = [
   {
     id: 't9',
     title: 'Relations & Functions: Types & Graphs',
-    topic: 'Relations & Functions',
+    topic: '২. সম্বন্ধ ও চিত্রণ',
+    exam: 'WB Class-XI First Semester',
     questions: [
       { id: 1, text: "One-one function (এক-এক ফাংশন) এর শর্ত কী?", options: ["$f(x_1) = f(x_2)$ হলে $x_1 = x_2$", "$f(x_1) = f(x_2)$ হলে $x_1 \\ne x_2$", "রেঞ্জ = কোডোমেন", "কোনোটিই নয়"], correctAnswer: 0 },
       { id: 2, text: "Onto function (সার্বিক ফাংশন) এর শর্ত কী?", options: ["রেঞ্জ = কোডোমেন", "রেঞ্জ $\\subset$ কোডোমেন", "এক-এক হতে হবে", "কোনোটিই নয়"], correctAnswer: 0 },
@@ -260,7 +271,8 @@ export const tests: Test[] = [
   {
     id: 't10',
     title: 'Trigonometry: Compound Angles',
-    topic: 'Trigonometric Functions',
+    topic: '৩. ত্রিকোণমিতিক অপেক্ষক',
+    exam: 'WB Class-XI First Semester',
     questions: [
       { id: 1, text: "$\\sin(A+B) = ?$", options: ["$\\sin A\\cos B + \\cos A\\sin B$", "$\\sin A\\cos B - \\cos A\\sin B$", "$\\cos A\\cos B - \\sin A\\sin B$", "$\\cos A\\cos B + \\sin A\\sin B$"], correctAnswer: 0 },
       { id: 2, text: "$\\cos(A-B) = ?$", options: ["$\\cos A\\cos B + \\sin A\\sin B$", "$\\cos A\\cos B - \\sin A\\sin B$", "$\\sin A\\cos B + \\cos A\\sin B$", "$\\sin A\\cos B - \\cos A\\sin B$"], correctAnswer: 0 },
@@ -287,7 +299,8 @@ export const tests: Test[] = [
   {
     id: 't11',
     title: 'বীজগণিত: দ্বিঘাত সমীকরণ (Quadratic Equations)',
-    topic: 'বীজগণিত (Algebra)',
+    topic: '৫. দ্বিঘাত সমীকরণ',
+    exam: 'WB Class-XI First Semester',
     questions: [
       { id: 1, text: "$ax^2 + bx + c = 0$ সমীকরণের মূলদ্বয় বাস্তব ও সমান হলে শর্ত কী?", options: ["$b^2 - 4ac > 0$", "$b^2 - 4ac = 0$", "$b^2 - 4ac < 0$", "$b^2 - 4ac \\ge 0$"], correctAnswer: 1 },
       { id: 2, text: "$x^2 - 5x + 6 = 0$ সমীকরণের মূলদ্বয়ের যোগফল কত?", options: ["5", "-5", "6", "-6"], correctAnswer: 0 },
@@ -315,6 +328,7 @@ export const tests: Test[] = [
     id: 't12',
     title: 'বীজগণিত: অনুক্রম ও ধারা (Sequence & Series)',
     topic: 'বীজগণিত (Algebra)',
+    exam: 'WB Class-XI Second Semester',
     questions: [
       { id: 1, text: "সমান্তর প্রগমনের (A.P.) $n$-তম পদের সূত্র কোনটি?", options: ["$a + (n-1)d$", "$a + nd$", "$a + (n+1)d$", "$a + (n-1)r$"], correctAnswer: 0 },
       { id: 2, text: "গুণোত্তর প্রগমনের (G.P.) $n$-তম পদের সূত্র কোনটি?", options: ["$ar^{n-1}$", "$ar^n$", "$a + (n-1)r$", "$ar^{n+1}$"], correctAnswer: 0 },
@@ -342,6 +356,7 @@ export const tests: Test[] = [
     id: 't13',
     title: 'ক্যালকুলাস: অন্তরজ ২ (Derivatives II)',
     topic: 'ক্যালকুলাস (Calculus)',
+    exam: 'WB Class-XI Third Semester',
     questions: [
       { id: 1, text: "$\\frac{d}{dx}(\\sin^{-1} x) = ?$", options: ["$\\frac{1}{\\sqrt{1-x^2}}$", "$-\\frac{1}{\\sqrt{1-x^2}}$", "$\\frac{1}{1+x^2}$", "$\\frac{1}{x\\sqrt{x^2-1}}$"], correctAnswer: 0 },
       { id: 2, text: "$\\frac{d}{dx}(\\tan^{-1} x) = ?$", options: ["$\\frac{1}{1+x^2}$", "$-\\frac{1}{1+x^2}$", "$\\frac{1}{\\sqrt{1-x^2}}$", "$\\frac{1}{x\\sqrt{x^2-1}}$"], correctAnswer: 0 },
@@ -369,6 +384,7 @@ export const tests: Test[] = [
     id: 't14',
     title: 'ক্যালকুলাস: লিমিট ২ (Limits II)',
     topic: 'ক্যালকুলাস (Calculus)',
+    exam: 'WB Class-XI Third Semester',
     questions: [
       { id: 1, text: "$\\lim_{x \\to 0} \\frac{1 - \\cos x}{x^2} = ?$", options: ["$1/2$", "1", "0", "$\\infty$"], correctAnswer: 0 },
       { id: 2, text: "$\\lim_{x \\to 0} (1 + x)^{1/x} = ?$", options: ["$e$", "1", "0", "$\\infty$"], correctAnswer: 0 },
@@ -396,6 +412,7 @@ export const tests: Test[] = [
     id: 't15',
     title: 'জ্যামিতি: সরলরেখা (Straight Lines)',
     topic: 'জ্যামিতি (Geometry)',
+    exam: 'WB Class-XI Third Semester',
     questions: [
       { id: 1, text: "দুটি বিন্দু $(x_1, y_1)$ এবং $(x_2, y_2)$ এর মধ্যবর্তী দূরত্ব কত?", options: ["$\\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$", "$(x_2-x_1)^2 + (y_2-y_1)^2$", "$\\sqrt{x_2^2 + y_2^2}$", "$x_1x_2 + y_1y_2$"], correctAnswer: 0 },
       { id: 2, text: "সরলরেখার ঢাল (Slope) $m$ এর সূত্র কী?", options: ["$\\frac{y_2 - y_1}{x_2 - x_1}$", "$\\frac{x_2 - x_1}{y_2 - y_1}$", "$y_2 - y_1$", "$x_2 - x_1$"], correctAnswer: 0 },
@@ -423,6 +440,7 @@ export const tests: Test[] = [
     id: 't16',
     title: 'জ্যামিতি: কনিক সেকশন (Conic Sections)',
     topic: 'জ্যামিতি (Geometry)',
+    exam: 'WB Class-XI Fourth Semester',
     questions: [
       { id: 1, text: "বৃত্তের সাধারণ সমীকরণ কোনটি?", options: ["$x^2 + y^2 + 2gx + 2fy + c = 0$", "$x^2/a^2 + y^2/b^2 = 1$", "$y^2 = 4ax$", "$x^2/a^2 - y^2/b^2 = 1$"], correctAnswer: 0 },
       { id: 2, text: "$x^2 + y^2 = a^2$ বৃত্তের কেন্দ্র কোথায়?", options: ["(0, 0)", "(a, 0)", "(0, a)", "(-g, -f)"], correctAnswer: 0 },
@@ -450,6 +468,7 @@ export const tests: Test[] = [
     id: 't17',
     title: 'পরিসংখ্যান: প্রাথমিক ধারণা (Statistics Basics)',
     topic: 'পরিসংখ্যান (Statistics)',
+    exam: 'WB Class-XI Fourth Semester',
     questions: [
       { id: 1, text: "কেন্দ্রীয় প্রবণতার (Central Tendency) সবচেয়ে নির্ভরযোগ্য পরিমাপ কোনটি?", options: ["গড় (Mean)", "মধ্যমা (Median)", "প্রচুরক (Mode)", "প্রসার (Range)"], correctAnswer: 0 },
       { id: 2, text: "গড় (Mean) নির্ণয়ের সূত্র কী?", options: ["$\\frac{\\sum x_i}{n}$", "মধ্যবর্তী মান", "সবচেয়ে বেশিবার আসা মান", "সর্বোচ্চ - সর্বনিম্ন"], correctAnswer: 0 },
@@ -477,6 +496,7 @@ export const tests: Test[] = [
     id: 't18',
     title: 'সম্ভাব্যতা: প্রাথমিক ধারণা (Probability)',
     topic: 'সম্ভাব্যতা (Probability)',
+    exam: 'WB Class-XI Fourth Semester',
     questions: [
       { id: 1, text: "কোনো ঘটনার সম্ভাব্যতা $P(E)$ এর মান কত হতে পারে?", options: ["$0 \\le P(E) \\le 1$", "$P(E) > 1$", "$P(E) < 0$", "$-1 \\le P(E) \\le 1$"], correctAnswer: 0 },
       { id: 2, text: "নিশ্চিত ঘটনার (Sure Event) সম্ভাব্যতা কত?", options: ["1", "0", "0.5", "অসীম"], correctAnswer: 0 },
@@ -504,6 +524,7 @@ export const tests: Test[] = [
     id: 't19',
     title: 'গাণিতিক যুক্তি (Mathematical Reasoning)',
     topic: 'যুক্তিবিজ্ঞান (Logic)',
+    exam: 'WB Class-XI Fourth Semester',
     questions: [
       { id: 1, text: "নিচের কোনটি একটি গাণিতিক উক্তি (Statement)?", options: ["2 + 2 = 4", "দরজাটি খোল।", "তুমি কেমন আছো?", "ওহ! কী সুন্দর!"], correctAnswer: 0 },
       { id: 2, text: "উক্তি $p$ এর না-বোধক (Negation) কে কীভাবে প্রকাশ করা হয়?", options: ["$\\sim p$", "$p'$", "$-p$", "সবগুলোই"], correctAnswer: 3 },
@@ -531,6 +552,7 @@ export const tests: Test[] = [
     id: 't20',
     title: 'মক টেস্ট: সম্পূর্ণ সিলেবাস (Full Syllabus Mock)',
     topic: 'মক টেস্ট (Mock Test)',
+    exam: 'WBJEE',
     questions: [
       { id: 1, text: "$A = \\{1, 2, 3\\}$ হলে Power Set $P(A)$ এর উপাদান সংখ্যা কত?", options: ["8", "3", "6", "9"], correctAnswer: 0 },
       { id: 2, text: "$f(x) = \\frac{1}{x-2}$ এর ডোমেন কত?", options: ["$R - \\{2\\}$", "$R$", "$[2, \\infty)$", "$(2, \\infty)$"], correctAnswer: 0 },
@@ -552,6 +574,312 @@ export const tests: Test[] = [
       { id: 18, text: "$y^2 = 8x$ পরাবৃত্তের ফোকাস কোথায়?", options: ["(2, 0)", "(4, 0)", "(0, 2)", "(-2, 0)"], correctAnswer: 0 },
       { id: 19, text: "$\\frac{d}{dx}(e^{2x}) = ?$", options: ["$2e^{2x}$", "$e^{2x}$", "$e^{2x}/2$", "$4e^{2x}$"], correctAnswer: 0 },
       { id: 20, text: "1, 2, 3, ..., 100 এর যোগফল কত?", options: ["5050", "5000", "5100", "10000"], correctAnswer: 0 }
+    ]
+  },
+  {
+    id: 'pt1',
+    title: 'Advanced Calculus (Premium)',
+    topic: 'Calculus',
+    exam: 'WBJEE',
+    isPaid: true,
+    questions: [
+      { id: 1, text: "$\\int x e^x dx = ?$", options: ["$e^x(x-1) + C$", "$x e^x + C$", "$e^x(x+1) + C$", "$x^2 e^x + C$"], correctAnswer: 0 },
+      { id: 2, text: "$\\frac{d}{dx}(\\ln(\\sin x)) = ?$", options: ["$\\cot x$", "$\\tan x$", "$\\cos x$", "$\\sec x$"], correctAnswer: 0 },
+      { id: 3, text: "$\\lim_{x \\to 0} \\frac{1 - \\cos x}{x^2} = ?$", options: ["$1/2$", "$1$", "$0$", "$2$"], correctAnswer: 0 },
+      { id: 4, text: "$\\int_0^{\\pi/2} \\sin^2 x dx = ?$", options: ["$\\pi/4$", "$\\pi/2$", "$1$", "$0$"], correctAnswer: 0 }
+    ]
+  },
+  {
+    id: 'pt2',
+    title: 'Coordinate Geometry Masterclass (Premium)',
+    topic: 'Coordinate Geometry',
+    exam: 'WBJEE',
+    isPaid: true,
+    questions: [
+      { id: 1, text: "The distance between parallel lines $3x - 4y + 7 = 0$ and $3x - 4y + 5 = 0$ is:", options: ["$2/5$", "$12/5$", "$2$", "$5/2$"], correctAnswer: 0 },
+      { id: 2, text: "The center of the circle $x^2 + y^2 - 6x + 8y - 24 = 0$ is:", options: ["$(3, -4)$", "$(-3, 4)$", "$(6, -8)$", "$(-6, 8)$"], correctAnswer: 0 },
+      { id: 3, text: "The eccentricity of the ellipse $\\frac{x^2}{16} + \\frac{y^2}{9} = 1$ is:", options: ["$\\sqrt{7}/4$", "$7/16$", "$3/4$", "$\\sqrt{7}/3$"], correctAnswer: 0 },
+      { id: 4, text: "The equation of the directrix of the parabola $y^2 = -8x$ is:", options: ["$x = 2$", "$x = -2$", "$y = 2$", "$y = -2$"], correctAnswer: 0 }
+    ]
+  },
+  {
+    id: 'set_t1',
+    title: '১.২ সেট সমূহ এবং এদের উপস্থাপন (Sets and Representation)',
+    topic: '১. সেট',
+    exam: 'WB Class-XI First Semester',
+    questions: [
+      { id: 1, text: "সেটের রোস্টার (Roster) পদ্ধতির অপর নাম কী?", options: ["ছক পদ্ধতি", "সেট গঠন পদ্ধতি", "ভেন চিত্র", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 2, text: "$A = \\{x : x \\text{ স্বাভাবিক সংখ্যা এবং } x < 5\\}$, রোস্টার পদ্ধতিতে লিখলে কী হবে?", options: ["$\\{1, 2, 3, 4\\}$", "$\\{0, 1, 2, 3, 4\\}$", "$\\{1, 2, 3, 4, 5\\}$", "$\\{2, 3, 4\\}$"], correctAnswer: 0 },
+      { id: 3, text: "$B = \\{2, 4, 6, 8\\}$ কে সেট গঠন পদ্ধতিতে লিখলে কী হবে?", options: ["$\\{x: x \\text{ জোড় স্বাভাবিক সংখ্যা, } x < 10\\}$", "$\\{x: x \\text{ স্বাভাবিক সংখ্যা, } x < 8\\}$", "$\\{x: x \\text{ বিজোড় সংখ্যা}\\}$", "$\\{x: x \\text{ পূর্ণসংখ্যা}\\}$"], correctAnswer: 0 },
+      { id: 4, text: "সেটের উপাদানগুলোকে কী দিয়ে আলাদা করা হয়?", options: ["কমা (,)", "সেমিকোলন (;)", "ড্যাশ (-)", "কোলন (:)"], correctAnswer: 0 },
+      { id: 5, text: "নিচের কোনটি সুসংজ্ঞায়িত সেটের উদাহরণ নয়?", options: ["ভারতের নদীসমূহ", "ক্লাসের ভালো ছাত্রদের দল", "10 এর চেয়ে ছোট মৌলিক সংখ্যা", "ইংরেজি বর্ণমালার স্বরবর্ণ"], correctAnswer: 1 },
+      { id: 6, text: "$C = \\{x : x \\text{ একটি পূর্ণসংখ্যা এবং } -2 < x < 3\\}$, রোস্টার পদ্ধতিতে লিখলে কী হবে?", options: ["$\\{-1, 0, 1, 2\\}$", "$\\{-2, -1, 0, 1, 2\\}$", "$\\{0, 1, 2\\}$", "$\\{-1, 0, 1, 2, 3\\}$"], correctAnswer: 0 },
+      { id: 7, text: "'MATHEMATICS' শব্দের অক্ষরগুলোর সেট কোনটি?", options: ["$\\{M, A, T, H, E, I, C, S\\}$", "$\\{M, A, T, H, E, M, A, T, I, C, S\\}$", "$\\{M, A, T\\}$", "$\\{H, E, I, C, S\\}$"], correctAnswer: 0 },
+      { id: 8, text: "সেট গঠন পদ্ধতিতে $D = \\{3, 6, 9, 12\\}$ কে কীভাবে লেখা যায়?", options: ["$\\{x : x = 3n, n \\in N \\text{ এবং } n \\le 4\\}$", "$\\{x : x = 3n, n \\in Z\\}$", "$\\{x : x = n+3, n \\in N\\}$", "$\\{x : x \\text{ বিজোড় সংখ্যা}\\}$"], correctAnswer: 0 },
+      { id: 9, text: "নিচের কোনটি সেট নয়?", options: ["বিশ্বের সেরা 5 জন ব্যাটসম্যানের সংগ্রহ", "100 এর চেয়ে বড় জোড় সংখ্যার সংগ্রহ", "কলকাতার স্কুলগুলোর সংগ্রহ", "5 এর গুণিতকগুলোর সংগ্রহ"], correctAnswer: 0 },
+      { id: 10, text: "$E = \\{x : x^2 - 5x + 6 = 0\\}$, রোস্টার পদ্ধতিতে লিখলে কী হবে?", options: ["$\\{2, 3\\}$", "$\\{-2, -3\\}$", "$\\{1, 6\\}$", "$\\{-1, -6\\}$"], correctAnswer: 0 },
+      { id: 11, text: "সেট প্রকাশের কয়টি প্রধান পদ্ধতি আছে?", options: ["2", "3", "4", "1"], correctAnswer: 0 },
+      { id: 12, text: "$F = \\{x : x \\text{ একটি মৌলিক সংখ্যা এবং } 10 < x < 20\\}$, রোস্টার পদ্ধতিতে লিখলে কী হবে?", options: ["$\\{11, 13, 17, 19\\}$", "$\\{11, 13, 15, 17, 19\\}$", "$\\{13, 17, 19\\}$", "$\\{11, 12, 13, 17, 19\\}$"], correctAnswer: 0 },
+      { id: 13, text: "সেট গঠন পদ্ধতিতে $G = \\{1, 4, 9, 16, 25\\}$ কে কীভাবে লেখা যায়?", options: ["$\\{x : x = n^2, n \\in N \\text{ এবং } n \\le 5\\}$", "$\\{x : x = 2n, n \\in N\\}$", "$\\{x : x = n^2, n \\in Z\\}$", "$\\{x : x \\text{ পূর্ণবর্গ সংখ্যা}\\}$"], correctAnswer: 0 },
+      { id: 14, text: "সেটের উপাদানগুলোর ক্রম পরিবর্তন করলে সেটের কী পরিবর্তন হয়?", options: ["কোনো পরিবর্তন হয় না", "সেটটি ভিন্ন হয়ে যায়", "উপাদান সংখ্যা বাড়ে", "উপাদান সংখ্যা কমে"], correctAnswer: 0 },
+      { id: 15, text: "একই উপাদান সেটে একাধিকবার লিখলে কী হয়?", options: ["সেটটি একই থাকে", "সেটটি ভিন্ন হয়ে যায়", "সেটটি অসংজ্ঞায়িত হয়", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 16, text: "$H = \\{x : x \\text{ একটি জোড় মৌলিক সংখ্যা}\\}$, রোস্টার পদ্ধতিতে লিখলে কী হবে?", options: ["$\\{2\\}$", "$\\phi$", "$\\{2, 4, 6\\}$", "$\\{0, 2\\}$"], correctAnswer: 0 },
+      { id: 17, text: "নিচের কোনটি রোস্টার পদ্ধতিতে লেখা সেট?", options: ["$\\{a, e, i, o, u\\}$", "$\\{x : x \\text{ একটি স্বরবর্ণ}\\}$", "$\\{x : x \\in N\\}$", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 18, text: "সেট গঠন পদ্ধতিতে $I = \\{1/2, 2/3, 3/4, 4/5\\}$ কে কীভাবে লেখা যায়?", options: ["$\\{x : x = n/(n+1), n \\in N \\text{ এবং } n \\le 4\\}$", "$\\{x : x = n/n+1, n \\in N\\}$", "$\\{x : x = 1/n, n \\in N\\}$", "$\\{x : x = (n-1)/n, n \\in N\\}$"], correctAnswer: 0 },
+      { id: 19, text: "গ্রিক অক্ষর $\\in$ (epsilon) দ্বারা কী বোঝানো হয়?", options: ["উপাদান (belongs to)", "উপাদান নয় (does not belong to)", "উপসেট", "সার্বিক সেট"], correctAnswer: 0 },
+      { id: 20, text: "$J = \\{x : x \\text{ একটি বছর যার দিন সংখ্যা 366}\\}$, এটি কী ধরনের সেট?", options: ["লিপ ইয়ারের সেট", "সাধারণ বছরের সেট", "শূন্য সেট", "কোনোটিই নয়"], correctAnswer: 0 }
+    ]
+  },
+  {
+    id: 'set_t2',
+    title: '১.৩ ও ১.৪ শূন্য, সসীম এবং অসীম সেট (Empty, Finite & Infinite Sets)',
+    topic: '১. সেট',
+    exam: 'WB Class-XI First Semester',
+    questions: [
+      { id: 1, text: "যে সেটে কোনো উপাদান থাকে না তাকে কী বলে?", options: ["শূন্য সেট", "সসীম সেট", "অসীম সেট", "একক সেট"], correctAnswer: 0 },
+      { id: 2, text: "শূন্য সেটকে কোন চিহ্ন দ্বারা প্রকাশ করা হয়?", options: ["$\\phi$", "$\\theta$", "$\\alpha$", "$\\mu$"], correctAnswer: 0 },
+      { id: 3, text: "$A = \\{x : x > 5 \\text{ এবং } x < 5\\}$, A সেটটি কী ধরনের সেট?", options: ["শূন্য সেট", "সসীম সেট", "অসীম সেট", "সার্বিক সেট"], correctAnswer: 0 },
+      { id: 4, text: "নিচের কোনটি অসীম সেট?", options: ["বছরের মাসগুলোর সেট", "100 এর চেয়ে ছোট মৌলিক সংখ্যার সেট", "একটি সরলরেখার উপর অবস্থিত বিন্দুর সেট", "$x^2 = 4$ এর সমাধান সেট"], correctAnswer: 2 },
+      { id: 5, text: "সসীম সেটের উপাদান সংখ্যা কী রূপ হয়?", options: ["নির্দিষ্ট", "অনির্দিষ্ট", "শূন্য", "অসীম"], correctAnswer: 0 },
+      { id: 6, text: "নিচের কোনটি সসীম সেট?", options: ["$A = \\{x : x \\in N, x < 1000\\}$", "$B = \\{x : x \\in Z, x > 0\\}$", "$C = \\{x : x \\in R, 0 < x < 1\\}$", "$D = \\{x : x \\text{ একটি বিজোড় সংখ্যা}\\}$"], correctAnswer: 0 },
+      { id: 7, text: "শূন্য সেটের উপাদান সংখ্যা কত?", options: ["0", "1", "অসীম", "নির্ণয় করা সম্ভব নয়"], correctAnswer: 0 },
+      { id: 8, text: "$E = \\{x : x^2 = 4 \\text{ এবং } x \\text{ বিজোড়}\\}$ সেটটি কী?", options: ["$\\phi$", "$\\{2\\}$", "$\\{-2\\}$", "$\\{2, -2\\}$"], correctAnswer: 0 },
+      { id: 9, text: "আকাশের তারার সেট কী ধরনের সেট?", options: ["অসীম সেট", "সসীম সেট", "শূন্য সেট", "একক সেট"], correctAnswer: 0 },
+      { id: 10, text: "$F = \\{x : x \\in N, 2x - 1 = 0\\}$ সেটটি কী?", options: ["শূন্য সেট", "সসীম সেট", "অসীম সেট", "একক সেট"], correctAnswer: 0 },
+      { id: 11, text: "নিচের কোনটি একক সেট (Singleton Set)?", options: ["$\\{0\\}$", "$\\phi$", "$\\{\\}$", "$\\{1, 2\\}$"], correctAnswer: 0 },
+      { id: 12, text: "$G = \\{x : x \\text{ একটি জোড় মৌলিক সংখ্যা > 2}\\}$ সেটটি কী?", options: ["শূন্য সেট", "একক সেট", "সসীম সেট", "অসীম সেট"], correctAnswer: 0 },
+      { id: 13, text: "পৃথিবীর মানুষের সেট কী ধরনের সেট?", options: ["সসীম সেট", "অসীম সেট", "শূন্য সেট", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 14, text: "$H = \\{x : x \\in Z, x^2 < 0\\}$ সেটটি কী?", options: ["$\\phi$", "$\\{0\\}$", "$\\{-1, 1\\}$", "অসীম সেট"], correctAnswer: 0 },
+      { id: 15, text: "$\\{\\phi\\}$ সেটটি কী ধরনের সেট?", options: ["একক সেট", "শূন্য সেট", "অসীম সেট", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 16, text: "দুটি সমান্তরাল সরলরেখার ছেদবিন্দুর সেট কী?", options: ["শূন্য সেট", "একক সেট", "অসীম সেট", "সসীম সেট"], correctAnswer: 0 },
+      { id: 17, text: "$I = \\{x : x \\in R, 1 < x < 2\\}$ সেটটি কী?", options: ["অসীম সেট", "সসীম সেট", "শূন্য সেট", "একক সেট"], correctAnswer: 0 },
+      { id: 18, text: "ইংরেজি বর্ণমালার সেট কী ধরনের সেট?", options: ["সসীম সেট", "অসীম সেট", "শূন্য সেট", "একক সেট"], correctAnswer: 0 },
+      { id: 19, text: "$J = \\{x : x \\text{ একটি ত্রিভুজ যার 4টি বাহু আছে}\\}$ সেটটি কী?", options: ["শূন্য সেট", "সসীম সেট", "অসীম সেট", "একক সেট"], correctAnswer: 0 },
+      { id: 20, text: "$\\{x : x \\in N, x \\text{ একটি জোড় সংখ্যা}\\}$ সেটটি কী?", options: ["অসীম সেট", "সসীম সেট", "শূন্য সেট", "একক সেট"], correctAnswer: 0 }
+    ]
+  },
+  {
+    id: 'set_t3',
+    title: '১.৫ ও ১.৬ সমান সেট ও উপসেট (Equal Sets & Subsets)',
+    topic: '১. সেট',
+    exam: 'WB Class-XI First Semester',
+    questions: [
+      { id: 1, text: "দুটি সেট A এবং B সমান হবে যদি-", options: ["A এর সব উপাদান B তে থাকে এবং B এর সব উপাদান A তে থাকে", "A এবং B এর উপাদান সংখ্যা সমান হয়", "A এর কিছু উপাদান B তে থাকে", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 2, text: "$A = \\{1, 2, 3\\}$ এবং $B = \\{2, 3, 1\\}$ হলে নিচের কোনটি সত্য?", options: ["$A = B$", "$A \\ne B$", "$A \\subset B$", "$A \\supset B$"], correctAnswer: 0 },
+      { id: 3, text: "যদি A সেটের প্রতিটি উপাদান B সেটেরও উপাদান হয়, তবে A কে B এর কী বলা হয়?", options: ["উপসেট", "সার্বিক সেট", "পূরক সেট", "সমান সেট"], correctAnswer: 0 },
+      { id: 4, text: "$A = \\{1, 2\\}$ সেটের উপসেট কয়টি?", options: ["4", "3", "2", "1"], correctAnswer: 0 },
+      { id: 5, text: "প্রকৃত উপসেট (Proper Subset) এর ক্ষেত্রে কোনটি সত্য?", options: ["$A \\subset B$ এবং $A \\ne B$", "$A = B$", "$A \\supset B$", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 6, text: "$A = \\{a, b, c\\}$ এবং $B = \\{a, b, c, c\\}$ হলে কোনটি সত্য?", options: ["$A = B$", "$A \\ne B$", "$A \\subset B$ কিন্তু $A \\ne B$", "$B \\subset A$ কিন্তু $A \\ne B$"], correctAnswer: 0 },
+      { id: 7, text: "ফাঁকা সেট ($\\phi$) যেকোনো সেটের কী?", options: ["উপসেট", "সমান সেট", "সার্বিক সেট", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 8, text: "$A = \\{1, 2, 3\\}$ এর প্রকৃত উপসেট সংখ্যা কত?", options: ["7", "8", "6", "9"], correctAnswer: 0 },
+      { id: 9, text: "যদি $A \\subset B$ এবং $B \\subset A$ হয়, তবে কোনটি সত্য?", options: ["$A = B$", "$A \\ne B$", "$A \\cup B = \\phi$", "$A \\cap B = \\phi$"], correctAnswer: 0 },
+      { id: 10, text: "$A = \\{x : x \\text{ একটি জোড় সংখ্যা}\\}$ এবং $B = \\{x : x \\text{ 2 এর গুণিতক}\\}$ হলে কোনটি সত্য?", options: ["$A = B$", "$A \\subset B$", "$B \\subset A$", "সবগুলোই সত্য"], correctAnswer: 3 },
+      { id: 11, text: "কোনো সেটের উপাদান সংখ্যা $n$ হলে, তার উপসেট সংখ্যা কত?", options: ["$2^n$", "$n^2$", "$2n$", "$n$"], correctAnswer: 0 },
+      { id: 12, text: "কোনো সেটের উপাদান সংখ্যা $n$ হলে, তার প্রকৃত উপসেট সংখ্যা কত?", options: ["$2^n - 1$", "$2^n$", "$n^2 - 1$", "$2n - 1$"], correctAnswer: 0 },
+      { id: 13, text: "$A = \\{1, 2, 3, 4\\}$ এবং $B = \\{1, 2, 3, 4, 5\\}$ হলে কোনটি সত্য?", options: ["$A \\subset B$", "$B \\subset A$", "$A = B$", "$A \\supset B$"], correctAnswer: 0 },
+      { id: 14, text: "নিচের কোনটি $A = \\{a, b\\}$ এর উপসেট নয়?", options: ["$\\{c\\}$", "$\\phi$", "$\\{a\\}$", "$\\{a, b\\}$"], correctAnswer: 0 },
+      { id: 15, text: "যদি $A = \\{1, 2\\}$ এবং $B = \\{\\{1, 2\\}, 3\\}$ হয়, তবে কোনটি সত্য?", options: ["$A \\in B$", "$A \\subset B$", "$A = B$", "$B \\subset A$"], correctAnswer: 0 },
+      { id: 16, text: "সমতুল্য সেট (Equivalent Sets) এর ক্ষেত্রে কোনটি সমান হয়?", options: ["উপাদান সংখ্যা", "উপাদানগুলো", "উভয়ই", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 17, text: "$A = \\{1, 2, 3\\}$ এবং $B = \\{a, b, c\\}$ হলে সেট দুটি কী ধরনের?", options: ["সমতুল্য সেট", "সমান সেট", "উপসেট", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 18, text: "প্রত্যেক সেট তার নিজের কী?", options: ["উপসেট", "প্রকৃত উপসেট", "সার্বিক সেট", "পূরক সেট"], correctAnswer: 0 },
+      { id: 19, text: "$A = \\{x : x^2 = 9\\}$ এবং $B = \\{3, -3\\}$ হলে কোনটি সত্য?", options: ["$A = B$", "$A \\subset B$", "$B \\subset A$", "সবগুলোই সত্য"], correctAnswer: 3 },
+      { id: 20, text: "যদি $A \\subset B$ এবং $B \\subset C$ হয়, তবে কোনটি সত্য?", options: ["$A \\subset C$", "$C \\subset A$", "$A = C$", "$A \\cap C = \\phi$"], correctAnswer: 0 }
+    ]
+  },
+  {
+    id: 'set_t4',
+    title: '১.৭ ও ১.৮ ঘাত সেট ও সার্বিক সেট (Power Set & Universal Set)',
+    topic: '১. সেট',
+    exam: 'WB Class-XI First Semester',
+    questions: [
+      { id: 1, text: "কোনো সেটের সকল উপসেট নিয়ে গঠিত সেটকে কী বলে?", options: ["ঘাত সেট", "সার্বিক সেট", "শূন্য সেট", "পূরক সেট"], correctAnswer: 0 },
+      { id: 2, text: "A সেটের উপাদান সংখ্যা n হলে, তার ঘাত সেটের উপাদান সংখ্যা কত হবে?", options: ["$2^n$", "$n^2$", "$2n$", "$n$"], correctAnswer: 0 },
+      { id: 3, text: "$A = \\{1, 2\\}$ হলে $P(A)$ এর উপাদান কয়টি?", options: ["4", "2", "8", "6"], correctAnswer: 0 },
+      { id: 4, text: "যে নির্দিষ্ট সেটের অধীনে অন্যান্য সব সেট আলোচনা করা হয়, তাকে কী বলে?", options: ["সার্বিক সেট", "ঘাত সেট", "শূন্য সেট", "উপসেট"], correctAnswer: 0 },
+      { id: 5, text: "সার্বিক সেটকে সাধারণত কোন অক্ষর দ্বারা প্রকাশ করা হয়?", options: ["$U$", "$P$", "$S$", "$A$"], correctAnswer: 0 },
+      { id: 6, text: "$A = \\phi$ হলে, $P(A)$ এর উপাদান সংখ্যা কত?", options: ["1", "0", "2", "অসীম"], correctAnswer: 0 },
+      { id: 7, text: "$A = \\{a, b, c\\}$ হলে, $P(A)$ এর উপাদান সংখ্যা কত?", options: ["8", "6", "9", "7"], correctAnswer: 0 },
+      { id: 8, text: "নিচের কোনটি $A = \\{1\\}$ এর ঘাত সেট?", options: ["$\\{\\phi, \\{1\\}\\}$", "$\\{1\\}$", "$\\{\\phi\\}$", "$\\{\\{1\\}\\}$"], correctAnswer: 0 },
+      { id: 9, text: "যদি $P(A)$ এর উপাদান সংখ্যা 16 হয়, তবে A সেটের উপাদান সংখ্যা কত?", options: ["4", "8", "2", "16"], correctAnswer: 0 },
+      { id: 10, text: "সার্বিক সেটের উপসেট কোনটি?", options: ["আলোচনাধীন সকল সেট", "শুধুমাত্র শূন্য সেট", "ঘাত সেট", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 11, text: "ঘাত সেটের প্রতিটি উপাদান কী?", options: ["একটি সেট", "একটি সংখ্যা", "একটি অক্ষর", "একটি সমীকরণ"], correctAnswer: 0 },
+      { id: 12, text: "$A = \\{1, 2\\}$ হলে, নিচের কোনটি $P(A)$ এর উপাদান নয়?", options: ["3", "$\\phi$", "$\\{1\\}$", "$\\{1, 2\\}$"], correctAnswer: 0 },
+      { id: 13, text: "যদি $A \\subset U$ হয়, তবে $U$ কে কী বলা হয়?", options: ["সার্বিক সেট", "ঘাত সেট", "শূন্য সেট", "উপসেট"], correctAnswer: 0 },
+      { id: 14, text: "$P(A)$ এর প্রকৃত উপসেট সংখ্যা কত (A এর উপাদান সংখ্যা n হলে)?", options: ["$2^{2^n} - 1$", "$2^n - 1$", "$2^{2^n}$", "$2^n$"], correctAnswer: 0 },
+      { id: 15, text: "যদি $A = \\{x, y\\}$ হয়, তবে $P(A) = ?$", options: ["$\\{\\phi, \\{x\\}, \\{y\\}, \\{x, y\\}\\}$", "$\\{\\{x\\}, \\{y\\}, \\{x, y\\}\\}$", "$\\{\\phi, x, y, \\{x, y\\}\\}$", "$\\{x, y\\}$"], correctAnswer: 0 },
+      { id: 16, text: "সকল সেটের সার্বিক সেট হিসেবে কোনটিকে ধরা যেতে পারে?", options: ["প্রয়োজন অনুযায়ী যেকোনো বড় সেট", "বাস্তব সংখ্যার সেট", "স্বাভাবিক সংখ্যার সেট", "শূন্য সেট"], correctAnswer: 0 },
+      { id: 17, text: "যদি $A = \\{\\phi\\}$ হয়, তবে $P(A)$ এর উপাদান সংখ্যা কত?", options: ["2", "1", "0", "4"], correctAnswer: 0 },
+      { id: 18, text: "ঘাত সেটের উপাদানগুলো কী দ্বারা আবদ্ধ থাকে?", options: ["দ্বিতীয় বন্ধনী $\\{\\}$", "প্রথম বন্ধনী $()$", "তৃতীয় বন্ধনী $[]$", "কোনো বন্ধনী থাকে না"], correctAnswer: 0 },
+      { id: 19, text: "$A = \\{1, 2, 3\\}$ এর ঘাত সেটে কয়টি উপাদান আছে যা একক সেট (Singleton)?", options: ["3", "1", "8", "0"], correctAnswer: 0 },
+      { id: 20, text: "সার্বিক সেট $U = \\{1, 2, 3, 4, 5\\}$ এবং $A = \\{1, 2\\}$ হলে, A এর সাপেক্ষে U কী?", options: ["সার্বিক সেট", "উপসেট", "পূরক সেট", "ঘাত সেট"], correctAnswer: 0 }
+    ]
+  },
+  {
+    id: 'set_t5',
+    title: '১.৯ ভেন্ চিত্র (Venn Diagrams)',
+    topic: '১. সেট',
+    exam: 'WB Class-XI First Semester',
+    questions: [
+      { id: 1, text: "ভেন চিত্রে সার্বিক সেটকে সাধারণত কোন জ্যামিতিক চিত্র দ্বারা প্রকাশ করা হয়?", options: ["আয়তক্ষেত্র", "বৃত্ত", "ত্রিভুজ", "সরলরেখা"], correctAnswer: 0 },
+      { id: 2, text: "ভেন চিত্রে উপসেটগুলোকে সাধারণত কী দ্বারা প্রকাশ করা হয়?", options: ["বৃত্ত", "আয়তক্ষেত্র", "বর্গক্ষেত্র", "সরলরেখা"], correctAnswer: 0 },
+      { id: 3, text: "A এবং B দুটি পরস্পরচ্ছেদী সেট হলে, ভেন চিত্রে তাদের সাধারণ অংশ কী নির্দেশ করে?", options: ["$A \\cap B$", "$A \\cup B$", "$A - B$", "$A'$"], correctAnswer: 0 },
+      { id: 4, text: "A এবং B নিচ্ছেদ (Disjoint) সেট হলে ভেন চিত্রে বৃত্ত দুটি কেমন হবে?", options: ["আলাদা থাকবে", "একে অপরকে ছেদ করবে", "একটি অপরটির ভেতরে থাকবে", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 5, text: "ভেন চিত্রের প্রবর্তক কে?", options: ["জন ভেন", "জর্জ ক্যান্টর", "ডি মরগান", "পিথাগোরাস"], correctAnswer: 0 },
+      { id: 6, text: "ভেন চিত্রে $A \\subset B$ বোঝাতে কী আঁকা হয়?", options: ["A বৃত্তটি B বৃত্তের ভেতরে", "B বৃত্তটি A বৃত্তের ভেতরে", "দুটি বৃত্ত আলাদা", "দুটি বৃত্ত পরস্পরকে ছেদ করে"], correctAnswer: 0 },
+      { id: 7, text: "ভেন চিত্রে $A'$ (A এর পূরক সেট) কোন অংশটি নির্দেশ করে?", options: ["A বৃত্তের বাইরের অংশ (আয়তক্ষেত্রের ভেতরে)", "A বৃত্তের ভেতরের অংশ", "সম্পূর্ণ আয়তক্ষেত্র", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 8, text: "ভেন চিত্রে $A \\cup B$ কোন অংশটি নির্দেশ করে?", options: ["A এবং B বৃত্ত দুটির সম্পূর্ণ অংশ", "শুধুমাত্র A এবং B এর সাধারণ অংশ", "A বৃত্তের যে অংশ B তে নেই", "B বৃত্তের যে অংশ A তে নেই"], correctAnswer: 0 },
+      { id: 9, text: "ভেন চিত্রে $A - B$ কোন অংশটি নির্দেশ করে?", options: ["A বৃত্তের যে অংশ B তে নেই", "B বৃত্তের যে অংশ A তে নেই", "A এবং B এর সাধারণ অংশ", "A এবং B এর বাইরের অংশ"], correctAnswer: 0 },
+      { id: 10, text: "ভেন চিত্রে $(A \\cup B)'$ কোন অংশটি নির্দেশ করে?", options: ["A এবং B বৃত্ত দুটির বাইরের সম্পূর্ণ অংশ", "A এবং B এর সাধারণ অংশ", "শুধুমাত্র A বৃত্তের বাইরের অংশ", "শুধুমাত্র B বৃত্তের বাইরের অংশ"], correctAnswer: 0 },
+      { id: 11, text: "ভেন চিত্রে $A \\cap B = \\phi$ হলে বৃত্ত দুটি কেমন হবে?", options: ["পরস্পরকে ছেদ করবে না", "পরস্পরকে ছেদ করবে", "একটি অপরটির ভেতরে থাকবে", "সমাপতিত হবে"], correctAnswer: 0 },
+      { id: 12, text: "ভেন চিত্রে তিনটি সেট A, B, C পরস্পরচ্ছেদী হলে, তাদের সাধারণ অংশ কী নির্দেশ করে?", options: ["$A \\cap B \\cap C$", "$A \\cup B \\cup C$", "$(A \\cap B) \\cup C$", "$A \\cup (B \\cap C)$"], correctAnswer: 0 },
+      { id: 13, text: "ভেন চিত্রে $A \\cup A'$ কোন অংশটি নির্দেশ করে?", options: ["সম্পূর্ণ আয়তক্ষেত্র (সার্বিক সেট)", "শুধুমাত্র A বৃত্ত", "A বৃত্তের বাইরের অংশ", "ফাঁকা অংশ"], correctAnswer: 0 },
+      { id: 14, text: "ভেন চিত্রে $A \\cap A'$ কোন অংশটি নির্দেশ করে?", options: ["ফাঁকা অংশ ($\\phi$)", "সম্পূর্ণ আয়তক্ষেত্র", "A বৃত্ত", "A বৃত্তের বাইরের অংশ"], correctAnswer: 0 },
+      { id: 15, text: "ভেন চিত্রে $A \\subset B$ এবং $B \\subset C$ হলে, A বৃত্তটি কোথায় থাকবে?", options: ["C বৃত্তের ভেতরে", "C বৃত্তের বাইরে", "C বৃত্তকে ছেদ করবে", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 16, text: "ভেন চিত্রে $U - A$ কোন অংশটি নির্দেশ করে?", options: ["$A'$ (A এর পূরক সেট)", "$A$", "$U$", "$\\phi$"], correctAnswer: 0 },
+      { id: 17, text: "ভেন চিত্রে $A \\cup \\phi$ কোন অংশটি নির্দেশ করে?", options: ["A বৃত্ত", "সম্পূর্ণ আয়তক্ষেত্র", "ফাঁকা অংশ", "A বৃত্তের বাইরের অংশ"], correctAnswer: 0 },
+      { id: 18, text: "ভেন চিত্রে $A \\cap U$ কোন অংশটি নির্দেশ করে?", options: ["A বৃত্ত", "সম্পূর্ণ আয়তক্ষেত্র", "ফাঁকা অংশ", "A বৃত্তের বাইরের অংশ"], correctAnswer: 0 },
+      { id: 19, text: "ভেন চিত্রে $(A \\cap B)'$ কোন অংশটি নির্দেশ করে?", options: ["A এবং B এর সাধারণ অংশ ছাড়া বাকি সম্পূর্ণ অংশ", "A এবং B এর সাধারণ অংশ", "A এবং B বৃত্ত দুটির সম্পূর্ণ অংশ", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 20, text: "ভেন চিত্রে $A \\Delta B$ (প্রতিসম অন্তর) কোন অংশটি নির্দেশ করে?", options: ["$(A - B) \\cup (B - A)$", "$A \\cap B$", "$A \\cup B$", "$(A \\cup B)'$"], correctAnswer: 0 }
+    ]
+  },
+  {
+    id: 'set_t6',
+    title: '১.১০ সেটের উপর প্রক্রিয়াসমূহ - ১ (Operations on Sets - 1)',
+    topic: '১. সেট',
+    exam: 'WB Class-XI First Semester',
+    questions: [
+      { id: 1, text: "A এবং B সেটের সংযোগ (Union) সেটকে কীভাবে লেখা হয়?", options: ["$A \\cup B$", "$A \\cap B$", "$A - B$", "$A \\times B$"], correctAnswer: 0 },
+      { id: 2, text: "$A = \\{1, 2\\}, B = \\{2, 3\\}$ হলে $A \\cup B = ?$", options: ["$\\{1, 2, 3\\}$", "$\\{2\\}$", "$\\{1, 3\\}$", "$\\{1, 2, 2, 3\\}$"], correctAnswer: 0 },
+      { id: 3, text: "A এবং B সেটের ছেদ (Intersection) সেটকে কীভাবে লেখা হয়?", options: ["$A \\cap B$", "$A \\cup B$", "$A - B$", "$A'$"], correctAnswer: 0 },
+      { id: 4, text: "$A = \\{1, 2, 3\\}, B = \\{2, 3, 4\\}$ হলে $A \\cap B = ?$", options: ["$\\{2, 3\\}$", "$\\{1, 4\\}$", "$\\{1, 2, 3, 4\\}$", "$\\phi$"], correctAnswer: 0 },
+      { id: 5, text: "$A \\cup A = ?$", options: ["$A$", "$\\phi$", "$U$", "$A'$"], correctAnswer: 0 },
+      { id: 6, text: "$A \\cap A = ?$", options: ["$A$", "$\\phi$", "$U$", "$A'$"], correctAnswer: 0 },
+      { id: 7, text: "$A \\cup \\phi = ?$", options: ["$A$", "$\\phi$", "$U$", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 8, text: "$A \\cap \\phi = ?$", options: ["$\\phi$", "$A$", "$U$", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 9, text: "$A \\cup U = ?$", options: ["$U$", "$A$", "$\\phi$", "$A'$"], correctAnswer: 0 },
+      { id: 10, text: "$A \\cap U = ?$", options: ["$A$", "$U$", "$\\phi$", "$A'$"], correctAnswer: 0 },
+      { id: 11, text: "যদি $A \\subset B$ হয়, তবে $A \\cup B = ?$", options: ["$B$", "$A$", "$\\phi$", "$U$"], correctAnswer: 0 },
+      { id: 12, text: "যদি $A \\subset B$ হয়, তবে $A \\cap B = ?$", options: ["$A$", "$B$", "$\\phi$", "$U$"], correctAnswer: 0 },
+      { id: 13, text: "$A \\cup B = B \\cup A$, এই বিধিকে কী বলা হয়?", options: ["বিনিময় বিধি (Commutative Law)", "সংযোগ বিধি (Associative Law)", "বণ্টন বিধি (Distributive Law)", "অভেদ বিধি (Identity Law)"], correctAnswer: 0 },
+      { id: 14, text: "$A \\cap B = B \\cap A$, এই বিধিকে কী বলা হয়?", options: ["বিনিময় বিধি (Commutative Law)", "সংযোগ বিধি (Associative Law)", "বণ্টন বিধি (Distributive Law)", "অভেদ বিধি (Identity Law)"], correctAnswer: 0 },
+      { id: 15, text: "$(A \\cup B) \\cup C = A \\cup (B \\cup C)$, এই বিধিকে কী বলা হয়?", options: ["সংযোগ বিধি (Associative Law)", "বিনিময় বিধি (Commutative Law)", "বণ্টন বিধি (Distributive Law)", "অভেদ বিধি (Identity Law)"], correctAnswer: 0 },
+      { id: 16, text: "$(A \\cap B) \\cap C = A \\cap (B \\cap C)$, এই বিধিকে কী বলা হয়?", options: ["সংযোগ বিধি (Associative Law)", "বিনিময় বিধি (Commutative Law)", "বণ্টন বিধি (Distributive Law)", "অভেদ বিধি (Identity Law)"], correctAnswer: 0 },
+      { id: 17, text: "$A \\cup (B \\cap C) = (A \\cup B) \\cap (A \\cup C)$, এই বিধিকে কী বলা হয়?", options: ["বণ্টন বিধি (Distributive Law)", "সংযোগ বিধি (Associative Law)", "বিনিময় বিধি (Commutative Law)", "ডি মরগানের সূত্র"], correctAnswer: 0 },
+      { id: 18, text: "$A \\cap (B \\cup C) = (A \\cap B) \\cup (A \\cap C)$, এই বিধিকে কী বলা হয়?", options: ["বণ্টন বিধি (Distributive Law)", "সংযোগ বিধি (Associative Law)", "বিনিময় বিধি (Commutative Law)", "ডি মরগানের সূত্র"], correctAnswer: 0 },
+      { id: 19, text: "যদি $A \\cup B = \\phi$ হয়, তবে কোনটি সত্য?", options: ["$A = \\phi$ এবং $B = \\phi$", "$A = \\phi$ অথবা $B = \\phi$", "$A \\ne \\phi$ এবং $B \\ne \\phi$", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 20, text: "$A = \\{x : x \\in N, x < 5\\}$ এবং $B = \\{x : x \\in N, 3 < x < 7\\}$ হলে $A \\cap B = ?$", options: ["$\\{4\\}$", "$\\{3, 4\\}$", "$\\{4, 5\\}$", "$\\{1, 2, 3, 4, 5, 6\\}$"], correctAnswer: 0 }
+    ]
+  },
+  {
+    id: 'set_t7',
+    title: '১.১০ সেটের উপর প্রক্রিয়াসমূহ - ২ (Operations on Sets - 2)',
+    topic: '১. সেট',
+    exam: 'WB Class-XI First Semester',
+    questions: [
+      { id: 1, text: "A এবং B সেটের অন্তর (Difference) $A - B$ বলতে কী বোঝায়?", options: ["$\\{x : x \\in A \\text{ এবং } x \\notin B\\}$", "$\\{x : x \\in B \\text{ এবং } x \\notin A\\}$", "$\\{x : x \\in A \\text{ এবং } x \\in B\\}$", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 2, text: "$A = \\{1, 2, 3, 4\\}, B = \\{3, 4, 5\\}$ হলে $A - B = ?$", options: ["$\\{1, 2\\}$", "$\\{5\\}$", "$\\{3, 4\\}$", "$\\{1, 2, 5\\}$"], correctAnswer: 0 },
+      { id: 3, text: "$B - A = ?$", options: ["$\\{x : x \\in B \\text{ এবং } x \\notin A\\}$", "$\\{x : x \\in A \\text{ এবং } x \\notin B\\}$", "$\\{x : x \\in A \\text{ এবং } x \\in B\\}$", "$\\phi$"], correctAnswer: 0 },
+      { id: 4, text: "A এবং B নিচ্ছেদ সেট হলে $A - B = ?$", options: ["$A$", "$B$", "$\\phi$", "$U$"], correctAnswer: 0 },
+      { id: 5, text: "$A - \\phi = ?$", options: ["$A$", "$\\phi$", "$U$", "$A'$"], correctAnswer: 0 },
+      { id: 6, text: "$A - A = ?$", options: ["$\\phi$", "$A$", "$U$", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 7, text: "যদি $A \\subset B$ হয়, তবে $A - B = ?$", options: ["$\\phi$", "$A$", "$B$", "$U$"], correctAnswer: 0 },
+      { id: 8, text: "যদি $A \\subset B$ হয়, তবে $B - A = ?$", options: ["$\\{x : x \\in B \\text{ এবং } x \\notin A\\}$", "$\\phi$", "$A$", "$B$"], correctAnswer: 0 },
+      { id: 9, text: "$A - B$ এবং $B - A$ সেট দুটি কেমন?", options: ["পরস্পর নিচ্ছেদ (Disjoint)", "সমান", "সমতুল্য", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 10, text: "$(A - B) \\cup (A \\cap B) = ?$", options: ["$A$", "$B$", "$A \\cup B$", "$\\phi$"], correctAnswer: 0 },
+      { id: 11, text: "$A = \\{a, b, c, d\\}$ এবং $B = \\{c, d, e, f\\}$ হলে $A - B = ?$", options: ["$\\{a, b\\}$", "$\\{e, f\\}$", "$\\{c, d\\}$", "$\\{a, b, e, f\\}$"], correctAnswer: 0 },
+      { id: 12, text: "$A = \\{a, b, c, d\\}$ এবং $B = \\{c, d, e, f\\}$ হলে $B - A = ?$", options: ["$\\{e, f\\}$", "$\\{a, b\\}$", "$\\{c, d\\}$", "$\\{a, b, e, f\\}$"], correctAnswer: 0 },
+      { id: 13, text: "প্রতিসম অন্তর (Symmetric Difference) $A \\Delta B = ?$", options: ["$(A - B) \\cup (B - A)$", "$(A - B) \\cap (B - A)$", "$A \\cup B$", "$A \\cap B$"], correctAnswer: 0 },
+      { id: 14, text: "$A = \\{1, 2, 3\\}$ এবং $B = \\{3, 4, 5\\}$ হলে $A \\Delta B = ?$", options: ["$\\{1, 2, 4, 5\\}$", "$\\{3\\}$", "$\\{1, 2, 3, 4, 5\\}$", "$\\phi$"], correctAnswer: 0 },
+      { id: 15, text: "$A \\Delta A = ?$", options: ["$\\phi$", "$A$", "$U$", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 16, text: "$A \\Delta \\phi = ?$", options: ["$A$", "$\\phi$", "$U$", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 17, text: "যদি $A \\cap B = \\phi$ হয়, তবে $A \\Delta B = ?$", options: ["$A \\cup B$", "$A \\cap B$", "$A - B$", "$B - A$"], correctAnswer: 0 },
+      { id: 18, text: "$A - B = A \\cap B'$ এটি কি সত্য?", options: ["হ্যাঁ", "না", "বলা সম্ভব নয়", "কখনো কখনো সত্য"], correctAnswer: 0 },
+      { id: 19, text: "$A - (B \\cup C) = ?$", options: ["$(A - B) \\cap (A - C)$", "$(A - B) \\cup (A - C)$", "$A \\cup (B - C)$", "$A \\cap (B - C)$"], correctAnswer: 0 },
+      { id: 20, text: "$A - (B \\cap C) = ?$", options: ["$(A - B) \\cup (A - C)$", "$(A - B) \\cap (A - C)$", "$A \\cup (B - C)$", "$A \\cap (B - C)$"], correctAnswer: 0 }
+    ]
+  },
+  {
+    id: 'set_t8',
+    title: '১.১১ পূরক সেট (Complement of a Set)',
+    topic: '১. সেট',
+    exam: 'WB Class-XI First Semester',
+    questions: [
+      { id: 1, text: "A সেটের পূরক সেট (Complement) $A' = ?$", options: ["$U - A$", "$A - U$", "$A \\cap U$", "$A \\cup U$"], correctAnswer: 0 },
+      { id: 2, text: "$(A')' = ?$", options: ["$A$", "$A'$", "$U$", "$\\phi$"], correctAnswer: 0 },
+      { id: 3, text: "$A \\cup A' = ?$", options: ["$U$", "$\\phi$", "$A$", "$A'$"], correctAnswer: 0 },
+      { id: 4, text: "$A \\cap A' = ?$", options: ["$\\phi$", "$U$", "$A$", "$A'$"], correctAnswer: 0 },
+      { id: 5, text: "ডি মরগানের সূত্র কোনটি?", options: ["$(A \\cup B)' = A' \\cap B'$", "$(A \\cup B)' = A' \\cup B'$", "$(A \\cap B)' = A' \\cap B'$", "$(A - B)' = A' - B'$"], correctAnswer: 0 },
+      { id: 6, text: "ডি মরগানের অপর সূত্র কোনটি?", options: ["$(A \\cap B)' = A' \\cup B'$", "$(A \\cap B)' = A' \\cap B'$", "$(A \\cup B)' = A' \\cup B'$", "$(A - B)' = A' - B'$"], correctAnswer: 0 },
+      { id: 7, text: "$U' = ?$", options: ["$\\phi$", "$U$", "$A$", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 8, text: "$\\phi' = ?$", options: ["$U$", "$\\phi$", "$A$", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 9, text: "যদি $U = \\{1, 2, 3, 4, 5\\}$ এবং $A = \\{2, 4\\}$ হয়, তবে $A' = ?$", options: ["$\\{1, 3, 5\\}$", "$\\{2, 4\\}$", "$\\{1, 2, 3, 4, 5\\}$", "$\\phi$"], correctAnswer: 0 },
+      { id: 10, text: "যদি $A \\subset B$ হয়, তবে কোনটি সত্য?", options: ["$B' \\subset A'$", "$A' \\subset B'$", "$A' = B'$", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 11, text: "$A - B = ?$", options: ["$A \\cap B'$", "$A \\cup B'$", "$A' \\cap B$", "$A' \\cup B$"], correctAnswer: 0 },
+      { id: 12, text: "$B - A = ?$", options: ["$B \\cap A'$", "$B \\cup A'$", "$B' \\cap A$", "$B' \\cup A$"], correctAnswer: 0 },
+      { id: 13, text: "যদি $A = B$ হয়, তবে কোনটি সত্য?", options: ["$A' = B'$", "$A' \\ne B'$", "$A' \\subset B'$", "$B' \\subset A'$"], correctAnswer: 0 },
+      { id: 14, text: "সার্বিক সেট U এর সাপেক্ষে A এর পূরক সেট A' হলে, $A$ এবং $A'$ কী ধরনের সেট?", options: ["পরস্পর নিচ্ছেদ (Disjoint)", "সমান", "সমতুল্য", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 15, text: "$(A \\cup B) \\cap (A \\cup B') = ?$", options: ["$A$", "$B$", "$A \\cup B$", "$\\phi$"], correctAnswer: 0 },
+      { id: 16, text: "$(A \\cap B) \\cup (A \\cap B') = ?$", options: ["$A$", "$B$", "$A \\cap B$", "$\\phi$"], correctAnswer: 0 },
+      { id: 17, text: "$A \\cup (A' \\cap B) = ?$", options: ["$A \\cup B$", "$A \\cap B$", "$A$", "$B$"], correctAnswer: 0 },
+      { id: 18, text: "$A \\cap (A' \\cup B) = ?$", options: ["$A \\cap B$", "$A \\cup B$", "$A$", "$B$"], correctAnswer: 0 },
+      { id: 19, text: "যদি $A \\cup B = U$ হয়, তবে $A' \\cap B' = ?$", options: ["$\\phi$", "$U$", "$A$", "$B$"], correctAnswer: 0 },
+      { id: 20, text: "যদি $A \\cap B = \\phi$ হয়, তবে $A' \\cup B' = ?$", options: ["$U$", "$\\phi$", "$A$", "$B$"], correctAnswer: 0 }
+    ]
+  },
+  {
+    id: 'set_t9',
+    title: '১.১২ দুটি সেটের সংযোগ ও ছেদ প্রয়োগে ব্যবহারিক সমস্যা - ১',
+    topic: '১. সেট',
+    exam: 'WB Class-XI First Semester',
+    questions: [
+      { id: 1, text: "$n(A \\cup B)$ এর সূত্র কোনটি?", options: ["$n(A) + n(B) - n(A \\cap B)$", "$n(A) + n(B)$", "$n(A) - n(B)$", "$n(A) + n(B) + n(A \\cap B)$"], correctAnswer: 0 },
+      { id: 2, text: "$n(A) = 20, n(B) = 15$ এবং $n(A \\cap B) = 5$ হলে $n(A \\cup B) = ?$", options: ["30", "35", "40", "25"], correctAnswer: 0 },
+      { id: 3, text: "$n(A) = 40, n(A \\cup B) = 60$ এবং $n(A \\cap B) = 10$ হলে $n(B) = ?$", options: ["30", "20", "40", "50"], correctAnswer: 0 },
+      { id: 4, text: "A এবং B নিচ্ছেদ সেট হলে $n(A \\cup B) = ?$", options: ["$n(A) + n(B)$", "$n(A) - n(B)$", "$n(A) * n(B)$", "0"], correctAnswer: 0 },
+      { id: 5, text: "একটি ক্লাসে 30 জন ফুটবল এবং 20 জন ক্রিকেট খেলে। 10 জন উভয় খেলা খেলে। কমপক্ষে একটি খেলা খেলে এমন ছাত্র সংখ্যা কত?", options: ["40", "50", "60", "30"], correctAnswer: 0 },
+      { id: 6, text: "70 জনের একটি দলে 37 জন কফি এবং 52 জন চা পছন্দ করে। প্রত্যেকে অন্তত একটি পানীয় পছন্দ করলে, কতজন উভয় পানীয় পছন্দ করে?", options: ["19", "20", "21", "22"], correctAnswer: 0 },
+      { id: 7, text: "$n(A - B) = ?$", options: ["$n(A) - n(A \\cap B)$", "$n(A) - n(B)$", "$n(A \\cup B) - n(B)$", "উভয়ই (প্রথম ও তৃতীয়)"], correctAnswer: 3 },
+      { id: 8, text: "$n(A) = 50, n(B) = 30, n(A \\cap B) = 10$ হলে, শুধুমাত্র A ঘটে এমন উপাদান সংখ্যা কত?", options: ["40", "20", "50", "30"], correctAnswer: 0 },
+      { id: 9, text: "$n(A) = 50, n(B) = 30, n(A \\cap B) = 10$ হলে, শুধুমাত্র B ঘটে এমন উপাদান সংখ্যা কত?", options: ["20", "40", "30", "10"], correctAnswer: 0 },
+      { id: 10, text: "একটি স্কুলে 20 জন শিক্ষক গণিত বা পদার্থবিদ্যা পড়ান। এদের মধ্যে 12 জন গণিত এবং 4 জন উভয় বিষয় পড়ান। কতজন পদার্থবিদ্যা পড়ান?", options: ["12", "8", "16", "20"], correctAnswer: 0 },
+      { id: 11, text: "উপরের প্রশ্নে, কতজন শুধুমাত্র পদার্থবিদ্যা পড়ান?", options: ["8", "12", "4", "16"], correctAnswer: 0 },
+      { id: 12, text: "$n(U) = 500, n(A) = 200, n(B) = 300, n(A \\cap B) = 100$ হলে $n(A' \\cap B') = ?$", options: ["100", "200", "300", "400"], correctAnswer: 0 },
+      { id: 13, text: "65 জনের একটি দলে 40 জন ক্রিকেট এবং 10 জন ক্রিকেট ও টেনিস উভয়ই খেলে। কতজন শুধুমাত্র টেনিস খেলে (ধরে নাও প্রত্যেকে অন্তত একটি খেলে)?", options: ["25", "35", "15", "30"], correctAnswer: 0 },
+      { id: 14, text: "উপরের প্রশ্নে, কতজন টেনিস খেলে?", options: ["35", "25", "45", "15"], correctAnswer: 0 },
+      { id: 15, text: "$n(A \\Delta B) = ?$", options: ["$n(A) + n(B) - 2n(A \\cap B)$", "$n(A \\cup B) - n(A \\cap B)$", "উভয়ই", "কোনোটিই নয়"], correctAnswer: 2 },
+      { id: 16, text: "$n(A) = 25, n(B) = 15, n(A \\cup B) = 35$ হলে $n(A \\cap B) = ?$", options: ["5", "10", "15", "20"], correctAnswer: 0 },
+      { id: 17, text: "$n(A - B) = 15, n(B - A) = 10, n(A \\cap B) = 5$ হলে $n(A \\cup B) = ?$", options: ["30", "25", "35", "20"], correctAnswer: 0 },
+      { id: 18, text: "$n(A) = 20, n(A \\cup B) = 45, n(A \\cap B) = 5$ হলে $n(B - A) = ?$", options: ["25", "30", "20", "15"], correctAnswer: 0 },
+      { id: 19, text: "একটি পরীক্ষায় 60% ছাত্র গণিতে এবং 70% ছাত্র ইংরেজিতে পাস করেছে। 20% উভয় বিষয়ে ফেল করেছে। কত শতাংশ উভয় বিষয়ে পাস করেছে?", options: ["50%", "40%", "30%", "60%"], correctAnswer: 0 },
+      { id: 20, text: "যদি $A \\subset B$ হয়, তবে $n(A \\cup B) = ?$", options: ["$n(B)$", "$n(A)$", "$n(A) + n(B)$", "0"], correctAnswer: 0 }
+    ]
+  },
+  {
+    id: 'set_t10',
+    title: '১.১২ দুটি সেটের সংযোগ ও ছেদ প্রয়োগে ব্যবহারিক সমস্যা - ২',
+    topic: '১. সেট',
+    exam: 'WB Class-XI First Semester',
+    questions: [
+      { id: 1, text: "$n(A \\cup B \\cup C)$ এর সূত্রে $n(A \\cap B \\cap C)$ কী করা হয়?", options: ["যোগ করা হয়", "বিয়োগ করা হয়", "গুণ করা হয়", "ভাগ করা হয়"], correctAnswer: 0 },
+      { id: 2, text: "50 জনের মধ্যে 30 জন চা পান করে, 25 জন কফি পান করে এবং 10 জন উভয়ই পান করে। কতজন কোনোটিই পান করে না?", options: ["5", "10", "15", "0"], correctAnswer: 0 },
+      { id: 3, text: "$n(U) = 100, n(A) = 50, n(B) = 40, n(A \\cap B) = 20$ হলে $n(A' \\cap B') = ?$", options: ["30", "70", "10", "20"], correctAnswer: 0 },
+      { id: 4, text: "শুধুমাত্র A ঘটে এমন উপাদানের সংখ্যা কীভাবে বের করা হয়?", options: ["$n(A) - n(A \\cap B)$", "$n(A) + n(A \\cap B)$", "$n(A) - n(B)$", "$n(A \\cup B) - n(A)$"], correctAnswer: 0 },
+      { id: 5, text: "400 জনের একটি দলে 250 জন হিন্দিতে এবং 200 জন ইংরেজিতে কথা বলতে পারে। কতজন উভয় ভাষায় কথা বলতে পারে?", options: ["50", "100", "150", "200"], correctAnswer: 0 },
+      { id: 6, text: "$n(A \\cup B \\cup C) = n(A) + n(B) + n(C) - n(A \\cap B) - n(B \\cap C) - n(C \\cap A) + ?$", options: ["$n(A \\cap B \\cap C)$", "$n(A \\cup B \\cup C)$", "0", "1"], correctAnswer: 0 },
+      { id: 7, text: "শুধুমাত্র A এবং B ঘটে কিন্তু C ঘটে না, এমন উপাদান সংখ্যা কত?", options: ["$n(A \\cap B) - n(A \\cap B \\cap C)$", "$n(A \\cap B)$", "$n(A \\cap B \\cap C)$", "$n(A \\cup B) - n(C)$"], correctAnswer: 0 },
+      { id: 8, text: "কমপক্ষে দুটি ঘটনা ঘটে এমন উপাদান সংখ্যা কত?", options: ["$n(A \\cap B) + n(B \\cap C) + n(C \\cap A) - 2n(A \\cap B \\cap C)$", "$n(A \\cap B) + n(B \\cap C) + n(C \\cap A)$", "$n(A \\cap B \\cap C)$", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 9, text: "ঠিক একটি ঘটনা ঘটে এমন উপাদান সংখ্যা কত?", options: ["$n(A) + n(B) + n(C) - 2(n(A \\cap B) + n(B \\cap C) + n(C \\cap A)) + 3n(A \\cap B \\cap C)$", "$n(A) + n(B) + n(C)$", "$n(A \\cup B \\cup C)$", "কোনোটিই নয়"], correctAnswer: 0 },
+      { id: 10, text: "100 জন ছাত্রের মধ্যে 40 জন অঙ্কে, 30 জন পদার্থবিদ্যায় এবং 20 জন রসায়নে পাস করেছে। 10 জন অঙ্ক ও পদার্থবিদ্যায়, 8 জন পদার্থবিদ্যা ও রসায়নে, 5 জন রসায়ন ও অঙ্কে এবং 2 জন তিনটিতেই পাস করেছে। কতজন কমপক্ষে একটি বিষয়ে পাস করেছে?", options: ["69", "70", "71", "72"], correctAnswer: 0 },
+      { id: 11, text: "উপরের প্রশ্নে, কতজন কোনো বিষয়েই পাস করেনি?", options: ["31", "30", "29", "28"], correctAnswer: 0 },
+      { id: 12, text: "উপরের প্রশ্নে, কতজন শুধুমাত্র অঙ্কে পাস করেছে?", options: ["27", "25", "30", "20"], correctAnswer: 0 },
+      { id: 13, text: "উপরের প্রশ্নে, কতজন ঠিক দুটি বিষয়ে পাস করেছে?", options: ["17", "15", "19", "21"], correctAnswer: 0 },
+      { id: 14, text: "$n(A \\cap B') = ?$", options: ["$n(A) - n(A \\cap B)$", "$n(A) - n(B)$", "$n(A \\cup B) - n(B)$", "উভয়ই (প্রথম ও তৃতীয়)"], correctAnswer: 3 },
+      { id: 15, text: "$n(A' \\cap B) = ?$", options: ["$n(B) - n(A \\cap B)$", "$n(B) - n(A)$", "$n(A \\cup B) - n(A)$", "উভয়ই (প্রথম ও তৃতীয়)"], correctAnswer: 3 },
+      { id: 16, text: "একটি শহরে 20% পরিবার A পত্রিকা, 30% B পত্রিকা এবং 15% উভয় পত্রিকা পড়ে। কত শতাংশ পরিবার কোনো পত্রিকাই পড়ে না?", options: ["65%", "50%", "35%", "45%"], correctAnswer: 0 },
+      { id: 17, text: "উপরের প্রশ্নে, কত শতাংশ পরিবার শুধুমাত্র একটি পত্রিকা পড়ে?", options: ["20%", "30%", "40%", "50%"], correctAnswer: 0 },
+      { id: 18, text: "500 জনের একটি জরিপে দেখা গেল 285 জন চা, 195 জন কফি, 115 জন লেবুর শরবত, 45 জন চা ও কফি, 70 জন চা ও লেবুর শরবত, 50 জন কফি ও লেবুর শরবত পান করে। 50 জন কোনোটিই পান করে না। কতজন তিনটি পানীয়ই পান করে?", options: ["20", "15", "25", "30"], correctAnswer: 0 },
+      { id: 19, text: "উপরের প্রশ্নে, কতজন ঠিক একটি পানীয় পান করে?", options: ["325", "300", "350", "275"], correctAnswer: 0 },
+      { id: 20, text: "যদি $A, B, C$ তিনটি নিচ্ছেদ সেট হয়, তবে $n(A \\cup B \\cup C) = ?$", options: ["$n(A) + n(B) + n(C)$", "0", "$n(A) * n(B) * n(C)$", "কোনোটিই নয়"], correctAnswer: 0 }
     ]
   }
 ];

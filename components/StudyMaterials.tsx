@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { BookOpen, FileText, ArrowLeft, Search, ChevronRight, Lock, Clock } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 interface StudyMaterialsProps {
   onBack: () => void;
@@ -51,6 +53,52 @@ Try solving these problems to test your understanding:
 *   Calculate the hypotenuse of a right triangle with sides 3 and 4.
 
 Remember, consistent practice is the key to mastering mathematics. Do not rush through the concepts; take your time to understand the underlying principles.
+`;
+
+const setTheoryBengaliContent = `
+## সেট তত্ত্ব (Set Theory) - এক নজরে
+
+গণিতের অন্যতম গুরুত্বপূর্ণ একটি শাখা হলো সেট তত্ত্ব। এই নোটে আমরা সেটের প্রাথমিক ধারণা, প্রকারভেদ এবং বিভিন্ন প্রক্রিয়া সম্পর্কে জানব।
+
+### ১. সেট (Set) কী?
+
+বাস্তব বা চিন্তা জগতের সুনির্দিষ্ট, সুসংজ্ঞায়িত এবং পরস্পর ভিন্ন বস্তুর সমাবেশ বা সংগ্রহকে **সেট** বলে।
+যেমন: প্রথম ৫টি স্বাভাবিক সংখ্যার সেট, $A = \\{1, 2, 3, 4, 5\\}$
+
+### ২. সেটের প্রকাশ (Representation of Sets)
+
+সেটকে প্রধানত দুটি পদ্ধতিতে প্রকাশ করা হয়:
+*   **তালিকা পদ্ধতি (Roster Method)**: এই পদ্ধতিতে সেটের সকল উপাদান সুনির্দিষ্টভাবে উল্লেখ করে দ্বিতীয় বন্ধনী $\\{\\}$ এর মধ্যে আবদ্ধ করা হয়। যেমন: $A = \\{a, e, i, o, u\\}$
+*   **সেট গঠন পদ্ধতি (Set-Builder Method)**: এই পদ্ধতিতে সেটের উপাদানগুলো সুনির্দিষ্টভাবে উল্লেখ না করে উপাদান নির্ধারণের জন্য সাধারণ ধর্মের উল্লেখ থাকে। যেমন: $A = \\{x : x \\text{ স্বাভাবিক সংখ্যা এবং } x < 6\\}$
+
+### ৩. সেটের প্রকারভেদ (Types of Sets)
+
+*   **সসীম সেট (Finite Set)**: যে সেটের উপাদান সংখ্যা গণনা করে নির্ধারণ করা যায়। যেমন: $A = \\{1, 2, 3, 4\\}$
+*   **অসীম সেট (Infinite Set)**: যে সেটের উপাদান সংখ্যা গণনা করে শেষ করা যায় না। যেমন: স্বাভাবিক সংখ্যার সেট $N = \\{1, 2, 3, 4, \\dots\\}$
+*   **ফাঁকা সেট (Empty/Null Set)**: যে সেটে কোনো উপাদান নেই। একে $\\emptyset$ বা $\\{\\}$ দ্বারা প্রকাশ করা হয়।
+*   **সার্বিক সেট (Universal Set)**: আলোচনাধীন সকল সেট যে নির্দিষ্ট সেটের উপসেট, তাকে সার্বিক সেট $U$ বলে।
+*   **উপসেট (Subset)**: $A$ সেটের প্রতিটি উপাদান যদি $B$ সেটেরও উপাদান হয়, তবে $A$ কে $B$ এর উপসেট বলে। প্রকাশ: $A \\subseteq B$
+*   **প্রকৃত উপসেট (Proper Subset)**: $A \\subset B$ (অর্থাৎ $B$ তে অন্তত একটি উপাদান বেশি আছে)।
+
+### ৪. সেটের প্রক্রিয়া (Set Operations)
+
+*   **সংযোগ সেট (Union of Sets)**: $A \\cup B = \\{x : x \\in A \\text{ অথবা } x \\in B\\}$
+*   **ছেদ সেট (Intersection of Sets)**: $A \\cap B = \\{x : x \\in A \\text{ এবং } x \\in B\\}$
+*   **সেটের অন্তর (Difference of Sets)**: $A - B$ বা $A \\setminus B = \\{x : x \\in A \\text{ এবং } x \\notin B\\}$
+*   **পূরক সেট (Complement of a Set)**: $A' = U - A$
+
+### ৫. গুরুত্বপূর্ণ সূত্র (Important Formulas)
+
+সেটের উপাদান সংখ্যা (Cardinality) সম্পর্কিত কিছু গুরুত্বপূর্ণ সূত্র:
+
+*   $n(A \\cup B) = n(A) + n(B) - n(A \\cap B)$
+*   $n(A \\cup B \\cup C) = n(A) + n(B) + n(C) - n(A \\cap B) - n(B \\cap C) - n(C \\cap A) + n(A \\cap B \\cap C)$
+
+**ডি মরগানের সূত্র (De Morgan's Laws)**:
+1.  $(A \\cup B)' = A' \\cap B'$
+2.  $(A \\cap B)' = A' \\cup B'$
+
+> "গণিতের সৌন্দর্য তার যুক্তির মধ্যে নিহিত।"
 `;
 
 const materials: Material[] = [
@@ -113,6 +161,16 @@ const materials: Material[] = [
     isPremium: false,
     readTime: '10 min read',
     content: `# Coordinate Geometry Basics\n\n` + sampleContent
+  },
+  {
+    id: '7',
+    title: 'সেট তত্ত্ব (Set Theory) One Shot',
+    description: 'A complete quick revision of Set Theory concepts in Bengali.',
+    type: 'notes',
+    topic: 'Set Theory',
+    isPremium: false,
+    readTime: '6 min read',
+    content: setTheoryBengaliContent
   }
 ];
 
@@ -226,7 +284,10 @@ export const StudyMaterials: React.FC<StudyMaterialsProps> = ({ onBack }) => {
               className="bg-dark-900 rounded-3xl p-6 md:p-10 border border-white/5 shadow-2xl select-none"
             >
               <div className="prose prose-invert prose-pink max-w-none prose-headings:font-display prose-headings:font-bold prose-a:text-brand-pink hover:prose-a:text-brand-light prose-blockquote:border-l-brand-pink prose-blockquote:bg-white/5 prose-blockquote:py-1 prose-blockquote:px-4 prose-blockquote:rounded-r-lg prose-img:rounded-xl">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                <ReactMarkdown 
+                  remarkPlugins={[remarkGfm, remarkMath]} 
+                  rehypePlugins={[rehypeKatex]}
+                >
                   {selectedMaterial.content}
                 </ReactMarkdown>
               </div>

@@ -5,7 +5,7 @@ import { ArrowRight, Zap } from 'lucide-react';
 
 export const CourseGrid: React.FC = () => {
   return (
-    <section id="courses" className="py-24 bg-dark-950 relative">
+    <section id="courses" className="py-24 bg-dark-950 relative overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-pink/30 to-transparent"></div>
       <div className="absolute bottom-1/4 left-0 w-[500px] h-[500px] bg-brand-purple/10 rounded-full blur-[100px] pointer-events-none"></div>

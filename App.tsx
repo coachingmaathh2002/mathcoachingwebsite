@@ -13,7 +13,7 @@ const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<'home' | 'tests' | 'study-materials'>('home');
 
   return (
-    <div className="min-h-screen flex flex-col font-body">
+    <div className="min-h-screen flex flex-col font-body overflow-x-hidden">
       <Header onNavigate={setCurrentView} />
       <main className="flex-grow">
         {currentView === 'home' ? (

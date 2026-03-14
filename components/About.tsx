@@ -85,6 +85,26 @@ export const About: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Stats Section */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-24 border-t border-white/10 pt-16">
+          <div className="text-center">
+            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2">15+</h3>
+            <p className="text-brand-light text-sm uppercase tracking-widest">Years Experience</p>
+          </div>
+          <div className="text-center">
+            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2">10k+</h3>
+            <p className="text-brand-light text-sm uppercase tracking-widest">Students Taught</p>
+          </div>
+          <div className="text-center">
+            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2">50+</h3>
+            <p className="text-brand-light text-sm uppercase tracking-widest">Top 100 Ranks</p>
+          </div>
+          <div className="text-center">
+            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2">98%</h3>
+            <p className="text-brand-light text-sm uppercase tracking-widest">Success Rate</p>
+          </div>
+        </div>
       </div>
     </section>
   );

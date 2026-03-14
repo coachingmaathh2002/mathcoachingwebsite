@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
+import { AnnouncementBanner } from './AnnouncementBanner';
+
 interface HeaderProps {
   onNavigate: (view: 'home' | 'tests' | 'study-materials') => void;
 }
@@ -56,11 +58,15 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'glass-nav py-3' : 'bg-transparent py-5'
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 flex flex-col"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={`transition-all duration-300 origin-top ${scrolled ? 'h-0 opacity-0 overflow-hidden' : 'h-auto opacity-100'}`}>
+        <AnnouncementBanner />
+      </div>
+      <div className={`transition-all duration-300 w-full ${
+        scrolled ? 'glass-nav py-3' : 'bg-transparent py-5'
+      }`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
           <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('home'); window.scrollTo(0,0); }} className="flex items-center gap-3 group">
@@ -142,6 +148,8 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
             ))}
           </nav>
         </div>
+      </div>
+      
       </div>
       
       {/* Overlay */}

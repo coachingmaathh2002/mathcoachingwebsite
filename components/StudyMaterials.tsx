@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import { CONTACT_INFO } from '../constants';
 
 interface StudyMaterialsProps {
   onBack: () => void;
@@ -281,9 +282,18 @@ export const StudyMaterials: React.FC<StudyMaterialsProps> = ({ onBack }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-dark-900 rounded-3xl p-6 md:p-10 border border-white/5 shadow-2xl select-none"
+              className="bg-dark-900 rounded-3xl p-6 md:p-10 border border-white/5 shadow-2xl select-none relative overflow-hidden"
             >
-              <div className="prose prose-invert prose-pink max-w-none prose-headings:font-display prose-headings:font-bold prose-a:text-brand-pink hover:prose-a:text-brand-light prose-blockquote:border-l-brand-pink prose-blockquote:bg-white/5 prose-blockquote:py-1 prose-blockquote:px-4 prose-blockquote:rounded-r-lg prose-img:rounded-xl">
+              {/* Watermark Overlay */}
+              <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-[0.06] flex flex-wrap justify-center items-center gap-10 select-none">
+                {Array.from({ length: 150 }).map((_, i) => (
+                  <div key={i} className="transform -rotate-45 text-2xl md:text-3xl font-bold text-white whitespace-nowrap">
+                    Raj Sir Math Academy • {CONTACT_INFO.phone}
+                  </div>
+                ))}
+              </div>
+
+              <div className="prose prose-invert prose-pink max-w-none prose-headings:font-display prose-headings:font-bold prose-a:text-brand-pink hover:prose-a:text-brand-light prose-blockquote:border-l-brand-pink prose-blockquote:bg-white/5 prose-blockquote:py-1 prose-blockquote:px-4 prose-blockquote:rounded-r-lg prose-img:rounded-xl relative z-10">
                 <ReactMarkdown 
                   remarkPlugins={[remarkGfm, remarkMath]} 
                   rehypePlugins={[rehypeKatex]}
@@ -292,7 +302,7 @@ export const StudyMaterials: React.FC<StudyMaterialsProps> = ({ onBack }) => {
                 </ReactMarkdown>
               </div>
               
-              <div className="mt-12 pt-8 border-t border-white/10 flex justify-between items-center">
+              <div className="mt-12 pt-8 border-t border-white/10 flex justify-between items-center relative z-10">
                 <p className="text-sm text-slate-500">
                   © 2026 Raj Sir Math Academy. All rights reserved.
                 </p>

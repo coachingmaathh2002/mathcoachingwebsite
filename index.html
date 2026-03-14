@@ -80,9 +80,15 @@
         50% { transform: translate(25px, 35px) scale(1.1); }
       }
       
+      @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      
       .animate-float-1 { animation: float1 20s ease-in-out infinite; }
       .animate-float-2 { animation: float2 25s ease-in-out infinite; }
       .animate-float-3 { animation: float3 18s ease-in-out infinite; }
+      .animate-marquee { animation: marquee 30s linear infinite; }
       
       /* Glowing Text */
       .text-glow {

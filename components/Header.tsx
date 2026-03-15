@@ -61,7 +61,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
       className="fixed top-0 left-0 right-0 z-50 flex flex-col"
     >
       <div className={`transition-all duration-300 origin-top ${scrolled ? 'h-0 opacity-0 overflow-hidden' : 'h-auto opacity-100'}`}>
-        <AnnouncementBanner />
+        <AnnouncementBanner onNavigate={onNavigate} />
       </div>
       <div className={`transition-all duration-300 w-full ${
         scrolled ? 'glass-nav py-3' : 'bg-transparent py-5'

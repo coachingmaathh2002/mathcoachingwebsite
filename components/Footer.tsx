@@ -1,5 +1,5 @@
 import React from 'react';
-import { Facebook, Instagram, Youtube } from 'lucide-react';
+import { Facebook, Instagram, Youtube, MessageCircle } from 'lucide-react';
 import { CONTACT_INFO } from '../constants';
 
 export const Footer: React.FC = () => {
@@ -24,16 +24,37 @@ export const Footer: React.FC = () => {
                 href="https://www.facebook.com/share/17wjL1p9Hw/" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="w-8 h-8 rounded-full bg-dark-800 flex items-center justify-center hover:bg-brand-pink hover:text-white transition-colors"
+                className="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center hover:bg-[#1877F2] hover:text-white transition-all duration-300 hover:-translate-y-1 shadow-sm"
                 aria-label="Facebook Page"
               >
-                <Facebook size={16} />
+                <Facebook size={18} />
               </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-dark-800 flex items-center justify-center hover:bg-brand-pink hover:text-white transition-colors">
-                <Instagram size={16} />
+              <a 
+                href={`https://wa.me/${CONTACT_INFO.phone.replace(/[^0-9]/g, '')}`}
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center hover:bg-[#25D366] hover:text-white transition-all duration-300 hover:-translate-y-1 shadow-sm"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle size={18} />
               </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-dark-800 flex items-center justify-center hover:bg-brand-pink hover:text-white transition-colors">
-                <Youtube size={16} />
+              <a 
+                href="#" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center hover:bg-[#E4405F] hover:text-white transition-all duration-300 hover:-translate-y-1 shadow-sm"
+                aria-label="Instagram"
+              >
+                <Instagram size={18} />
+              </a>
+              <a 
+                href="#" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center hover:bg-[#FF0000] hover:text-white transition-all duration-300 hover:-translate-y-1 shadow-sm"
+                aria-label="YouTube"
+              >
+                <Youtube size={18} />
               </a>
             </div>
           </div>

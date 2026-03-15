@@ -8,13 +8,13 @@ interface CourseCardProps {
 
 export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   return (
-    <div className="group relative bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-white/5 p-[1px] overflow-hidden transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-[0_20px_40px_-20px_rgba(219,39,119,0.3)]">
+    <div className="group relative bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-white/10 p-[1px] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(219,39,119,0.3)] hover:border-brand-pink/50">
       
       {/* Gradient Border Glow on Hover */}
       <div className="absolute inset-0 bg-gradient-to-br from-brand-pink via-brand-purple to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
       
       {/* Inner Content Card */}
-      <div className="relative h-full bg-dark-900 rounded-2xl p-6 flex flex-col z-10">
+      <div className="relative h-full bg-dark-900 rounded-2xl p-6 flex flex-col z-10 transition-colors duration-500 group-hover:bg-dark-900/95">
         
         {/* Decorative Top Gradient */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-brand-pink/10 rounded-full blur-2xl -mr-16 -mt-16 group-hover:bg-brand-pink/20 transition-colors"></div>
@@ -47,7 +47,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
               {course.pricePlaceholder}
             </p>
           </div>
-          <button className="px-5 py-2.5 bg-white text-dark-950 text-sm font-bold rounded-lg hover:bg-brand-light transition-colors shadow-lg hover:shadow-[0_0_15px_rgba(244,114,182,0.5)]">
+          <button className="px-5 py-2.5 bg-white text-dark-950 text-sm font-bold rounded-lg hover:bg-brand-light hover:text-white transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(219,39,119,0.4)] hover:-translate-y-0.5">
             Enroll
           </button>
         </div>

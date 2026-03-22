@@ -881,5 +881,33 @@ export const tests: Test[] = [
       { id: 19, text: "উপরের প্রশ্নে, কতজন ঠিক একটি পানীয় পান করে?", options: ["325", "300", "350", "275"], correctAnswer: 0 },
       { id: 20, text: "যদি $A, B, C$ তিনটি নিচ্ছেদ সেট হয়, তবে $n(A \\cup B \\cup C) = ?$", options: ["$n(A) + n(B) + n(C)$", "0", "$n(A) * n(B) * n(C)$", "কোনোটিই নয়"], correctAnswer: 0 }
     ]
+  },
+  {
+    id: 'wbjee_free_limit',
+    title: 'সীমা ও সন্ততা - বিগত বছরের প্রশ্ন (Limit & Continuity - PYQ)',
+    topic: '৮. সীমা ও অবকলন',
+    exam: 'WBJEE',
+    questions: [
+      { id: 1, text: "যদি $\\lim_{x \\to 0} \\left( \\frac{1+cx}{1-cx} \\right)^{1/x} = 4$ হয়, তবে $\\lim_{x \\to 0} \\left( \\frac{1+2cx}{1-2cx} \\right)^{1/x}$ এর মান হবে", options: ["$2$", "$4$", "$16$", "$64$"], correctAnswer: 2 },
+      { id: 2, text: "যদি $l = \\lim_{x \\to 0} \\sin \\left( \\frac{e^{x^2} - x - 1 - \\frac{x^2}{2}}{x^2} \\right)$ হয়, তবে লিমিটটি", options: ["অস্তিত্ব নেই", "অস্তিত্ব আছে এবং 1 এর সমান", "অস্তিত্ব আছে এবং 0 এর সমান", "অস্তিত্ব আছে এবং $-\\frac{1}{2}$ এর সমান"], correctAnswer: 0 },
+      { id: 3, text: "ধরি $S_n = \\cot^{-1} 2 + \\cot^{-1} 8 + \\cot^{-1} 18 + \\cot^{-1} 32 + \\dots$ $n$-তম পদ পর্যন্ত। তবে $\\lim_{n \\to \\infty} S_n$ এর মান", options: ["$\\frac{\\pi}{2}$", "$\\frac{\\pi}{3}$", "$\\frac{\\pi}{6}$", "$\\frac{\\pi}{4}$"], correctAnswer: 3 },
+      { id: 4, text: "$a, b, c$ এর কোন মানের জন্য $f(x) = \\begin{cases} \\frac{\\sin(a+1)x + \\sin x}{x}, & x < 0 \\\\ c, & x = 0 \\\\ \\frac{(x+bx^2)^{1/2} - x^{1/2}}{bx^{3/2}}, & x > 0 \\end{cases}$ ফাংশনটি $x=0$ বিন্দুতে সন্তত হবে?", options: ["$a = -\\frac{3}{2}, b = -\\frac{3}{2}, c = \\frac{1}{2}$", "$a = -\\frac{3}{2}, c = \\frac{3}{2}, b$ যেকোনো অশূন্য বাস্তব সংখ্যা", "$a = -\\frac{5}{2}, b = -\\frac{3}{2}, c = \\frac{3}{2}$", "$a = -2, b \\in \\mathbb{R} - \\{0\\}, c = 0$"], correctAnswer: 1 },
+      { id: 5, text: "$\\lim_{x \\to 0} \\frac{1}{x} \\ln \\sqrt{\\frac{1+x}{1-x}}$ এর মান", options: ["$1/2$", "$0$", "$1$", "অস্তিত্ব নেই"], correctAnswer: 2 },
+      { id: 6, text: "ধরি $f(x) = \\begin{cases} |x+1|, & -1 \\le x \\le 0 \\\\ -x, & 0 \\le x \\le 1 \\end{cases}$", options: ["$f(x)$, $[-1, 1]$ এ অসন্তত এবং তাই $[-1, 1]$ এ এর কোনো সর্বোচ্চ বা সর্বনিম্ন মান নেই।", "$f(x)$, $[-1, 1]$ এ সন্তত এবং তাই এর সর্বোচ্চ ও সর্বনিম্ন মান আছে।", "$f(x)$, $[-1, 1]$ এ অসন্তত কিন্তু তবুও এর সর্বোচ্চ ও সর্বনিম্ন মান আছে।", "$f(x)$, $[-1, 1]$ এ সীমাবদ্ধ এবং সর্বোচ্চ বা সর্বনিম্ন মান অর্জন করে না।"], correctAnswer: 2 }
+    ]
+  },
+  {
+    id: 'wbjee_premium_limit',
+    title: 'সীমা ও সন্ততা - বিগত বছরের প্রশ্ন (Premium) (Limit & Continuity - PYQ)',
+    topic: '৮. সীমা ও অবকলন',
+    exam: 'WBJEE',
+    isPaid: true,
+    questions: [
+      { id: 1, text: "ধরি $f(x) = [x^2] \\sin \\pi x, x > 0$। তবে", options: ["$f$ সর্বত্র অসন্তত।", "$f$ সর্বত্র সন্তত।", "$f$ শুধুমাত্র সেই বিন্দুগুলোতে সন্তত যেগুলো পূর্ণবর্গ।", "$f$ শুধুমাত্র সেই বিন্দুগুলোতে সন্তত যেগুলো পূর্ণবর্গ নয়।"], correctAnswer: 2 },
+      { id: 2, text: "$\\lim_{x \\to \\infty} \\{ x - \\sqrt[n]{(x-a_1)(x-a_2)\\dots(x-a_n)} \\}$, যেখানে $a_1, a_2, \\dots, a_n$ হলো ধনাত্মক মূলদ সংখ্যা। লিমিটটি", options: ["অস্তিত্ব নেই", "হলো $\\frac{a_1 + a_2 + \\dots + a_n}{n}$", "হলো $\\sqrt[n]{a_1 a_2 \\dots a_n}$", "হলো $-\\frac{a_1 + a_2 + \\dots + a_n}{n}$"], correctAnswer: 1 },
+      { id: 3, text: "যদি $\\alpha, \\beta$ সমীকরণ $ax^2 + bx + c = 0$ এর মূল হয়, তবে $\\lim_{x \\to \\beta} \\frac{1 - \\cos(ax^2 + bx + c)}{(x - \\beta)^2}$ এর মান", options: ["$(\\alpha - \\beta)^2$", "$\\frac{1}{2} (\\alpha - \\beta)^2$", "$\\frac{a^2}{4} (\\alpha - \\beta)^2$", "$\\frac{a^2}{2} (\\alpha - \\beta)^2$"], correctAnswer: 3 },
+      { id: 4, text: "$\\lim_{x \\to 1} \\left( \\frac{1}{\\ln x} - \\frac{1}{(x-1)} \\right)$", options: ["অস্তিত্ব নেই", "হলো 1", "হলো $1/2$", "হলো 0"], correctAnswer: 2 },
+      { id: 5, text: "$\\lim_{x \\to \\infty} \\left( \\frac{3x-1}{3x+1} \\right)^{4x}$ এর মান", options: ["$1$", "$0$", "$e^{-8/3}$", "$e^{-4/3}$"], correctAnswer: 2 }
+    ]
   }
 ];

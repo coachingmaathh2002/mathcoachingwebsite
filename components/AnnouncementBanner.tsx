@@ -22,6 +22,12 @@ export const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({ onNaviga
 
   const announcements = [
     { 
+      text: "Free Mock Test Available Now!", 
+      ctaText: "Take Test", 
+      action: () => onNavigate?.('tests'),
+      isNew: true
+    },
+    { 
       text: "New Batches Starting Soon for 2026-2027 Session!", 
       ctaText: "Enroll Now", 
       action: () => handleScrollTo('courses') 
@@ -52,7 +58,12 @@ export const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({ onNaviga
             {announcements.map((item, j) => (
               <React.Fragment key={j}>
                 <span className="mx-6 text-sm font-bold tracking-wide flex items-center gap-3">
-                  {j % 2 === 0 && <Sparkles size={14} className="text-brand-light" />}
+                  {j % 2 === 0 && !item.isNew && <Sparkles size={14} className="text-brand-light" />}
+                  {item.isNew && (
+                    <span className="px-2 py-0.5 text-[10px] uppercase font-black bg-yellow-400 text-black rounded-md animate-pulse shadow-[0_0_10px_rgba(250,204,21,0.6)]">
+                      NEW
+                    </span>
+                  )}
                   {item.text}
                   {item.ctaText && (
                     <button 

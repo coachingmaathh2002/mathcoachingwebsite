@@ -32,28 +32,37 @@ export const EnquiryForm: React.FC = () => {
           </p>
           
           <div className="grid md:grid-cols-3 gap-6 mb-16">
-            <a href={`tel:${CONTACT_INFO.phone}`} className="group p-8 bg-dark-900 rounded-2xl border border-white/5 hover:border-brand-pink/50 transition-all hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(219,39,119,0.2)]">
-              <div className="w-14 h-14 rounded-full bg-dark-800 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-pink group-hover:text-white text-brand-pink transition-colors">
-                <Phone size={24} />
+            <a href={`tel:${CONTACT_INFO.phone}`} className="group relative p-8 bg-dark-900 rounded-2xl border border-white/5 hover:border-brand-pink/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(219,39,119,0.3)] overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-pink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="w-14 h-14 rounded-full bg-dark-800 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-pink group-hover:text-white text-brand-pink transition-colors duration-500 shadow-inner">
+                  <Phone size={24} />
+                </div>
+                <p className="text-white font-bold text-lg mb-1">Call Us</p>
+                <p className="text-slate-400 group-hover:text-brand-light transition-colors duration-300">{CONTACT_INFO.phone}</p>
               </div>
-              <p className="text-white font-bold text-lg mb-1">Call Us</p>
-              <p className="text-slate-400 group-hover:text-brand-light transition-colors">{CONTACT_INFO.phone}</p>
             </a>
             
-            <a href={`mailto:${CONTACT_INFO.email}`} className="group p-8 bg-dark-900 rounded-2xl border border-white/5 hover:border-brand-pink/50 transition-all hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(219,39,119,0.2)]">
-              <div className="w-14 h-14 rounded-full bg-dark-800 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-pink group-hover:text-white text-brand-pink transition-colors">
-                <Mail size={24} />
+            <a href={`mailto:${CONTACT_INFO.email}`} className="group relative p-8 bg-dark-900 rounded-2xl border border-white/5 hover:border-brand-pink/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(219,39,119,0.3)] overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-pink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="w-14 h-14 rounded-full bg-dark-800 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-pink group-hover:text-white text-brand-pink transition-colors duration-500 shadow-inner">
+                  <Mail size={24} />
+                </div>
+                <p className="text-white font-bold text-lg mb-1">Email Us</p>
+                <p className="text-slate-400 group-hover:text-brand-light transition-colors duration-300">{CONTACT_INFO.email}</p>
               </div>
-              <p className="text-white font-bold text-lg mb-1">Email Us</p>
-              <p className="text-slate-400 group-hover:text-brand-light transition-colors">{CONTACT_INFO.email}</p>
             </a>
             
-            <div className="group p-8 bg-dark-900 rounded-2xl border border-white/5 hover:border-brand-pink/50 transition-all hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(219,39,119,0.2)]">
-              <div className="w-14 h-14 rounded-full bg-dark-800 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-pink group-hover:text-white text-brand-pink transition-colors">
-                <MapPin size={24} />
+            <div className="group relative p-8 bg-dark-900 rounded-2xl border border-white/5 hover:border-brand-pink/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(219,39,119,0.3)] overflow-hidden cursor-default">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-pink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="w-14 h-14 rounded-full bg-dark-800 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-pink group-hover:text-white text-brand-pink transition-colors duration-500 shadow-inner">
+                  <MapPin size={24} />
+                </div>
+                <p className="text-white font-bold text-lg mb-1">Visit Us</p>
+                <p className="text-slate-400 group-hover:text-brand-light transition-colors duration-300">{CONTACT_INFO.address}</p>
               </div>
-              <p className="text-white font-bold text-lg mb-1">Visit Us</p>
-              <p className="text-slate-400 group-hover:text-brand-light transition-colors">{CONTACT_INFO.address}</p>
             </div>
           </div>
         </div>
@@ -93,7 +102,7 @@ export const EnquiryForm: React.FC = () => {
                       name="name"
                       id="name"
                       required
-                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink focus:border-transparent outline-none transition-all"
+                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink outline-none transition-all shadow-inner"
                       placeholder="John Doe"
                     />
                   </div>
@@ -104,7 +113,7 @@ export const EnquiryForm: React.FC = () => {
                       name="phone"
                       id="phone"
                       required
-                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink focus:border-transparent outline-none transition-all"
+                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink outline-none transition-all shadow-inner"
                       placeholder="+91 98765 00000"
                     />
                   </div>
@@ -118,7 +127,7 @@ export const EnquiryForm: React.FC = () => {
                       name="email"
                       id="email"
                       required
-                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink focus:border-transparent outline-none transition-all"
+                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink outline-none transition-all shadow-inner"
                       placeholder="john@example.com"
                     />
                   </div>
@@ -129,7 +138,7 @@ export const EnquiryForm: React.FC = () => {
                       id="course"
                       required
                       defaultValue=""
-                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink focus:border-transparent outline-none transition-all appearance-none"
+                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink outline-none transition-all appearance-none shadow-inner"
                     >
                       <option value="" disabled>Select a course</option>
                       <option value="Class 10">WB Board Class 10</option>
@@ -149,7 +158,7 @@ export const EnquiryForm: React.FC = () => {
                     name="message"
                     id="message"
                     rows={4}
-                    className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink focus:border-transparent outline-none transition-all"
+                    className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink outline-none transition-all shadow-inner"
                     placeholder="Any specific questions regarding timing or fees?"
                   ></textarea>
                 </div>

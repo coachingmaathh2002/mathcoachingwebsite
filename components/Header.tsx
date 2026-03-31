@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
-import { AnnouncementBanner } from './AnnouncementBanner';
-
 interface HeaderProps {
   onNavigate: (view: 'home' | 'tests' | 'study-materials') => void;
 }
@@ -60,11 +58,8 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
     <header 
       className="fixed top-0 left-0 right-0 z-50 flex flex-col"
     >
-      <div className={`transition-all duration-300 origin-top ${scrolled ? 'h-0 opacity-0 overflow-hidden' : 'h-auto opacity-100'}`}>
-        <AnnouncementBanner onNavigate={onNavigate} />
-      </div>
-      <div className={`transition-all duration-300 w-full ${
-        scrolled ? 'glass-nav py-3' : 'bg-transparent py-5'
+      <div className={`transition-all duration-300 w-full border-b border-white/10 ${
+        scrolled ? 'bg-dark-900/95 backdrop-blur-xl py-3 shadow-lg' : 'bg-dark-900/95 backdrop-blur-xl py-4'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
@@ -117,11 +112,12 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
+        </div>
       </div>
 
       {/* Mobile Navigation Panel */}
       <div 
-        className={`fixed inset-y-0 right-0 w-72 bg-dark-900/95 backdrop-blur-xl z-50 shadow-2xl transform transition-transform duration-300 ease-in-out md:hidden border-l border-white/10 ${
+        className={`fixed inset-y-0 right-0 w-72 bg-dark-950 z-50 shadow-2xl transform transition-transform duration-300 ease-in-out md:hidden border-l border-white/10 ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -150,12 +146,10 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
         </div>
       </div>
       
-      </div>
-      
       {/* Overlay */}
       {isMenuOpen && (
         <div 
-          className="fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-sm"
+          className="fixed inset-0 bg-black/80 z-40 md:hidden"
           onClick={() => setIsMenuOpen(false)}
         />
       )}

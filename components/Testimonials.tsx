@@ -86,11 +86,12 @@ export const Testimonials: React.FC = () => {
           {TESTIMONIALS.map((testimonial, index) => (
             <div 
               key={testimonial.id} 
-              className={`group relative bg-dark-900 border border-white/5 rounded-3xl p-8 hover:border-brand-pink/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(219,39,119,0.15)] flex flex-col justify-between ${
+              className={`group relative bg-dark-900 border border-white/5 rounded-3xl p-8 hover:border-brand-pink/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(219,39,119,0.3)] flex flex-col justify-between overflow-hidden ${
                 index === 1 || index === 4 ? 'lg:translate-y-8' : ''
               }`}
             >
-              <div>
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-pink/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
                 {/* Quote Icon */}
                 <div className="absolute top-8 right-8 text-dark-800 group-hover:text-brand-pink/10 transition-colors duration-500">
                   <Quote size={80} fill="currentColor" />

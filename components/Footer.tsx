@@ -63,10 +63,10 @@ export const Footer: React.FC = () => {
           <div>
             <h4 className="text-white font-bold mb-6">Quick Links</h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="#" className="hover:text-brand-light transition-colors">Home</a></li>
-              <li><a href="#courses" className="hover:text-brand-light transition-colors">Courses</a></li>
-              <li><a href="#about" className="hover:text-brand-light transition-colors">About Us</a></li>
-              <li><a href="#contact" className="hover:text-brand-light transition-colors">Contact</a></li>
+              <li><a href="#" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">Home</a></li>
+              <li><a href="#courses" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">Courses</a></li>
+              <li><a href="#about" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">About Us</a></li>
+              <li><a href="#contact" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">Contact</a></li>
             </ul>
           </div>
           
@@ -74,10 +74,10 @@ export const Footer: React.FC = () => {
            <div>
             <h4 className="text-white font-bold mb-6">Top Courses</h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="#" className="hover:text-brand-light transition-colors">Class 10 (Madhyamik)</a></li>
-              <li><a href="#" className="hover:text-brand-light transition-colors">Class 12 (HS)</a></li>
-              <li><a href="#" className="hover:text-brand-light transition-colors">WBJEE Competitive</a></li>
-              <li><a href="#" className="hover:text-brand-light transition-colors">B.Sc Math Honours</a></li>
+              <li><a href="#" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">Class 10 (Madhyamik)</a></li>
+              <li><a href="#" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">Class 12 (HS)</a></li>
+              <li><a href="#" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">WBJEE Competitive</a></li>
+              <li><a href="#" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">B.Sc Math Honours</a></li>
             </ul>
           </div>
           

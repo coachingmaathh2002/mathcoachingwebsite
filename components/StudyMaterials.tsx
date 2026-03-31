@@ -12,11 +12,18 @@ import {
   X,
   Sparkles,
   Filter,
+  Folder,
+  FolderOpen,
+  Download,
+  ChevronDown,
+  LayoutGrid,
+  ListTree
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import jsPDF from 'jspdf';
 import { CONTACT_INFO } from '../constants';
 import { MathPlot } from './MathPlot';
 
@@ -34,6 +41,7 @@ interface Material {
   title: string;
   description: string;
   type: MaterialType;
+  category: string;
   topic: string;
   isPremium: boolean;
   readTime: string;
@@ -127,7 +135,7 @@ const complexNumbersBengaliContent = `
 জটিল সংখ্যা WBJEE পরীক্ষার জন্য অত্যন্ত গুরুত্বপূর্ণ একটি অধ্যায়। এখান থেকে প্রতি বছর ২-৩ টি প্রশ্ন আসে।
 
 ### ১. জটিল সংখ্যার ধারণা (Concept of Complex Numbers)
-কোনো সংখ্যাকে $z = x + iy$ আকারে প্রকাশ করা গেলে তাকে জটিল সংখ্যা বলে, যেখানে $x$ এবং $y$ হলো বাস্তব সংখ্যা এবং $i = \\sqrt{-1}$।
+কোনো সংখ্যাকে $z = x + iy$ আকারে প্রকাশ করা গেলে তাকে তাকে জটিল সংখ্যা বলে, যেখানে $x$ এবং $y$ হলো বাস্তব সংখ্যা এবং $i = \\sqrt{-1}$।
 *   **বাস্তব অংশ (Real Part):** $Re(z) = x$
 *   **অবাস্তব অংশ (Imaginary Part):** $Im(z) = y$
 
@@ -219,6 +227,7 @@ const materials: Material[] = [
     description:
       'A comprehensive list of all important algebra formulas for quick revision.',
     type: 'notes',
+    category: 'General',
     topic: 'Algebra',
     isPremium: false,
     readTime: '5 min read',
@@ -231,6 +240,7 @@ const materials: Material[] = [
     description:
       'Detailed notes on advanced integration techniques with examples.',
     type: 'guide',
+    category: 'Class XII',
     topic: 'Calculus',
     isPremium: true,
     readTime: '15 min read',
@@ -243,6 +253,7 @@ const materials: Material[] = [
     description:
       'In-depth article covering basic to advanced trigonometry concepts.',
     type: 'article',
+    category: 'Class XI',
     topic: 'Trigonometry',
     isPremium: true,
     readTime: '20 min read',
@@ -255,6 +266,7 @@ const materials: Material[] = [
     description:
       'Quick summary of all major geometry theorems for competitive exams.',
     type: 'notes',
+    category: 'General',
     topic: 'Geometry',
     isPremium: false,
     readTime: '8 min read',
@@ -267,6 +279,7 @@ const materials: Material[] = [
     description:
       'Clear explanations of probability concepts with real-world examples.',
     type: 'article',
+    category: 'Class XII',
     topic: 'Probability',
     isPremium: false,
     readTime: '12 min read',
@@ -279,6 +292,7 @@ const materials: Material[] = [
     description:
       'Foundational guide on coordinate geometry and its applications.',
     type: 'guide',
+    category: 'Class XI',
     topic: 'Geometry',
     isPremium: false,
     readTime: '10 min read',
@@ -291,6 +305,7 @@ const materials: Material[] = [
     description:
       'A complete quick revision of Set Theory concepts in Bengali.',
     type: 'notes',
+    category: 'Class XI',
     topic: 'Set Theory',
     isPremium: false,
     readTime: '6 min read',
@@ -303,6 +318,7 @@ const materials: Material[] = [
     description:
       'Complete WBJEE revision material for Complex Numbers with visual graphs.',
     type: 'guide',
+    category: 'WBJEE',
     topic: 'Algebra',
     isPremium: false,
     readTime: '10 min read',
@@ -679,10 +695,95 @@ const MaterialReader: React.FC<MaterialReaderProps> = ({
 
 // ── Main Component ──────────────────────────────────────────────────────────────
 
+// ── Folder View Components ──────────────────────────────────────────────────────
+
+const handleDownloadPDF = (material: Material) => {
+  const doc = new jsPDF();
+  doc.setFontSize(16);
+  doc.text(material.title, 10, 20);
+  doc.setFontSize(12);
+  doc.text(`Topic: ${material.topic} | Type: ${material.type}`, 10, 30);
+  doc.setFontSize(10);
+  
+  // Very basic text extraction for PDF
+  const textLines = doc.splitTextToSize(material.content.replace(/[#*`]/g, ''), 180);
+  doc.text(textLines, 10, 40);
+  
+  doc.save(`${material.title.replace(/\s+/g, '_')}.pdf`);
+};
+
+const TopicAccordion = ({ topic, materials, onSelect }: { topic: string, materials: Material[], onSelect: (m: Material) => void }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="mb-2">
+      <button onClick={() => setIsOpen(!isOpen)} className="flex items-center gap-3 w-full p-3 bg-dark-800/50 rounded-lg border border-white/5 hover:border-brand-cyan/30 transition-colors">
+        {isOpen ? <FolderOpen size={18} className="text-brand-cyan" /> : <Folder size={18} className="text-brand-cyan" />}
+        <span className="text-md font-semibold text-slate-200">{topic}</span>
+        <ChevronDown size={16} className={`ml-auto transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+            <div className="pl-6 pr-2 py-3 space-y-3 border-l-2 border-dark-800 ml-4 mt-2">
+              {materials.map(mat => (
+                <div key={mat.id} className="flex items-center justify-between p-3 bg-dark-900 rounded-lg border border-white/5 hover:border-white/20 transition-colors group">
+                  <div className="flex items-center gap-3 cursor-pointer flex-1" onClick={() => onSelect(mat)}>
+                    <FileText size={16} className="text-slate-400 group-hover:text-brand-light" />
+                    <div>
+                      <h4 className="text-sm font-medium text-slate-200 group-hover:text-white transition-colors">{mat.title}</h4>
+                      <div className="flex items-center gap-2 mt-1">
+                        {mat.isPremium && <span className="text-[10px] font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded flex items-center gap-1"><Lock size={10} /> Premium</span>}
+                        <span className="text-[10px] text-slate-500">{mat.readTime}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button onClick={() => onSelect(mat)} className="px-3 py-1.5 text-xs font-medium bg-brand-pink/10 text-brand-pink hover:bg-brand-pink/20 rounded-md transition-colors">
+                      Read
+                    </button>
+                    <button onClick={(e) => { e.stopPropagation(); handleDownloadPDF(mat); }} className="p-1.5 text-slate-400 hover:text-brand-cyan hover:bg-brand-cyan/10 rounded-md transition-colors" title="Download PDF">
+                      <Download size={16} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+const FolderAccordion = ({ category, topics, onSelect }: { category: string, topics: Record<string, Material[]>, onSelect: (m: Material) => void }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="mb-4">
+      <button onClick={() => setIsOpen(!isOpen)} className="flex items-center gap-3 w-full p-4 bg-dark-900 rounded-xl border border-white/5 hover:border-brand-pink/30 transition-colors">
+        {isOpen ? <FolderOpen className="text-brand-pink" /> : <Folder className="text-brand-pink" />}
+        <span className="text-lg font-bold text-white">{category}</span>
+        <ChevronDown className={`ml-auto transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+            <div className="pl-6 pr-2 py-4 space-y-4 border-l-2 border-dark-800 ml-6 mt-2">
+              {Object.entries(topics).map(([topic, mats]) => (
+                <TopicAccordion key={topic} topic={topic} materials={mats} onSelect={onSelect} />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export const StudyMaterials: React.FC<StudyMaterialsProps> = ({ onBack }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [activeTopic, setActiveTopic] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'folder' | 'grid'>('folder');
   const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(
     null
   );
@@ -713,6 +814,16 @@ export const StudyMaterials: React.FC<StudyMaterialsProps> = ({ onBack }) => {
       return matchesSearch && matchesFilter && matchesTopic;
     });
   }, [searchQuery, activeFilter, activeTopic]);
+
+  const groupedMaterials = useMemo(() => {
+    const groups: Record<string, Record<string, Material[]>> = {};
+    filteredMaterials.forEach(mat => {
+      if (!groups[mat.category]) groups[mat.category] = {};
+      if (!groups[mat.category][mat.topic]) groups[mat.category][mat.topic] = [];
+      groups[mat.category][mat.topic].push(mat);
+    });
+    return groups;
+  }, [filteredMaterials]);
 
   const handleSelectMaterial = useCallback((material: Material) => {
     setSelectedMaterial(material);
@@ -763,17 +874,36 @@ export const StudyMaterials: React.FC<StudyMaterialsProps> = ({ onBack }) => {
             <span>Back to Home</span>
           </button>
 
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
-              Study{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-pink to-brand-light">
-                Materials
-              </span>
-            </h1>
-            <p className="text-slate-400 max-w-2xl mx-auto text-lg leading-relaxed">
-              Access our comprehensive collection of study notes, guides, and
-              articles to boost your preparation.
-            </p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+                Study{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-pink to-brand-light">
+                  Materials
+                </span>
+              </h1>
+              <p className="text-slate-400 max-w-2xl text-lg leading-relaxed">
+                Access our comprehensive collection of study notes, guides, and
+                articles to boost your preparation.
+              </p>
+            </div>
+            
+            <div className="flex items-center gap-2 bg-dark-900 p-1 rounded-lg border border-white/10">
+              <button
+                onClick={() => setViewMode('folder')}
+                className={`p-2 rounded-md transition-colors ${viewMode === 'folder' ? 'bg-brand-pink/20 text-brand-pink' : 'text-slate-400 hover:text-white'}`}
+                title="Folder View"
+              >
+                <ListTree size={20} />
+              </button>
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-brand-cyan/20 text-brand-cyan' : 'text-slate-400 hover:text-white'}`}
+                title="Grid View"
+              >
+                <LayoutGrid size={20} />
+              </button>
+            </div>
           </div>
         </motion.div>
 
@@ -797,7 +927,7 @@ export const StudyMaterials: React.FC<StudyMaterialsProps> = ({ onBack }) => {
                 placeholder='Search materials... (Press "/" to focus)'
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-dark-900 border border-white/10 rounded-xl py-3 pl-12 pr-10 text-white placeholder:text-slate-500 focus:ring-2 focus:ring-brand-pink focus:border-transparent outline-none transition-all"
+                className="w-full bg-dark-900 border border-white/10 rounded-xl py-3 pl-12 pr-10 text-white placeholder:text-slate-500 focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink outline-none transition-all shadow-inner"
               />
               {searchQuery && (
                 <button
@@ -883,29 +1013,41 @@ export const StudyMaterials: React.FC<StudyMaterialsProps> = ({ onBack }) => {
           )}
         </motion.div>
 
-        {/* Materials Grid */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: { staggerChildren: 0.06 },
-            },
-          }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredMaterials.map((material) => (
-              <MaterialCard
-                key={material.id}
-                material={material}
-                onSelect={handleSelectMaterial}
-              />
+        {/* Materials Display */}
+        {viewMode === 'folder' ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-4xl mx-auto"
+          >
+            {Object.entries(groupedMaterials).map(([category, topics]) => (
+              <FolderAccordion key={category} category={category} topics={topics} onSelect={handleSelectMaterial} />
             ))}
-          </AnimatePresence>
-        </motion.div>
+          </motion.div>
+        ) : (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.06 },
+              },
+            }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            <AnimatePresence mode="popLayout">
+              {filteredMaterials.map((material) => (
+                <MaterialCard
+                  key={material.id}
+                  material={material}
+                  onSelect={handleSelectMaterial}
+                />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )}
 
         {/* Empty State */}
         {filteredCount === 0 && (

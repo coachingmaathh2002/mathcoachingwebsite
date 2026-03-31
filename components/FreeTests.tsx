@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { tests, Test } from '../data/testData';
 import { paidStudents } from '../data/students';
-import { ArrowLeft, CheckCircle, Clock, Play, User, Phone, Award, ChevronRight, ChevronLeft, Download, History, BookOpen, Lock, Star } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Clock, Play, User, Phone, Award, ChevronRight, ChevronLeft, Download, History, BookOpen, Lock, Star, Flag, AlertTriangle, BarChart3, TrendingUp, X } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import 'katex/dist/katex.min.css';
 import Latex from 'react-latex-next';
 import jsPDF from 'jspdf';
@@ -37,7 +38,9 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [score, setScore] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [markedForReview, setMarkedForReview] = useState<Set<number>>(new Set());
+  const [showExitWarning, setShowExitWarning] = useState(false);
 
   useEffect(() => {
     const savedHistory = localStorage.getItem('rajSirTestHistory');
@@ -67,10 +70,25 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
   }, [timeLeft, view]);
 
   const formatTime = (seconds: number) => {
-    const m = Math.floor(seconds / 60);
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
     const s = seconds % 60;
+    if (h > 0) {
+      return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (view === 'test') {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [view]);
 
   const handleStartAuth = (test: Test) => {
     setSelectedTest(test);
@@ -99,8 +117,31 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
       setView('test');
       setAnswers({});
       setCurrentQuestionIndex(0);
-      setTimeLeft(20 * 60); // Reset timer to 20 minutes
+      setTimeLeft((selectedTest?.duration || 20) * 60); // Reset timer based on test duration
+      setMarkedForReview(new Set());
+      setShowExitWarning(false);
       window.scrollTo(0, 0);
+    }
+  };
+
+  const toggleMarkForReview = () => {
+    if (!selectedTest) return;
+    const qId = selectedTest.questions[currentQuestionIndex].id;
+    setMarkedForReview(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(qId)) newSet.delete(qId);
+      else newSet.add(qId);
+      return newSet;
+    });
+  };
+
+  const handleBackClick = () => {
+    if (view === 'test') {
+      setShowExitWarning(true);
+    } else if (view !== 'list') {
+      setView('list');
+    } else {
+      onBack();
     }
   };
 
@@ -335,13 +376,41 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
     return acc;
   }, {} as Record<string, Test[]>);
 
+  // Dashboard Calculations
+  const totalTests = history.length;
+  const averageAccuracy = totalTests > 0 
+    ? Math.round(history.reduce((acc, curr) => acc + (curr.score / curr.total), 0) / totalTests * 100) 
+    : 0;
+  
+  const topicStats = history.reduce((acc, curr) => {
+    if (!acc[curr.topic]) {
+      acc[curr.topic] = { topic: curr.topic, totalScore: 0, totalQuestions: 0, attempts: 0 };
+    }
+    acc[curr.topic].totalScore += curr.score;
+    acc[curr.topic].totalQuestions += curr.total;
+    acc[curr.topic].attempts += 1;
+    return acc;
+  }, {} as Record<string, { topic: string, totalScore: number, totalQuestions: number, attempts: number }>);
+
+  const topicPerformance = Object.values(topicStats).map(t => ({
+    name: t.topic.substring(0, 15) + (t.topic.length > 15 ? '...' : ''),
+    accuracy: Math.round((t.totalScore / t.totalQuestions) * 100),
+    attempts: t.attempts
+  }));
+
+  const chartData = history.map((h, i) => ({
+    name: `T${i + 1}`,
+    score: Math.round((h.score / h.total) * 100),
+    date: new Date(h.date).toLocaleDateString()
+  }));
+
   return (
     <div className="min-h-screen bg-dark-950 pt-24 pb-12 px-4 sm:px-6 lg:px-8 font-body text-slate-100">
       
       {/* Header for Test Section */}
       <div className="max-w-7xl mx-auto mb-8 flex items-center justify-between">
         <button 
-          onClick={view === 'list' ? onBack : () => setView('list')}
+          onClick={handleBackClick}
           className="flex items-center gap-2 text-slate-400 hover:text-brand-light transition-colors"
         >
           <ArrowLeft size={20} />
@@ -457,10 +526,11 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
                           visible: { opacity: 1, y: 0 }
                         }}
                         key={exam}
-                        className="bg-dark-900 rounded-2xl p-6 border border-white/5 hover:border-brand-pink/50 transition-all hover:-translate-y-1 hover:shadow-lg group cursor-pointer"
+                        className="relative bg-dark-900 rounded-2xl p-6 border border-white/5 hover:border-brand-pink/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(219,39,119,0.3)] group cursor-pointer overflow-hidden"
                         onClick={() => setSelectedExam(exam)}
                       >
-                        <div className="flex justify-between items-start mb-4">
+                        <div className="absolute inset-0 bg-gradient-to-br from-brand-pink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="relative z-10 flex justify-between items-start mb-4">
                           <div className="p-3 bg-dark-800 rounded-xl text-brand-pink group-hover:bg-brand-pink group-hover:text-white transition-colors">
                             <BookOpen size={24} />
                           </div>
@@ -507,10 +577,11 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
                           visible: { opacity: 1, y: 0 }
                         }}
                         key={topic}
-                        className="bg-dark-900 rounded-2xl p-6 border border-white/5 hover:border-brand-pink/50 transition-all hover:-translate-y-1 hover:shadow-lg group cursor-pointer"
+                        className="relative bg-dark-900 rounded-2xl p-6 border border-white/5 hover:border-brand-pink/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(219,39,119,0.3)] group cursor-pointer overflow-hidden"
                         onClick={() => setSelectedTopic(topic)}
                       >
-                        <div className="flex justify-between items-start mb-4">
+                        <div className="absolute inset-0 bg-gradient-to-br from-brand-pink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="relative z-10 flex justify-between items-start mb-4">
                           <div className="p-3 bg-dark-800 rounded-xl text-brand-pink group-hover:bg-brand-pink group-hover:text-white transition-colors">
                             <BookOpen size={24} />
                           </div>
@@ -567,9 +638,14 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
                           <div className="p-3 bg-dark-800 rounded-xl text-brand-pink group-hover:bg-brand-pink group-hover:text-white transition-colors">
                             <Award size={24} />
                           </div>
-                          <span className="text-xs font-mono text-slate-500 bg-dark-950 px-2 py-1 rounded border border-white/5">
-                            {test.questions.length} Questions
-                          </span>
+                          <div className="flex flex-col items-end gap-1">
+                            <span className="text-xs font-mono text-slate-500 bg-dark-950 px-2 py-1 rounded border border-white/5">
+                              {test.questions.length} Questions
+                            </span>
+                            <span className="text-xs font-mono text-slate-500 bg-dark-950 px-2 py-1 rounded border border-white/5 flex items-center gap-1">
+                              <Clock size={12} /> {test.duration || 20} mins
+                            </span>
+                          </div>
                         </div>
                         <h4 className="text-xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors">
                           {test.title}
@@ -588,7 +664,7 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
               )}
             </div>
           ) : (
-            <div className="max-w-4xl mx-auto animate-fade-in">
+            <div className="max-w-6xl mx-auto animate-fade-in">
               {history.length === 0 ? (
                 <div className="bg-dark-900 rounded-2xl p-12 text-center border border-white/5">
                   <History size={48} className="mx-auto text-slate-600 mb-4" />
@@ -602,37 +678,125 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
                   </button>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  {history.map((attempt) => (
-                    <div key={attempt.id} className="bg-dark-900 rounded-2xl p-6 border border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-bold px-2 py-1 bg-dark-800 text-brand-pink rounded border border-white/5 uppercase tracking-wider">
-                            {attempt.topic}
-                          </span>
-                          <span className="text-slate-500 text-sm">
-                            {new Date(attempt.date).toLocaleDateString()}
-                          </span>
-                        </div>
-                        <h4 className="text-lg font-bold text-white">{attempt.testTitle}</h4>
-                        <p className="text-slate-400 text-sm">Student: {attempt.userName}</p>
+                <div className="space-y-8">
+                  {/* Dashboard Stats */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-dark-900 rounded-2xl p-6 border border-white/5 flex items-center gap-4 shadow-lg">
+                      <div className="w-12 h-12 bg-brand-pink/20 rounded-xl flex items-center justify-center text-brand-pink">
+                        <BookOpen size={24} />
                       </div>
-                      
-                      <div className="flex items-center gap-6 bg-dark-950 px-6 py-4 rounded-xl border border-white/5 w-full sm:w-auto justify-between sm:justify-start">
-                        <div className="text-center">
-                          <p className="text-slate-500 text-xs mb-1 uppercase tracking-wider">Score</p>
-                          <p className="text-2xl font-bold text-brand-light">{attempt.score}<span className="text-sm text-slate-500">/{attempt.total}</span></p>
-                        </div>
-                        <div className="w-px h-10 bg-white/10 hidden sm:block"></div>
-                        <div className="text-center">
-                          <p className="text-slate-500 text-xs mb-1 uppercase tracking-wider">Percentage</p>
-                          <p className={`text-2xl font-bold ${attempt.score / attempt.total >= 0.8 ? 'text-green-400' : attempt.score / attempt.total >= 0.5 ? 'text-yellow-400' : 'text-red-400'}`}>
-                            {Math.round((attempt.score / attempt.total) * 100)}%
-                          </p>
-                        </div>
+                      <div>
+                        <p className="text-slate-400 text-sm">Tests Completed</p>
+                        <p className="text-2xl font-bold text-white">{totalTests}</p>
                       </div>
                     </div>
-                  ))}
+                    <div className="bg-dark-900 rounded-2xl p-6 border border-white/5 flex items-center gap-4 shadow-lg">
+                      <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400">
+                        <CheckCircle size={24} />
+                      </div>
+                      <div>
+                        <p className="text-slate-400 text-sm">Average Accuracy</p>
+                        <p className="text-2xl font-bold text-white">{averageAccuracy}%</p>
+                      </div>
+                    </div>
+                    <div className="bg-dark-900 rounded-2xl p-6 border border-white/5 flex items-center gap-4 shadow-lg">
+                      <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-400">
+                        <TrendingUp size={24} />
+                      </div>
+                      <div>
+                        <p className="text-slate-400 text-sm">Best Topic</p>
+                        <p className="text-xl font-bold text-white truncate">
+                          {topicPerformance.length > 0 ? topicPerformance.reduce((prev, current) => (prev.accuracy > current.accuracy) ? prev : current).name : 'N/A'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Charts */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="bg-dark-900 rounded-2xl p-6 border border-white/5 shadow-lg">
+                      <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                        <TrendingUp size={20} className="text-brand-pink" />
+                        Performance Trend
+                      </h3>
+                      <div className="h-[300px] w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <LineChart data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                            <XAxis dataKey="name" stroke="#94a3b8" tick={{ fill: '#94a3b8' }} />
+                            <YAxis stroke="#94a3b8" tick={{ fill: '#94a3b8' }} domain={[0, 100]} />
+                            <RechartsTooltip 
+                              contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px' }}
+                              itemStyle={{ color: '#fff' }}
+                            />
+                            <Line type="monotone" dataKey="score" stroke="#f472b6" strokeWidth={3} dot={{ r: 6, fill: '#f472b6', strokeWidth: 2, stroke: '#0f172a' }} activeDot={{ r: 8 }} />
+                          </LineChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
+
+                    <div className="bg-dark-900 rounded-2xl p-6 border border-white/5 shadow-lg">
+                      <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                        <BarChart3 size={20} className="text-brand-purple" />
+                        Topic Accuracy
+                      </h3>
+                      <div className="h-[300px] w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <BarChart data={topicPerformance} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                            <XAxis dataKey="name" stroke="#94a3b8" tick={{ fill: '#94a3b8' }} />
+                            <YAxis stroke="#94a3b8" tick={{ fill: '#94a3b8' }} domain={[0, 100]} />
+                            <RechartsTooltip 
+                              contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px' }}
+                              itemStyle={{ color: '#fff' }}
+                              cursor={{ fill: '#1e293b' }}
+                            />
+                            <Bar dataKey="accuracy" fill="#c084fc" radius={[4, 4, 0, 0]} maxBarSize={50} />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* History List */}
+                  <div className="bg-dark-900 rounded-2xl p-6 border border-white/5 shadow-lg">
+                    <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                      <History size={20} className="text-slate-400" />
+                      Recent Attempts
+                    </h3>
+                    <div className="space-y-4">
+                      {history.map((attempt) => (
+                        <div key={attempt.id} className="bg-dark-950 rounded-xl p-5 border border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-white/10 transition-colors">
+                          <div>
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="text-xs font-bold px-2 py-1 bg-dark-800 text-brand-pink rounded border border-white/5 uppercase tracking-wider">
+                                {attempt.topic}
+                              </span>
+                              <span className="text-slate-500 text-sm">
+                                {new Date(attempt.date).toLocaleDateString()}
+                              </span>
+                            </div>
+                            <h4 className="text-lg font-bold text-white">{attempt.testTitle}</h4>
+                            <p className="text-slate-400 text-sm">Student: {attempt.userName}</p>
+                          </div>
+                          
+                          <div className="flex items-center gap-6 bg-dark-900 px-6 py-4 rounded-xl border border-white/5 w-full sm:w-auto justify-between sm:justify-start">
+                            <div className="text-center">
+                              <p className="text-slate-500 text-xs mb-1 uppercase tracking-wider">Score</p>
+                              <p className="text-2xl font-bold text-brand-light">{attempt.score}<span className="text-sm text-slate-500">/{attempt.total}</span></p>
+                            </div>
+                            <div className="w-px h-10 bg-white/10 hidden sm:block"></div>
+                            <div className="text-center">
+                              <p className="text-slate-500 text-xs mb-1 uppercase tracking-wider">Accuracy</p>
+                              <p className={`text-2xl font-bold ${attempt.score / attempt.total >= 0.8 ? 'text-green-400' : attempt.score / attempt.total >= 0.5 ? 'text-yellow-400' : 'text-red-400'}`}>
+                                {Math.round((attempt.score / attempt.total) * 100)}%
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -735,135 +899,216 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -50 }}
           transition={{ duration: 0.4 }}
-          className="max-w-3xl mx-auto"
+          className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8"
         >
-          <div className="bg-dark-900 rounded-2xl p-6 mb-8 border border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sticky top-24 z-30 shadow-xl backdrop-blur-md bg-opacity-90">
-            <div>
-              <h2 className="text-lg font-bold text-white">{selectedTest.title} {view === 'review' && <span className="text-brand-pink ml-2">(Review Mode)</span>}</h2>
-              <p className="text-slate-400 text-sm">Student: <span className="text-brand-light">{user.name}</span></p>
-            </div>
-            <div className="flex items-center gap-4">
-              {view === 'test' && (
-                <div className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${timeLeft < 60 ? 'bg-red-500/10 border-red-500/30 text-red-400 animate-pulse' : 'bg-dark-950 border-white/5 text-slate-300'}`}>
-                  <Clock size={18} className={timeLeft < 60 ? 'text-red-400' : 'text-brand-pink'} />
-                  <span className="font-mono font-bold">{formatTime(timeLeft)}</span>
+          <div className="lg:col-span-3 flex flex-col gap-6">
+            <div className="bg-dark-900 rounded-2xl p-6 border border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sticky top-24 z-30 shadow-xl backdrop-blur-md bg-opacity-90">
+              <div>
+                <h2 className="text-lg font-bold text-white">{selectedTest.title} {view === 'review' && <span className="text-brand-pink ml-2">(Review Mode)</span>}</h2>
+                <p className="text-slate-400 text-sm">Student: <span className="text-brand-light">{user.name}</span></p>
+              </div>
+              <div className="flex items-center gap-4">
+                {view === 'test' && (
+                  <div className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${timeLeft < 60 ? 'bg-red-500/10 border-red-500/30 text-red-400 animate-pulse' : 'bg-dark-950 border-white/5 text-slate-300'}`}>
+                    <Clock size={18} className={timeLeft < 60 ? 'text-red-400' : 'text-brand-pink'} />
+                    <span className="font-mono font-bold">{formatTime(timeLeft)}</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-2 text-slate-300 bg-dark-950 px-4 py-2 rounded-lg border border-white/5">
+                  <span className="font-mono">Q: {currentQuestionIndex + 1}/{selectedTest.questions.length}</span>
                 </div>
-              )}
-              <div className="flex items-center gap-2 text-slate-300 bg-dark-950 px-4 py-2 rounded-lg border border-white/5">
-                <span className="font-mono">Q: {currentQuestionIndex + 1}/{selectedTest.questions.length}</span>
+              </div>
+            </div>
+
+            <div className="bg-dark-900 rounded-2xl p-6 md:p-8 border border-white/5 min-h-[400px] flex flex-col justify-between overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.div 
+                  key={currentQuestionIndex}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="flex gap-4 mb-6">
+                  <span className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border ${
+                    view === 'review' 
+                      ? answers[selectedTest.questions[currentQuestionIndex].id] === selectedTest.questions[currentQuestionIndex].correctAnswer
+                        ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                        : 'bg-red-500/20 text-red-400 border-red-500/30'
+                      : 'bg-dark-800 text-brand-light border-white/5'
+                  }`}>
+                    {currentQuestionIndex + 1}
+                  </span>
+                  <div className="text-xl text-white font-medium pt-1 leading-relaxed">
+                    <Latex>{selectedTest.questions[currentQuestionIndex].text}</Latex>
+                  </div>
+                </div>
+
+                <div className="space-y-4 ml-0 md:ml-14">
+                  {selectedTest.questions[currentQuestionIndex].options.map((option, optIndex) => {
+                    const isSelected = answers[selectedTest.questions[currentQuestionIndex].id] === optIndex;
+                    const isCorrect = selectedTest.questions[currentQuestionIndex].correctAnswer === optIndex;
+                    
+                    let optionClass = 'bg-dark-950 border-slate-800 text-slate-300 hover:border-slate-600 hover:bg-dark-800';
+                    let circleClass = 'border-slate-600';
+                    let innerCircleClass = 'bg-brand-pink';
+
+                    if (view === 'review') {
+                      if (isCorrect) {
+                        optionClass = 'bg-green-500/10 border-green-500 text-white shadow-[0_0_15px_rgba(34,197,94,0.1)]';
+                        circleClass = 'border-green-500';
+                        innerCircleClass = 'bg-green-500';
+                      } else if (isSelected && !isCorrect) {
+                        optionClass = 'bg-red-500/10 border-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.1)]';
+                        circleClass = 'border-red-500';
+                        innerCircleClass = 'bg-red-500';
+                      } else {
+                        optionClass = 'bg-dark-950 border-slate-800 text-slate-500 opacity-50';
+                      }
+                    } else if (isSelected) {
+                      optionClass = 'bg-brand-pink/10 border-brand-pink text-white shadow-[0_0_15px_rgba(219,39,119,0.1)]';
+                      circleClass = 'border-brand-pink';
+                    }
+
+                    return (
+                      <label 
+                        key={optIndex}
+                        className={`flex items-center gap-4 p-5 rounded-xl border transition-all ${view === 'review' ? 'cursor-default' : 'cursor-pointer'} ${optionClass}`}
+                      >
+                        <input
+                          type="radio"
+                          name={`q-${selectedTest.questions[currentQuestionIndex].id}`}
+                          className="hidden"
+                          checked={isSelected}
+                          onChange={() => handleAnswer(selectedTest.questions[currentQuestionIndex].id, optIndex)}
+                          disabled={view === 'review'}
+                        />
+                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${circleClass}`}>
+                          {isSelected && <div className={`w-3 h-3 rounded-full ${innerCircleClass}`} />}
+                        </div>
+                        <span className="text-lg"><Latex>{option}</Latex></span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            <div className="flex justify-between items-center mt-12 pt-6 border-t border-white/5">
+                <button
+                  onClick={handlePrev}
+                  disabled={currentQuestionIndex === 0}
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-slate-300 hover:text-white hover:bg-white/5"
+                >
+                  <ChevronLeft size={20} />
+                  Previous
+                </button>
+
+                {view === 'test' && (
+                  <button
+                    onClick={toggleMarkForReview}
+                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-colors ${
+                      markedForReview.has(selectedTest.questions[currentQuestionIndex].id)
+                        ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                        : 'bg-dark-800 text-slate-300 hover:text-white border border-white/5'
+                    }`}
+                  >
+                    <Flag size={18} className={markedForReview.has(selectedTest.questions[currentQuestionIndex].id) ? 'fill-current' : ''} />
+                    <span className="hidden sm:inline">Mark for Review</span>
+                  </button>
+                )}
+
+                {currentQuestionIndex === selectedTest.questions.length - 1 ? (
+                  view === 'review' ? (
+                    <button
+                      onClick={() => setView('result')}
+                      className="flex items-center gap-2 px-8 py-3 bg-brand-pink hover:bg-brand-light text-white rounded-xl font-bold shadow-lg transition-all hover:shadow-brand-pink/20"
+                    >
+                      Back to Results
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleSubmit}
+                      className="flex items-center gap-2 px-8 py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl font-bold shadow-lg transition-all hover:shadow-green-500/20"
+                    >
+                      Submit Test
+                      <CheckCircle size={20} />
+                    </button>
+                  )
+                ) : (
+                  <button
+                    onClick={handleNext}
+                    className="flex items-center gap-2 px-8 py-3 bg-brand-pink hover:bg-brand-light text-white rounded-xl font-bold shadow-lg transition-all hover:shadow-brand-pink/20"
+                  >
+                    Next
+                    <ChevronRight size={20} />
+                  </button>
+                )}
               </div>
             </div>
           </div>
 
-          <div className="bg-dark-900 rounded-2xl p-6 md:p-8 border border-white/5 min-h-[400px] flex flex-col justify-between overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div 
-                key={currentQuestionIndex}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="flex gap-4 mb-6">
-                <span className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border ${
-                  view === 'review' 
-                    ? answers[selectedTest.questions[currentQuestionIndex].id] === selectedTest.questions[currentQuestionIndex].correctAnswer
-                      ? 'bg-green-500/20 text-green-400 border-green-500/30'
-                      : 'bg-red-500/20 text-red-400 border-red-500/30'
-                    : 'bg-dark-800 text-brand-light border-white/5'
-                }`}>
-                  {currentQuestionIndex + 1}
-                </span>
-                <div className="text-xl text-white font-medium pt-1 leading-relaxed">
-                  <Latex>{selectedTest.questions[currentQuestionIndex].text}</Latex>
-                </div>
-              </div>
-
-              <div className="space-y-4 ml-0 md:ml-14">
-                {selectedTest.questions[currentQuestionIndex].options.map((option, optIndex) => {
-                  const isSelected = answers[selectedTest.questions[currentQuestionIndex].id] === optIndex;
-                  const isCorrect = selectedTest.questions[currentQuestionIndex].correctAnswer === optIndex;
+          <div className="lg:col-span-1">
+            <div className="bg-dark-900 rounded-2xl p-6 border border-white/10 sticky top-24 shadow-xl">
+              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <BookOpen size={18} className="text-brand-pink" />
+                Question Palette
+              </h3>
+              
+              <div className="grid grid-cols-5 sm:grid-cols-8 lg:grid-cols-4 gap-2 mb-6">
+                {selectedTest.questions.map((q, idx) => {
+                  const isAnswered = answers[q.id] !== undefined;
+                  const isMarked = markedForReview.has(q.id);
+                  const isCurrent = currentQuestionIndex === idx;
                   
-                  let optionClass = 'bg-dark-950 border-slate-800 text-slate-300 hover:border-slate-600 hover:bg-dark-800';
-                  let circleClass = 'border-slate-600';
-                  let innerCircleClass = 'bg-brand-pink';
-
+                  let btnClass = 'bg-dark-800 text-slate-400 border-white/5 hover:bg-dark-700';
+                  
                   if (view === 'review') {
-                    if (isCorrect) {
-                      optionClass = 'bg-green-500/10 border-green-500 text-white shadow-[0_0_15px_rgba(34,197,94,0.1)]';
-                      circleClass = 'border-green-500';
-                      innerCircleClass = 'bg-green-500';
-                    } else if (isSelected && !isCorrect) {
-                      optionClass = 'bg-red-500/10 border-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.1)]';
-                      circleClass = 'border-red-500';
-                      innerCircleClass = 'bg-red-500';
-                    } else {
-                      optionClass = 'bg-dark-950 border-slate-800 text-slate-500 opacity-50';
+                    const isCorrect = answers[q.id] === q.correctAnswer;
+                    if (isAnswered) {
+                      btnClass = isCorrect ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'bg-red-500/20 text-red-400 border-red-500/30';
                     }
-                  } else if (isSelected) {
-                    optionClass = 'bg-brand-pink/10 border-brand-pink text-white shadow-[0_0_15px_rgba(219,39,119,0.1)]';
-                    circleClass = 'border-brand-pink';
+                  } else {
+                    if (isMarked && isAnswered) btnClass = 'bg-purple-500/20 text-purple-400 border-purple-500/50';
+                    else if (isMarked) btnClass = 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50';
+                    else if (isAnswered) btnClass = 'bg-green-500/20 text-green-400 border-green-500/50';
+                  }
+
+                  if (isCurrent) {
+                    btnClass += ' ring-2 ring-brand-pink ring-offset-2 ring-offset-dark-900';
                   }
 
                   return (
-                    <label 
-                      key={optIndex}
-                      className={`flex items-center gap-4 p-5 rounded-xl border transition-all ${view === 'review' ? 'cursor-default' : 'cursor-pointer'} ${optionClass}`}
+                    <button
+                      key={q.id}
+                      onClick={() => setCurrentQuestionIndex(idx)}
+                      className={`w-full aspect-square rounded-lg flex items-center justify-center font-mono text-sm font-medium border transition-all ${btnClass}`}
                     >
-                      <input
-                        type="radio"
-                        name={`q-${selectedTest.questions[currentQuestionIndex].id}`}
-                        className="hidden"
-                        checked={isSelected}
-                        onChange={() => handleAnswer(selectedTest.questions[currentQuestionIndex].id, optIndex)}
-                        disabled={view === 'review'}
-                      />
-                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${circleClass}`}>
-                        {isSelected && <div className={`w-3 h-3 rounded-full ${innerCircleClass}`} />}
-                      </div>
-                      <span className="text-lg"><Latex>{option}</Latex></span>
-                    </label>
+                      {idx + 1}
+                    </button>
                   );
                 })}
               </div>
-            </motion.div>
-          </AnimatePresence>
 
-          <div className="flex justify-between mt-12 pt-6 border-t border-white/5">
-              <button
-                onClick={handlePrev}
-                disabled={currentQuestionIndex === 0}
-                className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-slate-300 hover:text-white hover:bg-white/5"
-              >
-                <ChevronLeft size={20} />
-                Previous
-              </button>
-
-              {currentQuestionIndex === selectedTest.questions.length - 1 ? (
-                view === 'review' ? (
-                  <button
-                    onClick={() => setView('result')}
-                    className="flex items-center gap-2 px-8 py-3 bg-brand-pink hover:bg-brand-light text-white rounded-xl font-bold shadow-lg transition-all hover:shadow-brand-pink/20"
-                  >
-                    Back to Results
-                  </button>
-                ) : (
-                  <button
-                    onClick={handleSubmit}
-                    className="flex items-center gap-2 px-8 py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl font-bold shadow-lg transition-all hover:shadow-green-500/20"
-                  >
-                    Submit Test
-                    <CheckCircle size={20} />
-                  </button>
-                )
-              ) : (
-                <button
-                  onClick={handleNext}
-                  className="flex items-center gap-2 px-8 py-3 bg-brand-pink hover:bg-brand-light text-white rounded-xl font-bold shadow-lg transition-all hover:shadow-brand-pink/20"
-                >
-                  Next
-                  <ChevronRight size={20} />
-                </button>
+              {view === 'test' && (
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded bg-green-500/20 border border-green-500/50"></div>
+                    <span className="text-slate-300">Answered</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded bg-yellow-500/20 border border-yellow-500/50"></div>
+                    <span className="text-slate-300">Marked for Review</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded bg-purple-500/20 border border-purple-500/50"></div>
+                    <span className="text-slate-300">Answered & Marked</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded bg-dark-800 border border-white/5"></div>
+                    <span className="text-slate-300">Not Answered</span>
+                  </div>
+                </div>
               )}
             </div>
           </div>
@@ -951,6 +1196,59 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
           </div>
         </motion.div>
       )}
+      </AnimatePresence>
+
+      {/* EXIT WARNING MODAL */}
+      <AnimatePresence>
+        {showExitWarning && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-dark-900 border border-white/10 rounded-2xl p-6 max-w-md w-full shadow-2xl relative"
+            >
+              <button 
+                onClick={() => setShowExitWarning(false)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
+              >
+                <X size={20} />
+              </button>
+              
+              <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mb-6 mx-auto border border-red-500/30">
+                <AlertTriangle size={32} className="text-red-400" />
+              </div>
+              
+              <h3 className="text-2xl font-bold text-white text-center mb-2">Are you sure?</h3>
+              <p className="text-slate-400 text-center mb-8">
+                If you leave now, your progress will be lost and this attempt will not be saved.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button 
+                  onClick={() => setShowExitWarning(false)}
+                  className="flex-1 px-6 py-3 bg-brand-pink hover:bg-brand-light text-white rounded-xl font-bold transition-colors"
+                >
+                  Resume Test
+                </button>
+                <button 
+                  onClick={() => {
+                    setShowExitWarning(false);
+                    setView('list');
+                  }}
+                  className="flex-1 px-6 py-3 bg-dark-800 hover:bg-red-500/20 hover:text-red-400 text-slate-300 rounded-xl font-medium transition-colors border border-white/5 hover:border-red-500/30"
+                >
+                  Exit Test
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
 
     </div>

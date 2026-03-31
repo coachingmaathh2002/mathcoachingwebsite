@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Header } from './components/Header';
+import { MarketingBanner } from './components/MarketingBanner';
 import { Hero } from './components/Hero';
 import { CourseGrid } from './components/CourseGrid';
 import { About } from './components/About';
@@ -21,6 +22,7 @@ const App: React.FC = () => {
       <main className="flex-grow">
         {currentView === 'home' ? (
           <>
+            <MarketingBanner />
             <Hero />
             <CourseGrid />
             <About />
@@ -41,7 +43,7 @@ const App: React.FC = () => {
         href={`https://wa.me/${CONTACT_INFO.phone.replace(/[^0-9]/g, '')}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 hover:shadow-[0_0_20px_rgba(37,211,102,0.5)]"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 hover:shadow-[0_0_20px_rgba(37,211,102,0.5)] animate-pulse-slow"
         aria-label="Chat on WhatsApp"
       >
         <MessageCircle size={28} />

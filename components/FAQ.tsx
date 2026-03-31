@@ -46,18 +46,18 @@ export const FAQ: React.FC = () => {
           {faqs.map((faq, index) => (
             <div 
               key={index}
-              className={`border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 ${
-                openIndex === index ? 'bg-dark-800/50 border-brand-pink/30' : 'bg-dark-950 hover:border-white/10'
+              className={`border border-white/5 rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-[0_10px_30px_-15px_rgba(219,39,119,0.2)] ${
+                openIndex === index ? 'bg-dark-800/50 border-brand-pink/50 shadow-[0_10px_30px_-15px_rgba(219,39,119,0.3)]' : 'bg-dark-950 hover:border-brand-pink/30 hover:-translate-y-1'
               }`}
             >
               <button
-                className="w-full px-6 py-5 flex items-center justify-between text-left"
+                className="w-full px-6 py-5 flex items-center justify-between text-left group"
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
               >
-                <span className="text-lg font-medium text-white">{faq.question}</span>
+                <span className="text-lg font-medium text-white group-hover:text-brand-light transition-colors duration-300">{faq.question}</span>
                 <ChevronDown 
-                  className={`text-brand-pink transition-transform duration-300 flex-shrink-0 ${
-                    openIndex === index ? 'rotate-180' : ''
+                  className={`text-brand-pink transition-transform duration-500 flex-shrink-0 ${
+                    openIndex === index ? 'rotate-180' : 'group-hover:scale-110'
                   }`} 
                   size={20} 
                 />

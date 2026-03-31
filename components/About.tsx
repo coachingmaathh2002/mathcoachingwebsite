@@ -88,21 +88,21 @@ export const About: React.FC = () => {
 
         {/* Stats Section */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-24 border-t border-white/10 pt-16">
-          <div className="text-center">
-            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2">15+</h3>
-            <p className="text-brand-light text-sm uppercase tracking-widest">Years Experience</p>
+          <div className="text-center group cursor-default">
+            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2 transition-all duration-300 group-hover:text-brand-pink group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(219,39,119,0.5)]">15+</h3>
+            <p className="text-brand-light text-sm uppercase tracking-widest transition-colors duration-300 group-hover:text-white">Years Experience</p>
           </div>
-          <div className="text-center">
-            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2">10k+</h3>
-            <p className="text-brand-light text-sm uppercase tracking-widest">Students Taught</p>
+          <div className="text-center group cursor-default">
+            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2 transition-all duration-300 group-hover:text-brand-purple group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(124,58,237,0.5)]">10k+</h3>
+            <p className="text-brand-light text-sm uppercase tracking-widest transition-colors duration-300 group-hover:text-white">Students Taught</p>
           </div>
-          <div className="text-center">
-            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2">50+</h3>
-            <p className="text-brand-light text-sm uppercase tracking-widest">Top 100 Ranks</p>
+          <div className="text-center group cursor-default">
+            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2 transition-all duration-300 group-hover:text-brand-light group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(244,114,182,0.5)]">50+</h3>
+            <p className="text-brand-light text-sm uppercase tracking-widest transition-colors duration-300 group-hover:text-white">Top 100 Ranks</p>
           </div>
-          <div className="text-center">
-            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2">98%</h3>
-            <p className="text-brand-light text-sm uppercase tracking-widest">Success Rate</p>
+          <div className="text-center group cursor-default">
+            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2 transition-all duration-300 group-hover:text-white group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">98%</h3>
+            <p className="text-brand-light text-sm uppercase tracking-widest transition-colors duration-300 group-hover:text-white">Success Rate</p>
           </div>
         </div>
       </div>

@@ -487,10 +487,10 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
             <div>
               <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
                 <Star className="text-yellow-400 fill-yellow-400" size={24} />
-                Unlock Premium Features!
+                🚀 প্রিমিয়াম ফিচার আনলক করো!
               </h3>
               <p className="text-slate-300">
-                If you want step-by-step solutions, multiple attempts, or extra features, you should buy our Premium Tests.
+                বিস্তারিত ধাপে-ধাপে সমাধান, একাধিকবার পরীক্ষা দেওয়ার সুযোগ এবং আরও অনেক এক্সক্লুসিভ ফিচারের জন্য আজই আমাদের প্রিমিয়াম মক টেস্টগুলো কিনে নাও!
               </p>
             </div>
             <motion.button 
@@ -499,7 +499,7 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
               onClick={() => { setActiveTab('paid'); setSelectedExam(null); setSelectedTopic(null); }}
               className="px-6 py-3 bg-brand-pink hover:bg-brand-light text-white font-bold rounded-xl transition-colors whitespace-nowrap shadow-lg hover:shadow-brand-pink/20"
             >
-              Explore Premium
+              প্রিমিয়াম দেখুন
             </motion.button>
           </motion.div>
 

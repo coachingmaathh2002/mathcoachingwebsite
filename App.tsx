@@ -22,7 +22,7 @@ const App: React.FC = () => {
       <main className="flex-grow">
         {currentView === 'home' ? (
           <>
-            <MarketingBanner />
+            <MarketingBanner onNavigate={setCurrentView} />
             <Hero />
             <CourseGrid />
             <About />

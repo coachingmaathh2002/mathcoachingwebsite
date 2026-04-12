@@ -8,10 +8,7 @@ import 'katex/dist/katex.min.css';
 import Latex from 'react-latex-next';
 import jsPDF from 'jspdf';
 import { CONTACT_INFO } from '../constants';
-
-interface FreeTestsProps {
-  onBack: () => void;
-}
+import { useNavigate } from 'react-router-dom';
 
 type ViewState = 'list' | 'auth' | 'test' | 'result';
 
@@ -26,7 +23,8 @@ interface TestAttempt {
   userName: string;
 }
 
-export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
+export const FreeTests: React.FC = () => {
+  const navigate = useNavigate();
   const [view, setView] = useState<ViewState | 'review'>('list');
   const [activeTab, setActiveTab] = useState<'tests' | 'paid' | 'history'>('tests');
   const [selectedExam, setSelectedExam] = useState<string | null>(null);
@@ -94,6 +92,7 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
     setSelectedTest(test);
     setAuthError('');
     setView('auth');
+    window.scrollTo(0, 0);
   };
 
   const handleStartTest = (e: React.FormEvent) => {
@@ -141,7 +140,7 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
     } else if (view !== 'list') {
       setView('list');
     } else {
-      onBack();
+      navigate('/');
     }
   };
 
@@ -205,6 +204,7 @@ export const FreeTests: React.FC<FreeTestsProps> = ({ onBack }) => {
     setAnswers({});
     setScore(0);
     setCurrentQuestionIndex(0);
+    window.scrollTo(0, 0);
   };
 
   const downloadMarksheet = () => {

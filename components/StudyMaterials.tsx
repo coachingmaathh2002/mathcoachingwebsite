@@ -27,11 +27,11 @@ import jsPDF from 'jspdf';
 import { CONTACT_INFO } from '../constants';
 import { MathPlot } from './MathPlot';
 
+import { useNavigate } from 'react-router-dom';
+
 // ── Types ───────────────────────────────────────────────────────────────────────
 
-interface StudyMaterialsProps {
-  onBack: () => void;
-}
+// Removed StudyMaterialsProps
 
 type MaterialType = 'article' | 'guide' | 'notes';
 type FilterType = 'all' | MaterialType;
@@ -220,6 +220,170 @@ $e^{ix} = \\cos x + i\\sin x$
 
 // ── Materials Data ──────────────────────────────────────────────────────────────
 
+
+const algebraBengaliContent = `
+## বীজগণিত (Algebra) - One Shot for WBJEE
+
+বীজগণিত WBJEE এর একটি বিশাল অংশ। এই নোটে আমরা দ্বিঘাত সমীকরণ, প্রগতি এবং লগারিদম সম্পর্কে জানব।
+
+### ১. দ্বিঘাত সমীকরণ (Quadratic Equations)
+$ax^2 + bx + c = 0$ সমীকরণের মূলদ্বয় $\\alpha, \\beta$ হলে:
+*   মূলদ্বয়ের যোগফল: $\\alpha + \\beta = -\\frac{b}{a}$
+*   মূলদ্বয়ের গুণফল: $\\alpha\\beta = \\frac{c}{a}$
+*   শ্রীধর আচার্যের সূত্র: $x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$
+
+### ২. সমান্তর প্রগতি (Arithmetic Progression - AP)
+*   $n$-তম পদ: $t_n = a + (n-1)d$
+*   $n$ সংখ্যক পদের যোগফল: $S_n = \\frac{n}{2}[2a + (n-1)d]$
+
+### ৩. গুণোত্তর প্রগতি (Geometric Progression - GP)
+*   $n$-তম পদ: $t_n = ar^{n-1}$
+*   $n$ সংখ্যক পদের যোগফল: $S_n = \\frac{a(r^n - 1)}{r - 1}$ (যখন $r > 1$)
+*   অসীম গুণোত্তর ধারার যোগফল: $S_\\infty = \\frac{a}{1 - r}$ (যখন $|r| < 1$)
+`;
+
+const trigonometryBengaliContent = `
+## ত্রিকোণমিতি (Trigonometry) - One Shot for WBJEE
+
+ত্রিকোণমিতি থেকে সরাসরি এবং অন্যান্য অধ্যায়ের সাথে যুক্ত হয়ে অনেক প্রশ্ন আসে।
+
+### ১. যৌগিক কোণ (Compound Angles)
+*   $\\sin(A \\pm B) = \\sin A \\cos B \\pm \\cos A \\sin B$
+*   $\\cos(A \\pm B) = \\cos A \\cos B \\mp \\sin A \\sin B$
+*   $\\tan(A \\pm B) = \\frac{\\tan A \\pm \\tan B}{1 \\mp \\tan A \\tan B}$
+
+### ২. গুণিতক কোণ (Multiple Angles)
+*   $\\sin 2A = 2\\sin A \\cos A = \\frac{2\\tan A}{1 + \\tan^2 A}$
+*   $\\cos 2A = \\cos^2 A - \\sin^2 A = 1 - 2\\sin^2 A = 2\\cos^2 A - 1$
+*   $\\tan 2A = \\frac{2\\tan A}{1 - \\tan^2 A}$
+
+### ৩. ত্রিকোণমিতিক সমীকরণ (Trigonometric Equations)
+*   $\\sin \\theta = 0 \\implies \\theta = n\\pi$
+*   $\\cos \\theta = 0 \\implies \\theta = (2n+1)\\frac{\\pi}{2}$
+*   $\\tan \\theta = 0 \\implies \\theta = n\\pi$
+`;
+
+const coordinateGeometryBengaliContent = `
+## স্থানাঙ্ক জ্যামিতি (Coordinate Geometry) - One Shot for WBJEE
+
+স্থানাঙ্ক জ্যামিতি WBJEE এর অন্যতম স্কোরিং অংশ।
+
+### ১. সরলরেখা (Straight Lines)
+*   দুটি বিন্দুর দূরত্ব: $d = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$
+*   প্রবণতা (Slope): $m = \\frac{y_2 - y_1}{x_2 - x_1}$
+*   সরলরেখার সমীকরণ: $y - y_1 = m(x - x_1)$
+*   দুটি রেখার মধ্যবর্তী কোণ: $\\tan \\theta = \\left| \\frac{m_1 - m_2}{1 + m_1 m_2} \\right|$
+
+### ২. বৃত্ত (Circles)
+*   বৃত্তের সাধারণ সমীকরণ: $x^2 + y^2 + 2gx + 2fy + c = 0$
+*   কেন্দ্র: $(-g, -f)$
+*   ব্যাসার্ধ: $r = \\sqrt{g^2 + f^2 - c}$
+
+### ৩. পরাবৃত্ত (Parabola)
+*   আদর্শ সমীকরণ: $y^2 = 4ax$
+*   নাভি (Focus): $(a, 0)$
+*   নিয়ামক (Directrix): $x = -a$
+`;
+
+const calculusBengaliContent = `
+## ক্যালকুলাস (Calculus) - One Shot for WBJEE
+
+ক্যালকুলাসের ভিত্তি হলো সীমা, সন্ততা এবং অবকলনযোগ্যতা।
+
+### ১. সীমা (Limits)
+*   $\\lim_{x \\to 0} \\frac{\\sin x}{x} = 1$
+*   $\\lim_{x \\to 0} \\frac{\\tan x}{x} = 1$
+*   $\\lim_{x \\to 0} \\frac{e^x - 1}{x} = 1$
+*   $\\lim_{x \\to 0} \\frac{\\ln(1+x)}{x} = 1$
+
+### ২. সন্ততা (Continuity)
+একটি অপেক্ষক $f(x)$, $x=a$ বিন্দুতে সন্তত হবে যদি:
+$\\lim_{x \\to a^-} f(x) = \\lim_{x \\to a^+} f(x) = f(a)$
+
+### ৩. অবকলনযোগ্যতা (Differentiability)
+একটি অপেক্ষক $f(x)$, $x=a$ বিন্দুতে অবকলনযোগ্য হবে যদি LHD = RHD হয়।
+*   $LHD = \\lim_{h \\to 0^-} \\frac{f(a+h) - f(a)}{h}$
+*   $RHD = \\lim_{h \\to 0^+} \\frac{f(a+h) - f(a)}{h}$
+`;
+
+const vectors3DBengaliContent = `
+## ভেক্টর ও 3D জ্যামিতি (Vectors & 3D Geometry) - One Shot for WBJEE
+
+### ১. ভেক্টর (Vectors)
+*   ডট গুণফল (Dot Product): $\\vec{a} \\cdot \\vec{b} = |\\vec{a}| |\\vec{b}| \\cos \\theta$
+*   ক্রস গুণফল (Cross Product): $\\vec{a} \\times \\vec{b} = |\\vec{a}| |\\vec{b}| \\sin \\theta \\hat{n}$
+*   দুটি ভেক্টর লম্ব হওয়ার শর্ত: $\\vec{a} \\cdot \\vec{b} = 0$
+*   দুটি ভেক্টর সমান্তরাল হওয়ার শর্ত: $\\vec{a} \\times \\vec{b} = \\vec{0}$
+
+### ২. 3D জ্যামিতি (3D Geometry)
+*   দুটি বিন্দুর দূরত্ব: $d = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}$
+*   দিক কোসাইন (Direction Cosines): $l^2 + m^2 + n^2 = 1$
+*   সমতলের সমীকরণ: $ax + by + cz + d = 0$
+`;
+
+const probabilityBengaliContent = `
+## সম্ভাবনা ও পরিসংখ্যান (Probability & Statistics) - One Shot for WBJEE
+
+### ১. সম্ভাবনা (Probability)
+*   $P(A) = \\frac{n(A)}{n(S)}$
+*   $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$
+*   শর্তাধীন সম্ভাবনা (Conditional Probability): $P(A|B) = \\frac{P(A \\cap B)}{P(B)}$
+*   স্বাধীন ঘটনা (Independent Events): $P(A \\cap B) = P(A)P(B)$
+
+### ২. পরিসংখ্যান (Statistics)
+*   গড় (Mean): $\\bar{x} = \\frac{\\sum x_i}{n}$
+*   ভেদমান (Variance): $\\sigma^2 = \\frac{\\sum (x_i - \\bar{x})^2}{n}$
+*   সম্যক বিচ্যুতি (Standard Deviation): $\\sigma = \\sqrt{Variance}$
+`;
+
+const matricesBengaliContent = `
+## ম্যাট্রিক্স ও নির্ণায়ক (Matrices & Determinants) - One Shot for WBJEE
+
+### ১. ম্যাট্রিক্স (Matrices)
+*   ম্যাট্রিক্সের গুণন: $AB \\neq BA$ (সাধারণত)
+*   পরিবর্ত ম্যাট্রিক্স (Transpose): $(AB)^T = B^T A^T$
+*   বিপরীত ম্যাট্রিক্স (Inverse): $A^{-1} = \\frac{1}{|A|} adj(A)$
+
+### ২. নির্ণায়ক (Determinants)
+*   $|AB| = |A||B|$
+*   $|A^T| = |A|$
+*   ক্রেমারের নিয়ম (Cramer's Rule): $x = \\frac{D_x}{D}, y = \\frac{D_y}{D}, z = \\frac{D_z}{D}$
+`;
+
+const permutationsBengaliContent = `
+## বিন্যাস ও সমবায় (Permutations & Combinations) - One Shot for WBJEE
+
+### ১. বিন্যাস (Permutations)
+*   $n$ সংখ্যক ভিন্ন বস্তু থেকে $r$ সংখ্যক বস্তু নিয়ে বিন্যাস সংখ্যা: $^nP_r = \\frac{n!}{(n-r)!}$
+*   সবগুলো বস্তু নিয়ে বিন্যাস সংখ্যা: $n!$
+*   বৃত্তাকার বিন্যাস: $(n-1)!$
+
+### ২. সমবায় (Combinations)
+*   $n$ সংখ্যক ভিন্ন বস্তু থেকে $r$ সংখ্যক বস্তু নিয়ে সমবায় সংখ্যা: $^nC_r = \\frac{n!}{r!(n-r)!}$
+*   $^nC_r = ^nC_{n-r}$
+*   $^nC_r + ^nC_{r-1} = ^{n+1}C_r$
+`;
+
+const integrationBengaliContent = `
+## অন্তরকলন ও সমাকলন (Differentiation & Integration) - One Shot for WBJEE
+
+### ১. অন্তরকলন (Differentiation)
+*   $\\frac{d}{dx}(x^n) = nx^{n-1}$
+*   $\\frac{d}{dx}(e^x) = e^x$
+*   $\\frac{d}{dx}(\\ln x) = \\frac{1}{x}$
+*   $\\frac{d}{dx}(\\sin x) = \\cos x$
+
+### ২. সমাকলন (Integration)
+*   $\\int x^n dx = \\frac{x^{n+1}}{n+1} + C$
+*   $\\int e^x dx = e^x + C$
+*   $\\int \\frac{1}{x} dx = \\ln|x| + C$
+*   $\\int \\sin x dx = -\\cos x + C$
+
+### ৩. নির্দিষ্ট সমাকলন (Definite Integration)
+*   $\\int_a^b f(x) dx = F(b) - F(a)$
+*   $\\int_0^a f(x) dx = \\int_0^a f(a-x) dx$
+`;
+
 const materials: Material[] = [
   {
     id: '1',
@@ -325,6 +489,116 @@ const materials: Material[] = [
     date: '2025-06-14',
     content: complexNumbersBengaliContent,
   },
+
+  {
+    id: 'wbjee_alg',
+    title: 'বীজগণিত (Algebra) One Shot',
+    description: 'Complete WBJEE revision material for Algebra including Quadratic Equations, AP & GP, and Logarithms.',
+    type: 'guide',
+    category: 'WBJEE',
+    topic: 'Algebra',
+    isPremium: false,
+    readTime: '15 min read',
+    date: '2025-06-15',
+    content: algebraBengaliContent,
+  },
+  {
+    id: 'wbjee_trig',
+    title: 'ত্রিকোণমিতি (Trigonometry) One Shot',
+    description: 'Complete WBJEE revision material for Trigonometry including Compound Angles and Equations.',
+    type: 'guide',
+    category: 'WBJEE',
+    topic: 'Trigonometry',
+    isPremium: false,
+    readTime: '12 min read',
+    date: '2025-06-16',
+    content: trigonometryBengaliContent,
+  },
+  {
+    id: 'wbjee_coord',
+    title: 'স্থানাঙ্ক জ্যামিতি (Coordinate Geometry) One Shot',
+    description: 'Complete WBJEE revision material for Coordinate Geometry including Straight Lines and Circles.',
+    type: 'guide',
+    category: 'WBJEE',
+    topic: 'Coordinate Geometry',
+    isPremium: false,
+    readTime: '18 min read',
+    date: '2025-06-17',
+    content: coordinateGeometryBengaliContent,
+  },
+  {
+    id: 'wbjee_calc',
+    title: 'ক্যালকুলাস (Calculus) One Shot',
+    description: 'Complete WBJEE revision material for Calculus including Limits, Continuity, and Differentiability.',
+    type: 'guide',
+    category: 'WBJEE',
+    topic: 'Calculus',
+    isPremium: false,
+    readTime: '14 min read',
+    date: '2025-06-18',
+    content: calculusBengaliContent,
+  },
+  {
+    id: 'wbjee_vec3d',
+    title: 'ভেক্টর ও 3D জ্যামিতি (Vectors & 3D Geometry) One Shot',
+    description: 'Complete WBJEE revision material for Vectors and 3D Geometry.',
+    type: 'guide',
+    category: 'WBJEE',
+    topic: 'Vectors & 3D Geometry',
+    isPremium: false,
+    readTime: '10 min read',
+    date: '2025-06-19',
+    content: vectors3DBengaliContent,
+  },
+  {
+    id: 'wbjee_prob',
+    title: 'সম্ভাবনা ও পরিসংখ্যান (Probability & Statistics) One Shot',
+    description: 'Complete WBJEE revision material for Probability and Statistics.',
+    type: 'guide',
+    category: 'WBJEE',
+    topic: 'Probability & Statistics',
+    isPremium: false,
+    readTime: '12 min read',
+    date: '2025-06-20',
+    content: probabilityBengaliContent,
+  },
+  {
+    id: 'wbjee_matdet',
+    title: 'ম্যাট্রিক্স ও নির্ণায়ক (Matrices & Determinants) One Shot',
+    description: 'Complete WBJEE revision material for Matrices and Determinants.',
+    type: 'guide',
+    category: 'WBJEE',
+    topic: 'Matrices & Determinants',
+    isPremium: false,
+    readTime: '10 min read',
+    date: '2025-06-21',
+    content: matricesBengaliContent,
+  },
+  {
+    id: 'wbjee_pnc',
+    title: 'বিন্যাস ও সমবায় (Permutations & Combinations) One Shot',
+    description: 'Complete WBJEE revision material for Permutations and Combinations.',
+    type: 'guide',
+    category: 'WBJEE',
+    topic: 'Permutations & Combinations',
+    isPremium: false,
+    readTime: '10 min read',
+    date: '2025-06-22',
+    content: permutationsBengaliContent,
+  },
+  {
+    id: 'wbjee_diffint',
+    title: 'অন্তরকলন ও সমাকলন (Differentiation & Integration) One Shot',
+    description: 'Complete WBJEE revision material for Differentiation and Integration.',
+    type: 'guide',
+    category: 'WBJEE',
+    topic: 'Differentiation & Integration',
+    isPremium: false,
+    readTime: '15 min read',
+    date: '2025-06-23',
+    content: integrationBengaliContent,
+  }
+
 ];
 
 // ── Helpers ─────────────────────────────────────────────────────────────────────
@@ -779,7 +1053,8 @@ const FolderAccordion = ({ category, topics, onSelect }: { category: string, top
   );
 }
 
-export const StudyMaterials: React.FC<StudyMaterialsProps> = ({ onBack }) => {
+export const StudyMaterials: React.FC = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [activeTopic, setActiveTopic] = useState<string | null>(null);
@@ -864,7 +1139,7 @@ export const StudyMaterials: React.FC<StudyMaterialsProps> = ({ onBack }) => {
           className="mb-8"
         >
           <button
-            onClick={onBack}
+            onClick={() => navigate('/')}
             className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-6 group"
           >
             <ArrowLeft

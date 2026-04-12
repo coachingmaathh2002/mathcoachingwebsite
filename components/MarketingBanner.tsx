@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, ChevronLeft, CheckCircle2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const banners = [
   {
     id: 5,
-    customNode: (onNavigate?: (view: 'home' | 'tests' | 'study-materials') => void) => (
+    customNode: (navigate: ReturnType<typeof useNavigate>) => (
       <div className="relative w-full h-full flex flex-col md:flex-row items-center justify-between px-4 md:px-12 py-6 overflow-hidden bg-[#0a0f2c]">
         {/* Background math pattern overlay */}
         <div 
@@ -29,7 +30,7 @@ const banners = [
         {/* Center: Main Content */}
         <div className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left flex-1 md:ml-8">
           <h1 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 drop-shadow-lg mb-2" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.2)' }}>
-            WBJEE অংক মক টেস্ট
+            WBJEE MATH মক টেস্ট
           </h1>
           <h2 className="text-2xl md:text-4xl font-bold text-white mb-4 drop-shadow-md flex items-center gap-2">
             <span className="text-yellow-400">🏆</span> ধুরন্ধর সিরিজ ব্যাচ <span className="text-yellow-400">🏆</span>
@@ -43,7 +44,7 @@ const banners = [
           </div>
 
           <button 
-            onClick={() => onNavigate && onNavigate('tests')}
+            onClick={() => navigate('/tests')}
             className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-8 rounded-full text-lg shadow-[0_0_15px_rgba(37,99,235,0.5)] transition-all transform hover:scale-105 border-2 border-blue-400"
           >
             আজই যুক্ত হন!
@@ -64,7 +65,7 @@ const banners = [
   },
   {
     id: 1,
-    customNode: (onNavigate?: (view: 'home' | 'tests' | 'study-materials') => void) => (
+    customNode: (navigate: ReturnType<typeof useNavigate>) => (
       <div className="relative w-full h-full flex flex-col md:flex-row items-center justify-between px-4 md:px-12 py-6 overflow-hidden bg-[#1e1b4b]">
         {/* Background pattern overlay */}
         <div 
@@ -103,7 +104,7 @@ const banners = [
           </div>
 
           <button 
-            onClick={() => onNavigate && onNavigate('tests')}
+            onClick={() => navigate('/tests')}
             className="bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 px-8 rounded-full text-lg shadow-[0_0_15px_rgba(219,39,119,0.5)] transition-all transform hover:scale-105 border-2 border-pink-400"
           >
             ব্যাচগুলি দেখুন!
@@ -124,7 +125,7 @@ const banners = [
   },
   {
     id: 2,
-    customNode: (onNavigate?: (view: 'home' | 'tests' | 'study-materials') => void) => (
+    customNode: (navigate: ReturnType<typeof useNavigate>) => (
       <div className="relative w-full h-full flex flex-col md:flex-row items-center justify-between px-4 md:px-12 py-6 overflow-hidden bg-[#064e3b]">
         {/* Background pattern overlay */}
         <div 
@@ -163,7 +164,7 @@ const banners = [
           </div>
 
           <button 
-            onClick={() => onNavigate && onNavigate('tests')}
+            onClick={() => navigate('/tests')}
             className="bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-8 rounded-full text-lg shadow-[0_0_15px_rgba(20,184,166,0.5)] transition-all transform hover:scale-105 border-2 border-teal-400"
           >
             এখনই যোগ দাও!
@@ -184,7 +185,7 @@ const banners = [
   },
   {
     id: 3,
-    customNode: (onNavigate?: (view: 'home' | 'tests' | 'study-materials') => void) => (
+    customNode: (navigate: ReturnType<typeof useNavigate>) => (
       <div className="relative w-full h-full flex flex-col md:flex-row items-center justify-between px-4 md:px-12 py-6 overflow-hidden bg-[#450a0a]">
         {/* Background pattern overlay */}
         <div 
@@ -223,7 +224,7 @@ const banners = [
           </div>
 
           <button 
-            onClick={() => onNavigate && onNavigate('tests')}
+            onClick={() => navigate('/tests')}
             className="bg-orange-600 hover:bg-orange-500 text-white font-bold py-2 px-8 rounded-full text-lg shadow-[0_0_15px_rgba(234,88,12,0.5)] transition-all transform hover:scale-105 border-2 border-orange-400"
           >
             অফারটি লুফে নাও
@@ -244,12 +245,11 @@ const banners = [
   }
 ];
 
-interface MarketingBannerProps {
-  onNavigate?: (view: 'home' | 'tests' | 'study-materials') => void;
-}
-
-export const MarketingBanner: React.FC<MarketingBannerProps> = ({ onNavigate }) => {
+export const MarketingBanner: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const navigate = useNavigate();
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -261,10 +261,40 @@ export const MarketingBanner: React.FC<MarketingBannerProps> = ({ onNavigate }) 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % banners.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    
+    const distance = touchStartX.current - touchEndX.current;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
   return (
     <div className="w-full bg-transparent pt-[90px] md:pt-[100px] pb-4">
       {/* Full width container, no side margins on desktop */}
-      <div className="relative w-full overflow-hidden shadow-md">
+      <div 
+        className="relative w-full overflow-hidden shadow-md touch-pan-y"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <div 
           className="flex transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -274,7 +304,7 @@ export const MarketingBanner: React.FC<MarketingBannerProps> = ({ onNavigate }) 
               key={banner.id}
               className={`w-full flex-shrink-0 ${banner.bgColor} relative overflow-hidden flex items-center justify-center min-h-[160px] md:min-h-[220px]`}
             >
-              {banner.customNode(onNavigate)}
+              {banner.customNode(navigate)}
             </div>
           ))}
         </div>

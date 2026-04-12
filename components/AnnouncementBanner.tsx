@@ -1,15 +1,16 @@
 import React from 'react';
 import { CONTACT_INFO } from '../constants';
 import { Sparkles, ArrowRight } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-interface AnnouncementBannerProps {
-  onNavigate?: (view: 'home' | 'tests' | 'study-materials') => void;
-}
+export const AnnouncementBanner: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-export const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({ onNavigate }) => {
   const handleScrollTo = (id: string) => {
-    onNavigate?.('home');
-    setTimeout(() => {
+    if (location.pathname !== '/') {
+      navigate('/#' + id);
+    } else {
       const element = document.getElementById(id);
       if (element) {
         window.scrollTo({
@@ -17,14 +18,14 @@ export const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({ onNaviga
           behavior: 'smooth'
         });
       }
-    }, 100);
+    }
   };
 
   const announcements = [
     { 
       text: "Free Mock Test Available Now!", 
       ctaText: "Take Test", 
-      action: () => onNavigate?.('tests'),
+      action: () => navigate('/tests'),
       isNew: true
     },
     { 
@@ -43,7 +44,7 @@ export const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({ onNaviga
     { 
       text: "Comprehensive Study Materials Provided", 
       ctaText: "View Materials", 
-      action: () => onNavigate?.('study-materials') 
+      action: () => navigate('/study-materials') 
     },
     { 
       text: "100% Success Rate in Board Exams" 

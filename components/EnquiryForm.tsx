@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Send, CheckCircle, Loader2, Phone, Mail, MapPin } from 'lucide-react';
 import { CONTACT_INFO } from '../constants';
+import toast from 'react-hot-toast';
 
 export const EnquiryForm: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -12,7 +13,21 @@ export const EnquiryForm: React.FC = () => {
     // Simulate API Call
     setTimeout(() => {
       setStatus('success');
+      toast.success('Message Sent Successfully! We will contact you soon.', {
+        style: {
+          background: '#1e1b4b',
+          color: '#fff',
+          border: '1px solid #db2777',
+        },
+        iconTheme: {
+          primary: '#db2777',
+          secondary: '#fff',
+        },
+      });
       e.currentTarget.reset();
+      
+      // Reset status after a few seconds
+      setTimeout(() => setStatus('idle'), 3000);
     }, 1500);
   };
 

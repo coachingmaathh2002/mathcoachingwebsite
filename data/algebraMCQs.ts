@@ -1,4 +1,9 @@
 import { MCQ } from '../components/WBJEEAssignments';
+import { quadExtraMCQs } from './quadMCQs';
+import { complexExtraMCQs } from './complexMCQs';
+import { matricesExtraMCQs } from './matricesMCQs';
+import { setsExtraMCQs } from './setsMCQs';
+import { binomialExtraMCQs } from './binomialMCQs';
 
 export const quadraticEquationsMCQs: MCQ[] = [
   {
@@ -35,7 +40,8 @@ export const quadraticEquationsMCQs: MCQ[] = [
     options: ['$a = c^3 - 3cd$', '$a = c^3 + 3cd$', '$b = d^3$', 'উভয় A এবং C'],
     correctAnswer: 3,
     explanation: 'ধরি দ্বিতীয় সমীকরণের মূল $\\alpha, \\beta$। তাহলে $\\alpha+\\beta = -c, \\alpha\\beta = d$। প্রথম সমীকরণের মূল $\\alpha^3, \\beta^3$। $\\alpha^3+\\beta^3 = (\\alpha+\\beta)^3 - 3\\alpha\\beta(\\alpha+\\beta) = -c^3 + 3cd = -a \\implies a = c^3 - 3cd$। এবং $\\alpha^3\\beta^3 = d^3 = b$।'
-  }
+  },
+  ...quadExtraMCQs
 ];
 
 export const apGpMCQs: MCQ[] = [
@@ -149,7 +155,8 @@ export const complexNumbersMCQs: MCQ[] = [
     options: ['$\\pi/6$', '$\\pi/3$', '$\\pi/2$', '$\\pi/4$'],
     correctAnswer: 1,
     explanation: '$|z_1 + z_2|^2 = |z_1|^2 + |z_2|^2 + 2|z_1||z_2|\\cos(\\theta_1 - \\theta_2)$। $3 = 1 + 1 + 2(1)(1)\\cos(\\Delta\\theta) \\implies 2\\cos(\\Delta\\theta) = 1 \\implies \\cos(\\Delta\\theta) = 1/2 \\implies \\Delta\\theta = \\pi/3$।'
-  }
+  },
+  ...complexExtraMCQs
 ];
 
 export const permutationsMCQs: MCQ[] = [
@@ -225,7 +232,8 @@ export const binomialMCQs: MCQ[] = [
     options: ['10', '100', '1000', 'উভয় A এবং B'],
     correctAnswer: 3,
     explanation: '$11^{10} = (10+1)^{10} = 1 + ^{10}C_1(10) + ^{10}C_2(10^2) + \\dots$। সুতরাং $11^{10} - 1 = 100 + 4500 + \\dots$ যা 100 দ্বারা বিভাজ্য। 100 দ্বারা বিভাজ্য মানে 10 দ্বারাও বিভাজ্য।'
-  }
+  },
+  ...binomialExtraMCQs
 ];
 
 export const matricesMCQs: MCQ[] = [
@@ -263,7 +271,8 @@ export const matricesMCQs: MCQ[] = [
     options: ['$A$', '$A^T$', '$I$', '$-A$'],
     correctAnswer: 1,
     explanation: 'লম্ব ম্যাট্রিক্সের সংজ্ঞা অনুযায়ী, $A A^T = I$। উভয় পাশে $A^{-1}$ দিয়ে গুণ করলে $A^T = A^{-1}$।'
-  }
+  },
+  ...matricesExtraMCQs
 ];
 
 export const setsMCQs: MCQ[] = [
@@ -301,5 +310,6 @@ export const setsMCQs: MCQ[] = [
     options: ['স্বসম (Reflexive) ও প্রতিসম (Symmetric)', 'প্রতিসম ও সংক্রমণ (Transitive)', 'স্বসম, প্রতিসম ও সংক্রমণ', 'স্বসম ও সংক্রমণ'],
     correctAnswer: 2,
     explanation: 'সমতুল্যতা সম্বন্ধের সংজ্ঞা অনুযায়ী, সম্বন্ধটিকে অবশ্যই স্বসম (Reflexive), প্রতিসম (Symmetric) এবং সংক্রমণ (Transitive) হতে হবে।'
-  }
+  },
+  ...setsExtraMCQs
 ];

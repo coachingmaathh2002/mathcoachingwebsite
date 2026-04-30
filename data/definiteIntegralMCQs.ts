@@ -212,3 +212,102 @@ export const definiteIntegralMCQs: MCQ[] = [
     explanation: "King's Rule: $I = \\int_0^{\\pi/4} \\ln(1+\\tan(\\pi/4-x)) dx = \\int_0^{\\pi/4} \\ln(1+\\frac{1-\\tan x}{1+\\tan x}) dx = \\int_0^{\\pi/4} \\ln(\\frac{2}{1+\\tan x}) dx = \\int_0^{\\pi/4} \\ln 2 dx - I$। $2I = \\frac{\\pi}{4} \\ln 2 \\implies I = \\frac{\\pi}{8} \\ln 2$।"
   }
 ];
+
+export const definiteIntegralMCQsMock2: MCQ[] = Array.from({ length: 30 }).map((_, i) => {
+  const types = 5;
+  const t = i % types;
+  const n = i + 1;
+  if (t === 0) {
+    return {
+      id: `calc-6-m2-${n}`,
+      question: `$\\int_0^{\\pi/2} \\frac{\\sin^{${n + 2}} x}{\\sin^{${n + 2}} x + \\cos^{${n + 2}} x} dx$ এর মান কত?`,
+      options: ['$\\frac{\\pi}{4}$', '$\\frac{\\pi}{2}$', '$\\pi$', '0'],
+      correctAnswer: 0,
+      explanation: `King's rule $\\int_0^a f(x) dx = \\int_0^a f(a-x) dx$ ব্যবহার করে যোগ করলে $2I = \\int_0^{\\pi/2} 1 dx = \\frac{\\pi}{2} \\implies I = \\frac{\\pi}{4}$।`
+    };
+  } else if (t === 1) {
+    const lim = n % 10 + 1;
+    return {
+      id: `calc-6-m2-${n}`,
+      question: `$\\int_{-${lim}}^{${lim}} \\frac{x^{${2*n+1}}}{1+x^{${2*(n%3)+2}}} dx$ এর মান কত?`,
+      options: ['0', `${lim}`, `${lim*2}`, '1'],
+      correctAnswer: 0,
+      explanation: `অযুগ্ম (Odd) অপেক্ষকের জন্য $\\int_{-a}^a f(x) dx = 0$ হয়। এখানে $f(-x) = -f(x)$।`
+    };
+  } else if (t === 2) {
+    const k = (n % 5) + 1;
+    return {
+      id: `calc-6-m2-${n}`,
+      question: `যদি $k=${k}$ হয়, তবে $\\int_0^\\pi \\frac{x \\sin x}{1+\\cos^2 x} dx$ এর মান কত?`,
+      options: ['$\\frac{\\pi^2}{4}$', '$\\frac{\\pi^2}{2}$', '$\\frac{\\pi}{4}$', '$\\pi$'],
+      correctAnswer: 0,
+      explanation: `$x = \\pi - x$ বসালে, $2I = \\pi \\int_0^\\pi \\frac{\\sin x}{1+\\cos^2 x} dx$। এরপর $\\cos x = z$ ধরলে $I = \\frac{\\pi^2}{4}$।`
+    };
+  } else if (t === 3) {
+    const factor = n % 3 + 1;
+    return {
+      id: `calc-6-m2-${n}`,
+      question: `$\\lim_{k \\to \\infty} \\sum_{r=1}^k \\frac{1}{k+${factor}r}$ এর মান কত?`,
+      options: [`$\\frac{1}{${factor}} \\ln(1+${factor})$`, `$\\ln(1+${factor})$`, `$\\frac{1}{${factor}} \\ln(${factor})$`, `0`],
+      correctAnswer: 0,
+      explanation: `সমাকলনের সাহায্যে লিমিট: $\\int_0^1 \\frac{1}{1+${factor}x} dx = \\frac{1}{${factor}} \\ln(1+${factor})$।`
+    };
+  } else {
+    const power = n % 4 + 2;
+    return {
+      id: `calc-6-m2-${n}`,
+      question: `$\\int_0^1 x(1-x)^{${power}} dx$ এর মান কত?`,
+      options: [`$\\frac{1}{${(power+1)*(power+2)}}$`, `$\\frac{1}{${power+1}}$`, `$\\frac{1}{${power+2}}$`, `0`],
+      correctAnswer: 0,
+      explanation: `$x = 1-t$ ধরলে, $\\int_0^1 (1-t) t^{${power}} dt = \\frac{1}{${power+1}} - \\frac{1}{${power+2}} = \\frac{1}{${(power+1)*(power+2)}}$।`
+    };
+  }
+});
+
+export const definiteIntegralMCQsMock3: MCQ[] = Array.from({ length: 30 }).map((_, i) => {
+  const types = 5;
+  const t = i % types;
+  const n = i + 1;
+  const k = i % 4 + 2;
+  if (t === 0) {
+    return {
+      id: `calc-6-m3-${n}`,
+      question: `$\\int_{0}^{${n}} \\frac{f(x)}{f(x)+f(${n}-x)} dx$ এর মান নিচের কোনটি?`,
+      options: [`${n/2}`, `${n}`, `0`, `${n/4}`],
+      correctAnswer: 0,
+      explanation: `King's Rule প্রয়োগ করলে $2I = \\int_0^{${n}} 1 dx = ${n} \\implies I = ${n/2}$।`
+    };
+  } else if (t === 1) {
+    return {
+      id: `calc-6-m3-${n}`,
+      question: `$\\int_{-\\pi/2}^{\\pi/2} \\sin^{${k*2-1}} x \\cos^2 x dx$ এর মান কত?`,
+      options: ['0', '$\\pi/4$', '$\\pi/2$', '1'],
+      correctAnswer: 0,
+      explanation: `অপেক্ষকটি অযুগ্ম (Odd Function) কারণ $\\sin(-x) = -\\sin x$ এবং পাওয়ার বিজোড়। তাই সমাকলনের মান 0।`
+    };
+  } else if (t === 2) {
+    return {
+      id: `calc-6-m3-${n}`,
+      question: `$\\int_0^{\\pi/2} \\ln(\\tan x) dx$ এর মান কত? (Set ${n})`,
+      options: ['0', '$\\pi/2$', '$\\pi/4$', '$\\pi \\ln 2$'],
+      correctAnswer: 0,
+      explanation: `$I = \\int_0^{\\pi/2} \\ln(\\tan x) dx = \\int_0^{\\pi/2} \\ln(\\cot x) dx = -I \\implies 2I = 0 \\implies I = 0$।`
+    };
+  } else if (t === 3) {
+    return {
+      id: `calc-6-m3-${n}`,
+      question: `$\\int_{-${n}}^{${n}} (e^{x^3} - e^{-x^3}) dx$ এর মান কত?`,
+      options: ['0', '1', '$e - \\frac{1}{e}$', '2'],
+      correctAnswer: 0,
+      explanation: `ধরি $f(x) = e^{x^3} - e^{-x^3}$। তাহলে $f(-x) = e^{-x^3} - e^{x^3} = -f(x)$। অযুগ্ম অপেক্ষক হওয়ায় উত্তর 0।`
+    };
+  } else {
+    return {
+      id: `calc-6-m3-${n}`,
+      question: `$\\int_0^1 \\frac{e^{${k}x}}{1+e^{${2*k}x}} dx$ এর মান কত?`,
+      options: [`$\\frac{1}{${k}}(\\tan^{-1}(e^{${k}}) - \\frac{\\pi}{4})$`, `$\\frac{\\pi}{4}$`, `$\\tan^{-1}(e^{${k}})$`, `0`],
+      correctAnswer: 0,
+      explanation: `$e^{${k}x} = z \\implies ${k}e^{${k}x} dx = dz$। সমাকলনটি হবে $\\frac{1}{${k}}\\int_1^{e^{${k}}} \\frac{dz}{1+z^2} = \\frac{1}{${k}}(\\tan^{-1}(e^{${k}}) - \\pi/4)$।`
+    };
+  }
+});

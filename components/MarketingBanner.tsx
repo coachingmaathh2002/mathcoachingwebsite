@@ -10,8 +10,8 @@ const banners = Array.from({ length: 6 }).map((_, i) => ({
       onClick={() => navigate('/assignments')}
     >
       <img 
-        src={`/mock-test-slide0${i + 1}.png`} 
-        alt={`Mock Test Slide 0${i + 1}`} 
+        src={`/mock-test-banner0${i + 1}.png`} 
+        alt={`Mock Test Banner 0${i + 1}`} 
         className="w-full h-full object-contain md:object-cover transition-transform duration-500 group-hover:scale-[1.02]" 
       />
     </div>

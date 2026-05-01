@@ -1,8 +1,18 @@
+/// <reference types="vite/client" />
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const banners = Array.from({ length: 6 }).map((_, i) => ({
+import banner1 from '../assets/mock-test-banner01.png';
+import banner2 from '../assets/mock-test-banner02.png';
+import banner3 from '../assets/mock-test-banner03.png';
+import banner4 from '../assets/mock-test-banner04.png';
+import banner5 from '../assets/mock-test-banner05.png';
+import banner6 from '../assets/mock-test-banner06.png';
+
+const bannerImages = [banner1, banner2, banner3, banner4, banner5, banner6];
+
+const banners = bannerImages.map((src, i) => ({
   id: i + 1,
   customNode: (navigate: ReturnType<typeof useNavigate>) => (
     <div 
@@ -10,7 +20,7 @@ const banners = Array.from({ length: 6 }).map((_, i) => ({
       onClick={() => navigate('/assignments')}
     >
       <img 
-        src={`/mock-test-banner0${i + 1}.png`} 
+        src={src} 
         alt={`Mock Test Banner 0${i + 1}`} 
         className="w-full h-full object-contain md:object-cover transition-transform duration-500 group-hover:scale-[1.02]" 
       />

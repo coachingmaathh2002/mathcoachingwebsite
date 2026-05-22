@@ -1,33 +1,15 @@
-/// <reference types="vite/client" />
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-import banner1 from '../assets/mock-test-banner01.png';
-import banner2 from '../assets/mock-test-banner02.png';
-import banner3 from '../assets/mock-test-banner03.png';
-import banner4 from '../assets/mock-test-banner04.png';
-import banner5 from '../assets/mock-test-banner05.png';
-import banner6 from '../assets/mock-test-banner06.png';
-
-const bannerImages = [banner1, banner2, banner3, banner4, banner5, banner6];
-
-const banners = bannerImages.map((src, i) => ({
-  id: i + 1,
-  customNode: (navigate: ReturnType<typeof useNavigate>) => (
-    <div 
-      className="relative w-full h-full flex items-center justify-center bg-[#02051e] cursor-pointer overflow-hidden group"
-      onClick={() => navigate('/assignments')}
-    >
-      <img 
-        src={src} 
-        alt={`Mock Test Banner 0${i + 1}`} 
-        className="w-full h-full object-contain md:object-cover transition-transform duration-500 group-hover:scale-[1.02]" 
-      />
-    </div>
-  ),
-  bgColor: "bg-[#02051e]",
-}));
+const bannerImages = [
+  '/mock-test-banner01.png',
+  '/mock-test-banner02.png',
+  '/mock-test-banner03.png',
+  '/mock-test-banner04.png',
+  '/mock-test-banner05.png',
+  '/mock-test-banner06.png',
+];
 
 export const MarketingBanner: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -37,13 +19,13 @@ export const MarketingBanner: React.FC = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % banners.length);
+      setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
     }, 5000);
     return () => clearInterval(timer);
   }, []);
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % banners.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + bannerImages.length) % bannerImages.length);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.targetTouches[0].clientX;
@@ -57,24 +39,17 @@ export const MarketingBanner: React.FC = () => {
     if (!touchStartX.current || !touchEndX.current) return;
     
     const distance = touchStartX.current - touchEndX.current;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-
-    if (isLeftSwipe) {
-      nextSlide();
-    } else if (isRightSwipe) {
-      prevSlide();
-    }
+    if (distance > 50) nextSlide();
+    else if (distance < -50) prevSlide();
 
     touchStartX.current = null;
     touchEndX.current = null;
   };
 
   return (
-    <div className="w-full bg-transparent pt-[90px] md:pt-[100px] pb-4">
-      {/* Full width container, no side margins on desktop */}
+    <div className="w-full pt-[80px] md:pt-[90px] pb-4 z-40 relative">
       <div 
-        className="relative w-full overflow-hidden shadow-md touch-pan-y"
+        className="relative w-full max-w-full overflow-hidden shadow-md mx-auto touch-pan-y"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -83,39 +58,45 @@ export const MarketingBanner: React.FC = () => {
           className="flex transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
-          {banners.map((banner) => (
+          {bannerImages.map((src, index) => (
             <div 
-              key={banner.id}
-              className={`w-full flex-shrink-0 ${banner.bgColor} relative overflow-hidden flex items-center justify-center min-h-[160px] md:min-h-[220px]`}
+              key={index}
+              onClick={() => navigate('/assignments')}
+              className="w-full flex-shrink-0 relative overflow-hidden flex items-center justify-center cursor-pointer bg-[#02051e] h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px]"
             >
-              {banner.customNode(navigate)}
+              <img 
+                src={src} 
+                alt={`Banner ${index + 1}`} 
+                className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
+                onError={() => {
+                  console.error('Image failed to load:', src);
+                }}
+              />
             </div>
           ))}
         </div>
 
-        {/* Navigation Arrows */}
         <button 
           onClick={prevSlide}
-          className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-black/20 hover:bg-black/40 text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-colors z-20"
+          className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center backdrop-blur-md transition-colors z-20"
         >
           <ChevronLeft size={24} />
         </button>
         <button 
           onClick={nextSlide}
-          className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-black/20 hover:bg-black/40 text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-colors z-20"
+          className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center backdrop-blur-md transition-colors z-20"
         >
           <ChevronRight size={24} />
         </button>
       </div>
 
-      {/* Dots Container (Below the banner like in the image) */}
       <div className="w-full py-4 flex justify-center gap-3">
-        {banners.map((_, index) => (
+        {bannerImages.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`w-2.5 h-2.5 rounded-full transition-colors ${
-              currentSlide === index ? 'bg-brand-pink' : 'bg-slate-600 hover:bg-slate-500'
+            className={`w-3 h-3 rounded-full transition-all ${
+              currentSlide === index ? 'bg-brand-pink w-6' : 'bg-slate-600 hover:bg-slate-500'
             }`}
           />
         ))}
@@ -123,3 +104,4 @@ export const MarketingBanner: React.FC = () => {
     </div>
   );
 };
+

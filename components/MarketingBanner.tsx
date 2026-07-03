@@ -3,12 +3,12 @@ import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const bannerImages = [
-  '/mock-test-banner01.png',
-  '/mock-test-banner02.png',
-  '/mock-test-banner03.png',
-  '/mock-test-banner04.png',
-  '/mock-test-banner05.png',
-  '/mock-test-banner06.png',
+  '/mock-test-hero01.png',
+  '/mock-test-hero02.png',
+  '/mock-test-hero03.png',
+  '/mock-test-hero04.png',
+  '/mock-test-hero05.png',
+  '/mock-test-hero06.png',
 ];
 
 export const MarketingBanner: React.FC = () => {
@@ -68,9 +68,6 @@ export const MarketingBanner: React.FC = () => {
                 src={src} 
                 alt={`Banner ${index + 1}`} 
                 className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
-                onError={() => {
-                  console.error('Image failed to load:', src);
-                }}
               />
             </div>
           ))}

@@ -477,7 +477,7 @@ export const FreeTests: React.FC = () => {
             </div>
           </div>
 
-          {/* Marketing Banner */}
+          {/* Hero Block */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1168,7 +1168,7 @@ export const FreeTests: React.FC = () => {
               </button>
             </div>
 
-            {/* Marketing Banner in Result */}
+            {/* Hero Block in Result */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

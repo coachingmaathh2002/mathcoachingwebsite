@@ -3,7 +3,7 @@ import { CONTACT_INFO } from '../constants';
 import { Sparkles, ArrowRight } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-export const AnnouncementBanner: React.FC = () => {
+export const SiteUpdates: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -21,7 +21,7 @@ export const AnnouncementBanner: React.FC = () => {
     }
   };
 
-  const announcements = [
+  const updates = [
     { 
       text: "Free Mock Test Available Now!", 
       ctaText: "Take Test", 
@@ -56,7 +56,7 @@ export const AnnouncementBanner: React.FC = () => {
       <div className="flex whitespace-nowrap animate-marquee items-center w-max group-hover:[animation-play-state:paused]">
         {[...Array(2)].map((_, i) => (
           <div key={i} className="flex items-center">
-            {announcements.map((item, j) => (
+            {updates.map((item, j) => (
               <React.Fragment key={j}>
                 <span className="mx-6 text-sm font-bold tracking-wide flex items-center gap-3">
                   {j % 2 === 0 && !item.isNew && <Sparkles size={14} className="text-brand-light" />}

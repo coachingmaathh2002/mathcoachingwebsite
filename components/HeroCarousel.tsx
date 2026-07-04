@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-import slide01 from '../src/assets/slide-image-01.webp';
-import slide02 from '../src/assets/slide-image-02.webp';
-import slide03 from '../src/assets/slide-image-03.webp';
-import slide04 from '../src/assets/slide-image-04.webp';
-import slide05 from '../src/assets/slide-image-05.webp';
-import slide06 from '../src/assets/slide-image-06.webp';
+import slide01 from '../src/assets/hero-showcase-01.webp';
+import slide02 from '../src/assets/hero-showcase-02.webp';
+import slide03 from '../src/assets/hero-showcase-03.webp';
+import slide04 from '../src/assets/hero-showcase-04.webp';
+import slide05 from '../src/assets/hero-showcase-05.webp';
+import slide06 from '../src/assets/hero-showcase-06.webp';
 
 const carouselImages = [
   slide01,

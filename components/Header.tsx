@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { AnnouncementBanner } from './AnnouncementBanner';
+import { SiteUpdates } from './SiteUpdates';
 
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -59,7 +59,7 @@ export const Header: React.FC = () => {
     <header 
       className="fixed top-0 left-0 right-0 z-50 flex flex-col"
     >
-      <AnnouncementBanner />
+      <SiteUpdates />
       <div className={`transition-all duration-300 w-full border-b border-white/10 ${
         scrolled ? 'bg-dark-900/95 backdrop-blur-xl py-3 shadow-lg' : 'bg-dark-900/95 backdrop-blur-xl py-4'
       }`}>

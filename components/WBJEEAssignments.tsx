@@ -282,7 +282,7 @@ export const WBJEEAssignments: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 pt-24 pb-12">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 pt-36 pb-12">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}

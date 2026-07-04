@@ -405,7 +405,7 @@ export const FreeTests: React.FC = () => {
   }));
 
   return (
-    <div className="min-h-screen bg-dark-950 pt-24 pb-12 px-4 sm:px-6 lg:px-8 font-body text-slate-100">
+    <div className="min-h-screen bg-dark-950 pt-36 pb-12 px-4 sm:px-6 lg:px-8 font-body text-slate-100">
       
       {/* Header for Test Section */}
       <div className="max-w-7xl mx-auto mb-8 flex items-center justify-between">

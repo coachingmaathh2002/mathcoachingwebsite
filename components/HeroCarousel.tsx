@@ -54,7 +54,7 @@ export const HeroCarousel: React.FC = () => {
   };
 
   return (
-    <div className="w-full pt-[80px] md:pt-[90px] pb-4 z-40 relative">
+    <div className="w-full pt-[128px] md:pt-[138px] pb-4 z-40 relative">
       <div 
         className="relative w-full max-w-full overflow-hidden shadow-md mx-auto touch-pan-y"
         onTouchStart={handleTouchStart}

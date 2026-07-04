@@ -821,7 +821,7 @@ const MaterialReader: React.FC<MaterialReaderProps> = ({
   }, []);
 
   return (
-    <div className="min-h-screen bg-dark-950 pt-24 pb-20 px-4 sm:px-6 lg:px-8 print:hidden">
+    <div className="min-h-screen bg-dark-950 pt-36 pb-20 px-4 sm:px-6 lg:px-8 print:hidden">
       <ReadingProgressBar />
       <ScrollToTopButton />
 
@@ -1130,7 +1130,7 @@ export const StudyMaterials: React.FC = () => {
   const filteredCount = filteredMaterials.length;
 
   return (
-    <div className="min-h-screen bg-dark-950 pt-24 pb-20 px-4 sm:px-6 lg:px-8 print:hidden">
+    <div className="min-h-screen bg-dark-950 pt-36 pb-20 px-4 sm:px-6 lg:px-8 print:hidden">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div

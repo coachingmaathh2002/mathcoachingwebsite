@@ -2,20 +2,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-import hero01 from '../src/assets/mock-test-hero01.webp';
-import hero02 from '../src/assets/mock-test-hero02.webp';
-import hero03 from '../src/assets/mock-test-hero03.webp';
-import hero04 from '../src/assets/mock-test-hero04.webp';
-import hero05 from '../src/assets/mock-test-hero05.webp';
-import hero06 from '../src/assets/mock-test-hero06.webp';
+import slide01 from '../src/assets/slide-image-01.webp';
+import slide02 from '../src/assets/slide-image-02.webp';
+import slide03 from '../src/assets/slide-image-03.webp';
+import slide04 from '../src/assets/slide-image-04.webp';
+import slide05 from '../src/assets/slide-image-05.webp';
+import slide06 from '../src/assets/slide-image-06.webp';
 
 const carouselImages = [
-  hero01,
-  hero02,
-  hero03,
-  hero04,
-  hero05,
-  hero06,
+  slide01,
+  slide02,
+  slide03,
+  slide04,
+  slide05,
+  slide06,
 ];
 
 export const HeroCarousel: React.FC = () => {
@@ -73,7 +73,7 @@ export const HeroCarousel: React.FC = () => {
             >
               <img 
                 src={src} 
-                alt={`Hero Slide ${index + 1}`} 
+                alt={`Slide ${index + 1}`} 
                 className="w-full h-full object-contain transition-transform duration-500 hover:scale-105" 
               />
             </div>

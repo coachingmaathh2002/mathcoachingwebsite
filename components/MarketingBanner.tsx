@@ -2,13 +2,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+import banner01 from '../src/assets/mock-test-hero01.webp';
+import banner02 from '../src/assets/mock-test-hero02.webp';
+import banner03 from '../src/assets/mock-test-hero03.webp';
+import banner04 from '../src/assets/mock-test-hero04.webp';
+import banner05 from '../src/assets/mock-test-hero05.webp';
+import banner06 from '../src/assets/mock-test-hero06.webp';
+
 const bannerImages = [
-  '/mock-test-hero01.webp',
-  '/mock-test-hero02.webp',
-  '/mock-test-hero03.webp',
-  '/mock-test-hero04.webp',
-  '/mock-test-hero05.webp',
-  '/mock-test-hero06.webp',
+  banner01,
+  banner02,
+  banner03,
+  banner04,
+  banner05,
+  banner06,
 ];
 
 export const MarketingBanner: React.FC = () => {

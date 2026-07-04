@@ -2,23 +2,23 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-import banner01 from '../src/assets/mock-test-hero01.webp';
-import banner02 from '../src/assets/mock-test-hero02.webp';
-import banner03 from '../src/assets/mock-test-hero03.webp';
-import banner04 from '../src/assets/mock-test-hero04.webp';
-import banner05 from '../src/assets/mock-test-hero05.webp';
-import banner06 from '../src/assets/mock-test-hero06.webp';
+import hero01 from '../src/assets/mock-test-hero01.webp';
+import hero02 from '../src/assets/mock-test-hero02.webp';
+import hero03 from '../src/assets/mock-test-hero03.webp';
+import hero04 from '../src/assets/mock-test-hero04.webp';
+import hero05 from '../src/assets/mock-test-hero05.webp';
+import hero06 from '../src/assets/mock-test-hero06.webp';
 
-const bannerImages = [
-  banner01,
-  banner02,
-  banner03,
-  banner04,
-  banner05,
-  banner06,
+const carouselImages = [
+  hero01,
+  hero02,
+  hero03,
+  hero04,
+  hero05,
+  hero06,
 ];
 
-export const MarketingBanner: React.FC = () => {
+export const HeroCarousel: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const navigate = useNavigate();
   const touchStartX = useRef<number | null>(null);
@@ -26,13 +26,13 @@ export const MarketingBanner: React.FC = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
+      setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
     }, 5000);
     return () => clearInterval(timer);
   }, []);
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + bannerImages.length) % bannerImages.length);
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.targetTouches[0].clientX;
@@ -65,7 +65,7 @@ export const MarketingBanner: React.FC = () => {
           className="flex transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
-          {bannerImages.map((src, index) => (
+          {carouselImages.map((src, index) => (
             <div 
               key={index}
               onClick={() => navigate('/assignments')}
@@ -73,7 +73,7 @@ export const MarketingBanner: React.FC = () => {
             >
               <img 
                 src={src} 
-                alt={`Banner ${index + 1}`} 
+                alt={`Hero Slide ${index + 1}`} 
                 className="w-full h-full object-contain transition-transform duration-500 hover:scale-105" 
               />
             </div>
@@ -95,7 +95,7 @@ export const MarketingBanner: React.FC = () => {
       </div>
 
       <div className="w-full py-4 flex justify-center gap-3">
-        {bannerImages.map((_, index) => (
+        {carouselImages.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}

@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { Header } from './components/Header';
-import { MarketingBanner } from './components/MarketingBanner';
+import { HeroCarousel } from './components/HeroCarousel';
 import { Hero } from './components/Hero';
 import { CourseGrid } from './components/CourseGrid';
 import { About } from './components/About';
@@ -19,7 +19,7 @@ import { CONTACT_INFO } from './constants';
 
 const Home = () => (
   <>
-    <MarketingBanner />
+    <HeroCarousel />
     <Hero />
     <CourseGrid />
     <About />

@@ -53,7 +53,7 @@ export const SiteUpdates: React.FC = () => {
 
   return (
     <div className="bg-gradient-to-r from-brand-pink to-brand-purple text-white py-2.5 overflow-hidden relative z-50 flex border-b border-white/10 group">
-      <div className="flex whitespace-nowrap animate-marquee items-center w-max group-hover:[animation-play-state:paused]">
+      <div className="flex whitespace-nowrap animate-marquee items-center w-max shrink-0 group-hover:[animation-play-state:paused]">
         {[...Array(2)].map((_, i) => (
           <div key={i} className="flex items-center">
             {updates.map((item, j) => (

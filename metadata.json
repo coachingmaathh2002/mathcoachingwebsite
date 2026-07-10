@@ -1,5 +1,6 @@
 {
   "name": "Raj Sir Math Academy",
   "description": "A professional educational platform for Bengali math students offering courses for WB Board, CBSE, WBJEE, and UG Honours.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -2,20 +2,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-import slide01 from '../src/assets/images/math_hero_1.jpg';
-import slide02 from '../src/assets/images/math_hero_2.jpg';
-import slide03 from '../src/assets/images/math_hero_3.jpg';
-import slide04 from '../src/assets/images/math_hero_4.jpg';
-import slide05 from '../src/assets/images/math_hero_5.jpg';
-import slide06 from '../src/assets/images/math_hero_6.jpg';
+import hero01 from '../assets/hero/hero-showcase-01.webp';
+import hero02 from '../assets/hero/hero-showcase-02.webp';
+import hero03 from '../assets/hero/hero-showcase-03.webp';
+import hero04 from '../assets/hero/hero-showcase-04.webp';
+import hero05 from '../assets/hero/hero-showcase-05.webp';
+import hero06 from '../assets/hero/hero-showcase-06.webp';
 
 const carouselImages = [
-  slide01,
-  slide02,
-  slide03,
-  slide04,
-  slide05,
-  slide06,
+  hero01,
+  hero02,
+  hero03,
+  hero04,
+  hero05,
+  hero06,
 ];
 
 export const HeroCarousel: React.FC = () => {

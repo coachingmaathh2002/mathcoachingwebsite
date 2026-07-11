@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-import slide01 from '../src/assets/hero-showcase-01.webp';
-import slide02 from '../src/assets/hero-showcase-02.webp';
-import slide03 from '../src/assets/hero-showcase-03.webp';
-import slide04 from '../src/assets/hero-showcase-04.webp';
-import slide05 from '../src/assets/hero-showcase-05.webp';
-import slide06 from '../src/assets/hero-showcase-06.webp';
+import slide01 from '../src/assets/images/math_hero_1.jpg';
+import slide02 from '../src/assets/images/math_hero_2.jpg';
+import slide03 from '../src/assets/images/math_hero_3.jpg';
+import slide04 from '../src/assets/images/math_hero_4.jpg';
+import slide05 from '../src/assets/images/math_hero_5.jpg';
+import slide06 from '../src/assets/images/math_hero_6.jpg';
 
 const carouselImages = [
   slide01,
@@ -75,6 +75,7 @@ export const HeroCarousel: React.FC = () => {
                 src={src} 
                 alt={`Slide ${index + 1}`} 
                 className="w-full h-full object-contain transition-transform duration-500 hover:scale-105" 
+                referrerPolicy="no-referrer"
               />
             </div>
           ))}

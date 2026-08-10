@@ -8,26 +8,26 @@ interface CourseCardProps {
 
 export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   return (
-    <div className="group relative bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-white/10 p-[1px] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(219,39,119,0.3)] hover:border-brand-pink/50">
+    <div className="group relative bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-white/10 p-[1px] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(212,175,55,0.3)] hover:border-brand-gold/50">
       
       {/* Gradient Border Glow on Hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-brand-pink via-brand-purple to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-brand-gold via-yellow-600 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
       
       {/* Inner Content Card */}
       <div className="relative h-full bg-dark-900 rounded-2xl p-6 flex flex-col z-10 transition-colors duration-500 group-hover:bg-dark-900/95">
         
         {/* Decorative Top Gradient */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-brand-pink/10 rounded-full blur-2xl -mr-16 -mt-16 group-hover:bg-brand-pink/20 transition-colors"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/10 rounded-full blur-2xl -mr-16 -mt-16 group-hover:bg-brand-gold/20 transition-colors"></div>
 
         {/* Popular Tag */}
         {(course.id === 'wb-10' || course.id === 'wbjee') && (
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-pink/10 border border-brand-pink/30 text-brand-light text-xs font-bold mb-4 w-fit uppercase tracking-wider shadow-[0_0_10px_rgba(219,39,119,0.2)]">
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-light animate-pulse"></span>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/30 text-brand-gold text-xs font-bold mb-4 w-fit uppercase tracking-wider shadow-[0_0_10px_rgba(212,175,55,0.2)]">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse"></span>
             Trending
           </div>
         )}
         
-        <h3 className="text-xl font-bold text-white mb-3 font-display tracking-wide group-hover:text-brand-light transition-colors">
+        <h3 className="text-xl font-bold text-white mb-3 font-display tracking-wide group-hover:text-brand-gold transition-colors">
           {course.title}
         </h3>
         
@@ -36,7 +36,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
         </p>
         
         <div className="flex items-start gap-2.5 mb-6 mt-auto bg-dark-950/50 p-3 rounded-lg border border-white/5">
-          <Clock size={16} className="text-brand-pink flex-shrink-0 mt-0.5" />
+          <Clock size={16} className="text-brand-gold flex-shrink-0 mt-0.5" />
           <span className="text-xs text-slate-300 font-medium">{course.highlight}</span>
         </div>
         
@@ -47,7 +47,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
               {course.pricePlaceholder}
             </p>
           </div>
-          <button className="px-5 py-2.5 bg-white text-dark-950 text-sm font-bold rounded-lg hover:bg-brand-light hover:text-white transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(219,39,119,0.4)] hover:-translate-y-0.5">
+          <button className="px-5 py-2.5 bg-white text-dark-950 text-sm font-bold rounded-lg hover:bg-brand-gold hover:text-dark-950 transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:-translate-y-0.5">
             Enroll
           </button>
         </div>

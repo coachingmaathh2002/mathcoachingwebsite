@@ -29,16 +29,16 @@ export const FAQ: React.FC = () => {
 
   return (
     <section id="faq" className="py-24 bg-dark-900 relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-pink/20 to-transparent"></div>
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-gold/20 to-transparent"></div>
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark-800 border border-white/10 mb-6">
-            <HelpCircle size={16} className="text-brand-pink" />
-            <span className="text-slate-300 font-medium text-sm tracking-wide uppercase">Got Questions?</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark-800 border border-brand-gold/20 mb-6">
+            <HelpCircle size={16} className="text-brand-gold" />
+            <span className="text-brand-silver font-medium text-sm tracking-wide uppercase">Got Questions?</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">
-            Frequently Asked <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-pink to-brand-purple">Questions</span>
+            Frequently Asked <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-brand-glow">Questions</span>
           </h2>
         </div>
 
@@ -46,17 +46,17 @@ export const FAQ: React.FC = () => {
           {faqs.map((faq, index) => (
             <div 
               key={index}
-              className={`border border-white/5 rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-[0_10px_30px_-15px_rgba(219,39,119,0.2)] ${
-                openIndex === index ? 'bg-dark-800/50 border-brand-pink/50 shadow-[0_10px_30px_-15px_rgba(219,39,119,0.3)]' : 'bg-dark-950 hover:border-brand-pink/30 hover:-translate-y-1'
+              className={`border border-white/5 rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-[0_10px_30px_-15px_rgba(212,175,55,0.2)] ${
+                openIndex === index ? 'bg-dark-800/50 border-brand-gold/50 shadow-[0_10px_30px_-15px_rgba(212,175,55,0.3)]' : 'bg-dark-950 hover:border-brand-gold/30 hover:-translate-y-1'
               }`}
             >
               <button
                 className="w-full px-6 py-5 flex items-center justify-between text-left group"
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
               >
-                <span className="text-lg font-medium text-white group-hover:text-brand-light transition-colors duration-300">{faq.question}</span>
+                <span className="text-lg font-medium text-white group-hover:text-brand-gold transition-colors duration-300">{faq.question}</span>
                 <ChevronDown 
-                  className={`text-brand-pink transition-transform duration-500 flex-shrink-0 ${
+                  className={`text-brand-gold transition-transform duration-500 flex-shrink-0 ${
                     openIndex === index ? 'rotate-180' : 'group-hover:scale-110'
                   }`} 
                   size={20} 

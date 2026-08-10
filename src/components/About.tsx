@@ -11,10 +11,10 @@ export const About: React.FC = () => {
           
           {/* Text Content */}
           <div>
-            <span className="text-brand-light font-bold tracking-widest uppercase text-sm mb-2 block">Why Choose Us</span>
+            <span className="text-brand-gold font-bold tracking-widest uppercase text-sm mb-2 block">Why Choose Us</span>
             <h2 className="text-4xl md:text-5xl font-display text-white mb-8 leading-tight">
               We Don't Just Teach.<br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-pink to-brand-purple">We Transform.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-brand-glow">We Transform.</span>
             </h2>
             <p className="text-lg text-slate-400 mb-6 font-light leading-relaxed">
               Raj Sir Math Academy has been the gold standard for mathematics education in West Bengal for over 15 years. 
@@ -26,7 +26,7 @@ export const About: React.FC = () => {
             
             <div className="grid grid-cols-2 gap-y-8 gap-x-4">
               <div className="flex items-start gap-4 group">
-                <div className="w-12 h-12 rounded-xl bg-dark-800 border border-brand-pink/20 flex items-center justify-center flex-shrink-0 text-brand-pink group-hover:bg-brand-pink group-hover:text-white transition-all duration-300 shadow-[0_0_15px_rgba(219,39,119,0.1)]">
+                <div className="w-12 h-12 rounded-xl bg-dark-800 border border-brand-gold/20 flex items-center justify-center flex-shrink-0 text-brand-gold group-hover:bg-brand-gold group-hover:text-dark-900 transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.1)]">
                   <UserCheck size={24} />
                 </div>
                 <div>
@@ -35,7 +35,7 @@ export const About: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-start gap-4 group">
-                <div className="w-12 h-12 rounded-xl bg-dark-800 border border-brand-pink/20 flex items-center justify-center flex-shrink-0 text-brand-purple group-hover:bg-brand-purple group-hover:text-white transition-all duration-300 shadow-[0_0_15px_rgba(124,58,237,0.1)]">
+                <div className="w-12 h-12 rounded-xl bg-dark-800 border border-brand-gold/20 flex items-center justify-center flex-shrink-0 text-brand-silver group-hover:bg-brand-silver group-hover:text-dark-900 transition-all duration-300 shadow-[0_0_15px_rgba(226,232,240,0.1)]">
                   <BookOpen size={24} />
                 </div>
                 <div>
@@ -44,7 +44,7 @@ export const About: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-start gap-4 group">
-                <div className="w-12 h-12 rounded-xl bg-dark-800 border border-brand-pink/20 flex items-center justify-center flex-shrink-0 text-brand-light group-hover:bg-brand-light group-hover:text-white transition-all duration-300 shadow-[0_0_15px_rgba(244,114,182,0.1)]">
+                <div className="w-12 h-12 rounded-xl bg-dark-800 border border-brand-gold/20 flex items-center justify-center flex-shrink-0 text-brand-light group-hover:bg-brand-light group-hover:text-dark-900 transition-all duration-300 shadow-[0_0_15px_rgba(253,224,71,0.1)]">
                   <Users size={24} />
                 </div>
                 <div>
@@ -53,7 +53,7 @@ export const About: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-start gap-4 group">
-                <div className="w-12 h-12 rounded-xl bg-dark-800 border border-brand-pink/20 flex items-center justify-center flex-shrink-0 text-white group-hover:bg-white group-hover:text-dark-900 transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                <div className="w-12 h-12 rounded-xl bg-dark-800 border border-brand-gold/20 flex items-center justify-center flex-shrink-0 text-white group-hover:bg-white group-hover:text-dark-900 transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
                   <Trophy size={24} />
                 </div>
                 <div>
@@ -66,20 +66,20 @@ export const About: React.FC = () => {
           
           {/* Image/Graphic Area */}
           <div className="relative mt-10 md:mt-0">
-            {/* Pink Glow Behind */}
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-pink to-brand-purple rounded-2xl blur-2xl opacity-30 animate-pulse"></div>
+            {/* Gold Glow Behind */}
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-gold to-yellow-600 rounded-2xl blur-2xl opacity-10 animate-pulse-slow"></div>
             
-            <div className="aspect-square rounded-3xl bg-dark-950 p-2 relative z-10 border border-white/10 shadow-2xl">
+            <div className="aspect-square rounded-3xl bg-dark-950 p-2 relative z-10 border border-brand-gold/20 shadow-[0_0_40px_rgba(212,175,55,0.1)]">
               <div className="h-full w-full rounded-2xl bg-dark-900 border border-white/5 flex items-center justify-center relative overflow-hidden group">
                 
                 {/* Math Pattern Background */}
-                <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-brand-pink/40 via-transparent to-transparent"></div>
+                <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-brand-gold/20 via-transparent to-transparent"></div>
                 
                 <div className="text-center relative z-10 transform group-hover:scale-105 transition-transform duration-500">
                   <p className="text-8xl md:text-9xl font-display text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 drop-shadow-2xl">∑</p>
-                  <div className="h-px w-24 bg-brand-pink mx-auto my-4 shadow-[0_0_10px_#db2777]"></div>
+                  <div className="h-px w-24 bg-brand-gold mx-auto my-4 shadow-[0_0_10px_#d4af37]"></div>
                   <p className="text-slate-300 mt-2 font-bengali text-xl tracking-wide">শিক্ষা হল মুক্তি</p>
-                  <p className="text-brand-light/60 text-xs mt-2 uppercase tracking-[0.3em]">Est. 2009</p>
+                  <p className="text-brand-gold/60 text-xs mt-2 uppercase tracking-[0.3em]">Est. 2009</p>
                 </div>
               </div>
             </div>
@@ -89,20 +89,20 @@ export const About: React.FC = () => {
         {/* Stats Section */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-24 border-t border-white/10 pt-16">
           <div className="text-center group cursor-default">
-            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2 transition-all duration-300 group-hover:text-brand-pink group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(219,39,119,0.5)]">15+</h3>
-            <p className="text-brand-light text-sm uppercase tracking-widest transition-colors duration-300 group-hover:text-white">Years Experience</p>
+            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2 transition-all duration-300 group-hover:text-brand-gold group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(212,175,55,0.5)]">15+</h3>
+            <p className="text-brand-silver text-sm uppercase tracking-widest transition-colors duration-300 group-hover:text-white">Years Experience</p>
           </div>
           <div className="text-center group cursor-default">
-            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2 transition-all duration-300 group-hover:text-brand-purple group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(124,58,237,0.5)]">10k+</h3>
-            <p className="text-brand-light text-sm uppercase tracking-widest transition-colors duration-300 group-hover:text-white">Students Taught</p>
+            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2 transition-all duration-300 group-hover:text-brand-silver group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(226,232,240,0.5)]">10k+</h3>
+            <p className="text-brand-silver text-sm uppercase tracking-widest transition-colors duration-300 group-hover:text-white">Students Taught</p>
           </div>
           <div className="text-center group cursor-default">
-            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2 transition-all duration-300 group-hover:text-brand-light group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(244,114,182,0.5)]">50+</h3>
-            <p className="text-brand-light text-sm uppercase tracking-widest transition-colors duration-300 group-hover:text-white">Top 100 Ranks</p>
+            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2 transition-all duration-300 group-hover:text-brand-light group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(253,224,71,0.5)]">50+</h3>
+            <p className="text-brand-silver text-sm uppercase tracking-widest transition-colors duration-300 group-hover:text-white">Top 100 Ranks</p>
           </div>
           <div className="text-center group cursor-default">
             <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2 transition-all duration-300 group-hover:text-white group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">98%</h3>
-            <p className="text-brand-light text-sm uppercase tracking-widest transition-colors duration-300 group-hover:text-white">Success Rate</p>
+            <p className="text-brand-silver text-sm uppercase tracking-widest transition-colors duration-300 group-hover:text-white">Success Rate</p>
           </div>
         </div>
       </div>

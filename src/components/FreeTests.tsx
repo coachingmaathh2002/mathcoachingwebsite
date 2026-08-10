@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { StudentMarksheetModal } from './StudentMarksheetModal';
 import { tests, Test } from '../data/testData';
 import { paidStudents } from '../data/students';
-import { ArrowLeft, CheckCircle, Clock, Play, User, Phone, Award, ChevronRight, ChevronLeft, Download, History, BookOpen, Lock, Star, Flag, AlertTriangle, BarChart3, TrendingUp, X } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Clock, Play, User, Phone, Award, ChevronRight, ChevronLeft, History, BookOpen, Lock, Star, Flag, AlertTriangle, BarChart3, TrendingUp, X } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import 'katex/dist/katex.min.css';
 import Latex from 'react-latex-next';
-import jsPDF from 'jspdf';
-import { CONTACT_INFO } from '../constants';
 import { useNavigate } from 'react-router-dom';
 
 type ViewState = 'list' | 'auth' | 'test' | 'result';
@@ -39,6 +38,7 @@ export const FreeTests: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [markedForReview, setMarkedForReview] = useState<Set<number>>(new Set());
   const [showExitWarning, setShowExitWarning] = useState(false);
+  const [showMarksheetModal, setShowMarksheetModal] = useState(false);
 
   useEffect(() => {
     const savedHistory = localStorage.getItem('rajSirTestHistory');
@@ -207,165 +207,6 @@ export const FreeTests: React.FC = () => {
     window.scrollTo(0, 0);
   };
 
-  const downloadMarksheet = () => {
-    if (!selectedTest) return;
-
-    const doc = new jsPDF();
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-    const primaryColor: [number, number, number] = [219, 39, 119]; // Brand Pink
-    const darkColor: [number, number, number] = [30, 41, 59]; // Slate 800
-    const lightGray: [number, number, number] = [248, 250, 252]; // Slate 50
-
-    // 1. Page Borders (Double Border for premium look)
-    doc.setDrawColor(...primaryColor);
-    doc.setLineWidth(1);
-    doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
-    doc.setLineWidth(0.3);
-    doc.rect(12, 12, pageWidth - 24, pageHeight - 24);
-
-    // 2. Header Section
-    doc.setTextColor(...primaryColor);
-    doc.setFont("times", "bold");
-    doc.setFontSize(28);
-    doc.text("RAJ SIR MATH ACADEMY", pageWidth / 2, 35, { align: "center" });
-    
-    doc.setTextColor(...darkColor);
-    doc.setFont("times", "italic");
-    doc.setFontSize(14);
-    doc.text("Premium Center for Mathematics Excellence", pageWidth / 2, 45, { align: "center" });
-
-    // Decorative line
-    doc.setDrawColor(...primaryColor);
-    doc.setLineWidth(0.5);
-    doc.line(40, 52, pageWidth - 40, 52);
-
-    // 3. Report Title
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(18);
-    doc.setTextColor(255, 255, 255);
-    doc.setFillColor(...primaryColor);
-    doc.rect(pageWidth / 2 - 55, 65, 110, 12, 'F');
-    doc.text("PERFORMANCE REPORT", pageWidth / 2, 73, { align: "center" });
-
-    // 4. Student Details Section (Boxed)
-    const startY = 95;
-    doc.setFillColor(...lightGray);
-    doc.setDrawColor(200, 200, 200);
-    doc.roundedRect(20, startY, pageWidth - 40, 45, 3, 3, 'FD');
-
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
-    doc.setTextColor(...darkColor);
-    
-    // Column 1
-    doc.text("Student Name:", 25, startY + 12);
-    doc.text("Mobile Number:", 25, startY + 24);
-    doc.text("Test Date:", 25, startY + 36);
-    
-    // Column 2
-    doc.text("Topic:", pageWidth / 2, startY + 12);
-    doc.text("Test Title:", pageWidth / 2, startY + 24);
-    doc.text("Total Marks:", pageWidth / 2, startY + 36);
-
-    doc.setFont("helvetica", "normal");
-    doc.text(user.name.toUpperCase(), 60, startY + 12);
-    doc.text(user.mobile, 60, startY + 24);
-    doc.text(new Date().toLocaleDateString(), 60, startY + 36);
-    
-    doc.text(selectedTest.topic, pageWidth / 2 + 25, startY + 12);
-    // Truncate title if too long
-    const title = selectedTest.title.length > 30 ? selectedTest.title.substring(0, 27) + '...' : selectedTest.title;
-    doc.text(title, pageWidth / 2 + 25, startY + 24);
-    doc.text("20", pageWidth / 2 + 25, startY + 36);
-
-    // 5. Performance Metrics
-    const metricY = 160;
-    const percentage = Math.round((score / 20) * 100);
-    
-    // Calculate Grade and Remarks
-    let grade = 'F';
-    let remark = 'Needs Improvement';
-    let gradeColor: [number, number, number] = [239, 68, 68]; // Red
-    
-    if (percentage >= 90) { grade = 'A+'; remark = 'Outstanding Performance'; gradeColor = [34, 197, 94]; } // Green
-    else if (percentage >= 80) { grade = 'A'; remark = 'Excellent Work'; gradeColor = [34, 197, 94]; }
-    else if (percentage >= 70) { grade = 'B+'; remark = 'Very Good'; gradeColor = [234, 179, 8]; } // Yellow
-    else if (percentage >= 60) { grade = 'B'; remark = 'Good Effort'; gradeColor = [234, 179, 8]; }
-    else if (percentage >= 50) { grade = 'C'; remark = 'Average, Can do better'; gradeColor = [249, 115, 22]; } // Orange
-
-    // Score Breakdown
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(14);
-    doc.text("Score Breakdown", 20, metricY);
-    doc.setLineWidth(0.5);
-    doc.line(20, metricY + 2, 65, metricY + 2);
-
-    doc.setFontSize(12);
-    doc.text("Total Questions:", 25, metricY + 15);
-    doc.text("Correct Answers:", 25, metricY + 25);
-    doc.text("Incorrect Answers:", 25, metricY + 35);
-    doc.text("Accuracy:", 25, metricY + 45);
-
-    doc.setFont("helvetica", "normal");
-    doc.text("20", 70, metricY + 15);
-    doc.text(`${score}`, 70, metricY + 25);
-    doc.text(`${20 - score}`, 70, metricY + 35);
-    doc.text(`${percentage}%`, 70, metricY + 45);
-
-    // Grade Badge
-    doc.setFillColor(...gradeColor);
-    doc.circle(pageWidth - 55, metricY + 25, 22, 'F');
-    doc.setFillColor(255, 255, 255);
-    doc.circle(pageWidth - 55, metricY + 25, 20, 'F');
-    doc.setFillColor(...gradeColor);
-    doc.circle(pageWidth - 55, metricY + 25, 18, 'F');
-
-    doc.setTextColor(255, 255, 255);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
-    doc.text("GRADE", pageWidth - 55, metricY + 18, { align: "center" });
-    doc.setFontSize(24);
-    doc.text(grade, pageWidth - 55, metricY + 31, { align: "center" });
-
-    // Remarks
-    doc.setTextColor(...darkColor);
-    doc.setFontSize(12);
-    doc.setFont("times", "italic");
-    doc.text(`Remarks: ${remark}`, pageWidth - 55, metricY + 55, { align: "center" });
-
-    // 6. Footer
-    const footerY = pageHeight - 45;
-    
-    // Signature
-    doc.setDrawColor(...darkColor);
-    doc.setLineWidth(0.5);
-    doc.line(pageWidth - 70, footerY, pageWidth - 20, footerY);
-    
-    doc.setFont("times", "italic");
-    doc.setFontSize(16);
-    doc.setTextColor(...primaryColor);
-    doc.text("Raj Sir", pageWidth - 45, footerY - 5, { align: "center" });
-    
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.setTextColor(...darkColor);
-    doc.text("Authorized Signature", pageWidth - 45, footerY + 5, { align: "center" });
-    doc.text("Director, Raj Sir Math Academy", pageWidth - 45, footerY + 10, { align: "center" });
-
-    // Contact Info
-    doc.setFontSize(9);
-    doc.text(`Contact: ${CONTACT_INFO.phone}  |  Email: ${CONTACT_INFO.email}`, 20, footerY + 5);
-    doc.text(`Address: ${CONTACT_INFO.address}`, 20, footerY + 10);
-
-    // Official Document Note
-    doc.setFontSize(8);
-    doc.setTextColor(150, 150, 150);
-    doc.text("This is an electronically generated report card and does not require a physical seal.", pageWidth / 2, pageHeight - 15, { align: "center" });
-
-    doc.save(`RajSirMathAcademy_Report_${user.name.replace(/\s+/g, '_')}.pdf`);
-  };
-
   // Group tests by topic
   const filteredTests = tests.filter(t => activeTab === 'paid' ? t.isPaid : !t.isPaid);
   const exams = Array.from(new Set(filteredTests.map(t => t.exam)));
@@ -445,7 +286,7 @@ export const FreeTests: React.FC = () => {
                 onClick={() => { setActiveTab('tests'); setSelectedExam(null); setSelectedTopic(null); }}
                 className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
                   activeTab === 'tests' 
-                    ? 'bg-brand-pink text-white shadow-lg' 
+                    ? 'bg-brand-gold text-dark-950 font-bold shadow-lg shadow-brand-gold/20' 
                     : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -456,7 +297,7 @@ export const FreeTests: React.FC = () => {
                 onClick={() => { setActiveTab('paid'); setSelectedExam(null); setSelectedTopic(null); }}
                 className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
                   activeTab === 'paid' 
-                    ? 'bg-brand-pink text-white shadow-lg' 
+                    ? 'bg-brand-gold text-dark-950 font-bold shadow-lg shadow-brand-gold/20' 
                     : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -467,7 +308,7 @@ export const FreeTests: React.FC = () => {
                 onClick={() => setActiveTab('history')}
                 className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
                   activeTab === 'history' 
-                    ? 'bg-brand-pink text-white shadow-lg' 
+                    ? 'bg-brand-gold text-dark-950 font-bold shadow-lg shadow-brand-gold/20' 
                     : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -482,14 +323,14 @@ export const FreeTests: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="max-w-4xl mx-auto mb-12 bg-gradient-to-r from-brand-pink/10 to-brand-purple/10 border border-brand-pink/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-lg"
+            className="max-w-4xl mx-auto mb-12 bg-dark-900 border border-brand-gold/30 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-[0_10px_30px_rgba(212,175,55,0.1)]"
           >
             <div>
               <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
-                <Star className="text-yellow-400 fill-yellow-400" size={24} />
+                <Star className="text-brand-gold fill-brand-gold" size={24} />
                 🚀 প্রিমিয়াম ফিচার আনলক করো!
               </h3>
-              <p className="text-slate-300">
+              <p className="text-slate-300 text-sm">
                 বিস্তারিত ধাপে-ধাপে সমাধান, একাধিকবার পরীক্ষা দেওয়ার সুযোগ এবং আরও অনেক এক্সক্লুসিভ ফিচারের জন্য আজই আমাদের প্রিমিয়াম মক টেস্টগুলো কিনে নাও!
               </p>
             </div>
@@ -497,7 +338,7 @@ export const FreeTests: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => { setActiveTab('paid'); setSelectedExam(null); setSelectedTopic(null); }}
-              className="px-6 py-3 bg-brand-pink hover:bg-brand-light text-white font-bold rounded-xl transition-colors whitespace-nowrap shadow-lg hover:shadow-brand-pink/20"
+              className="px-6 py-3 bg-gradient-to-r from-brand-gold via-yellow-400 to-amber-500 text-dark-950 font-bold rounded-xl transition-all whitespace-nowrap shadow-lg shadow-brand-gold/20"
             >
               প্রিমিয়াম দেখুন
             </motion.button>
@@ -507,7 +348,7 @@ export const FreeTests: React.FC = () => {
             <div className="space-y-12">
               {!selectedExam ? (
                 <div className="animate-fade-in">
-                  <h3 className="text-2xl font-bold text-brand-light mb-6 border-l-4 border-brand-pink pl-4">
+                  <h3 className="text-2xl font-bold text-brand-gold mb-6 border-l-4 border-brand-gold pl-4">
                     Select Exam
                   </h3>
                   <motion.div 
@@ -526,12 +367,12 @@ export const FreeTests: React.FC = () => {
                           visible: { opacity: 1, y: 0 }
                         }}
                         key={exam}
-                        className="relative bg-dark-900 rounded-2xl p-6 border border-white/5 hover:border-brand-pink/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(219,39,119,0.3)] group cursor-pointer overflow-hidden"
+                        className="relative bg-dark-900 rounded-2xl p-6 border border-white/5 hover:border-brand-gold/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(212,175,55,0.2)] group cursor-pointer overflow-hidden"
                         onClick={() => setSelectedExam(exam)}
                       >
-                        <div className="absolute inset-0 bg-gradient-to-br from-brand-pink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div className="relative z-10 flex justify-between items-start mb-4">
-                          <div className="p-3 bg-dark-800 rounded-xl text-brand-pink group-hover:bg-brand-pink group-hover:text-white transition-colors">
+                          <div className="p-3 bg-dark-800 rounded-xl text-brand-gold group-hover:bg-brand-gold group-hover:text-dark-950 transition-colors">
                             <BookOpen size={24} />
                           </div>
                         </div>
@@ -577,12 +418,12 @@ export const FreeTests: React.FC = () => {
                           visible: { opacity: 1, y: 0 }
                         }}
                         key={topic}
-                        className="relative bg-dark-900 rounded-2xl p-6 border border-white/5 hover:border-brand-pink/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(219,39,119,0.3)] group cursor-pointer overflow-hidden"
+                        className="relative bg-dark-900 rounded-2xl p-6 border border-white/5 hover:border-brand-gold/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(212,175,55,0.2)] group cursor-pointer overflow-hidden"
                         onClick={() => setSelectedTopic(topic)}
                       >
-                        <div className="absolute inset-0 bg-gradient-to-br from-brand-pink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div className="relative z-10 flex justify-between items-start mb-4">
-                          <div className="p-3 bg-dark-800 rounded-xl text-brand-pink group-hover:bg-brand-pink group-hover:text-white transition-colors">
+                          <div className="p-3 bg-dark-800 rounded-xl text-brand-gold group-hover:bg-brand-gold group-hover:text-dark-950 transition-colors">
                             <BookOpen size={24} />
                           </div>
                           <span className="text-xs font-mono text-slate-500 bg-dark-950 px-2 py-1 rounded border border-white/5">
@@ -631,11 +472,11 @@ export const FreeTests: React.FC = () => {
                           visible: { opacity: 1, y: 0 }
                         }}
                         key={test.id}
-                        className="bg-dark-900 rounded-2xl p-6 border border-white/5 hover:border-brand-pink/50 transition-all hover:-translate-y-1 hover:shadow-lg group cursor-pointer"
+                        className="bg-dark-900 rounded-2xl p-6 border border-white/5 hover:border-brand-gold/50 transition-all hover:-translate-y-1 hover:shadow-[0_10px_25px_rgba(212,175,55,0.15)] group cursor-pointer"
                         onClick={() => handleStartAuth(test)}
                       >
                         <div className="flex justify-between items-start mb-4">
-                          <div className="p-3 bg-dark-800 rounded-xl text-brand-pink group-hover:bg-brand-pink group-hover:text-white transition-colors">
+                          <div className="p-3 bg-dark-800 rounded-xl text-brand-gold group-hover:bg-brand-gold group-hover:text-dark-950 transition-colors">
                             <Award size={24} />
                           </div>
                           <div className="flex flex-col items-end gap-1">
@@ -672,7 +513,7 @@ export const FreeTests: React.FC = () => {
                   <p className="text-slate-400 mb-6">You haven't taken any tests yet. Start a test to see your history here.</p>
                   <button 
                     onClick={() => setActiveTab('tests')}
-                    className="px-6 py-3 bg-brand-pink hover:bg-brand-light text-white rounded-xl font-medium transition-colors"
+                    className="px-6 py-3 bg-brand-gold text-dark-950 rounded-xl font-bold transition-colors"
                   >
                     Browse Tests
                   </button>
@@ -682,7 +523,7 @@ export const FreeTests: React.FC = () => {
                   {/* Dashboard Stats */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="bg-dark-900 rounded-2xl p-6 border border-white/5 flex items-center gap-4 shadow-lg">
-                      <div className="w-12 h-12 bg-brand-pink/20 rounded-xl flex items-center justify-center text-brand-pink">
+                      <div className="w-12 h-12 bg-brand-gold/10 rounded-xl flex items-center justify-center text-brand-gold">
                         <BookOpen size={24} />
                       </div>
                       <div>
@@ -716,7 +557,7 @@ export const FreeTests: React.FC = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div className="bg-dark-900 rounded-2xl p-6 border border-white/5 shadow-lg">
                       <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                        <TrendingUp size={20} className="text-brand-pink" />
+                        <TrendingUp size={20} className="text-brand-gold" />
                         Performance Trend
                       </h3>
                       <div className="h-[300px] w-full">
@@ -737,7 +578,7 @@ export const FreeTests: React.FC = () => {
 
                     <div className="bg-dark-900 rounded-2xl p-6 border border-white/5 shadow-lg">
                       <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                        <BarChart3 size={20} className="text-brand-purple" />
+                        <BarChart3 size={20} className="text-brand-gold" />
                         Topic Accuracy
                       </h3>
                       <div className="h-[300px] w-full">
@@ -769,7 +610,7 @@ export const FreeTests: React.FC = () => {
                         <div key={attempt.id} className="bg-dark-950 rounded-xl p-5 border border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-white/10 transition-colors">
                           <div>
                             <div className="flex items-center gap-2 mb-1">
-                              <span className="text-xs font-bold px-2 py-1 bg-dark-800 text-brand-pink rounded border border-white/5 uppercase tracking-wider">
+                              <span className="text-xs font-bold px-2 py-1 bg-dark-800 text-brand-gold rounded border border-brand-gold/20 uppercase tracking-wider">
                                 {attempt.topic}
                               </span>
                               <span className="text-slate-500 text-sm">
@@ -816,7 +657,7 @@ export const FreeTests: React.FC = () => {
         >
           <div className="bg-dark-900 rounded-3xl p-8 border border-white/10 shadow-2xl">
             <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-brand-pink/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-pink">
+              <div className="w-16 h-16 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-gold border border-brand-gold/20">
                 <User size={32} />
               </div>
               <h2 className="text-2xl font-bold text-white">Student Details</h2>
@@ -839,7 +680,7 @@ export const FreeTests: React.FC = () => {
                     required
                     value={user.name}
                     onChange={e => setUser({...user, name: e.target.value})}
-                    className="w-full bg-dark-950 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:ring-2 focus:ring-brand-pink focus:border-transparent outline-none"
+                    className="w-full bg-dark-950 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none"
                     placeholder="Enter your name"
                   />
                 </div>
@@ -854,7 +695,7 @@ export const FreeTests: React.FC = () => {
                     required
                     value={user.mobile}
                     onChange={e => setUser({...user, mobile: e.target.value})}
-                    className="w-full bg-dark-950 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:ring-2 focus:ring-brand-pink focus:border-transparent outline-none"
+                    className="w-full bg-dark-950 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none"
                     placeholder="Enter mobile number"
                   />
                 </div>
@@ -880,7 +721,7 @@ export const FreeTests: React.FC = () => {
               <div className="pt-4">
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-brand-pink to-brand-purple text-white font-bold py-4 rounded-xl hover:shadow-lg hover:shadow-brand-pink/20 transition-all flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-brand-gold via-yellow-400 to-amber-500 text-dark-950 font-bold py-4 rounded-xl hover:shadow-lg hover:shadow-brand-gold/20 transition-all flex items-center justify-center gap-2"
                 >
                   Start Test
                   <Play size={18} className="fill-current" />
@@ -904,13 +745,13 @@ export const FreeTests: React.FC = () => {
           <div className="lg:col-span-3 flex flex-col gap-6">
             <div className="bg-dark-900 rounded-2xl p-6 border border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sticky top-24 z-30 shadow-xl backdrop-blur-md bg-opacity-90">
               <div>
-                <h2 className="text-lg font-bold text-white">{selectedTest.title} {view === 'review' && <span className="text-brand-pink ml-2">(Review Mode)</span>}</h2>
-                <p className="text-slate-400 text-sm">Student: <span className="text-brand-light">{user.name}</span></p>
+                <h2 className="text-lg font-bold text-white">{selectedTest.title} {view === 'review' && <span className="text-brand-gold ml-2">(Review Mode)</span>}</h2>
+                <p className="text-slate-400 text-sm">Student: <span className="text-brand-gold">{user.name}</span></p>
               </div>
               <div className="flex items-center gap-4">
                 {view === 'test' && (
                   <div className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${timeLeft < 60 ? 'bg-red-500/10 border-red-500/30 text-red-400 animate-pulse' : 'bg-dark-950 border-white/5 text-slate-300'}`}>
-                    <Clock size={18} className={timeLeft < 60 ? 'text-red-400' : 'text-brand-pink'} />
+                    <Clock size={18} className={timeLeft < 60 ? 'text-red-400' : 'text-brand-gold'} />
                     <span className="font-mono font-bold">{formatTime(timeLeft)}</span>
                   </div>
                 )}
@@ -951,7 +792,7 @@ export const FreeTests: React.FC = () => {
                     
                     let optionClass = 'bg-dark-950 border-slate-800 text-slate-300 hover:border-slate-600 hover:bg-dark-800';
                     let circleClass = 'border-slate-600';
-                    let innerCircleClass = 'bg-brand-pink';
+                    let innerCircleClass = 'bg-brand-gold';
 
                     if (view === 'review') {
                       if (isCorrect) {
@@ -966,8 +807,8 @@ export const FreeTests: React.FC = () => {
                         optionClass = 'bg-dark-950 border-slate-800 text-slate-500 opacity-50';
                       }
                     } else if (isSelected) {
-                      optionClass = 'bg-brand-pink/10 border-brand-pink text-white shadow-[0_0_15px_rgba(219,39,119,0.1)]';
-                      circleClass = 'border-brand-pink';
+                      optionClass = 'bg-brand-gold/10 border-brand-gold text-white shadow-[0_0_15px_rgba(212,175,55,0.15)]';
+                      circleClass = 'border-brand-gold';
                     }
 
                     return (
@@ -1022,14 +863,14 @@ export const FreeTests: React.FC = () => {
                   view === 'review' ? (
                     <button
                       onClick={() => setView('result')}
-                      className="flex items-center gap-2 px-8 py-3 bg-brand-pink hover:bg-brand-light text-white rounded-xl font-bold shadow-lg transition-all hover:shadow-brand-pink/20"
+                      className="flex items-center gap-2 px-8 py-3 bg-brand-gold hover:opacity-90 text-dark-950 rounded-xl font-bold shadow-lg transition-all"
                     >
                       Back to Results
                     </button>
                   ) : (
                     <button
                       onClick={handleSubmit}
-                      className="flex items-center gap-2 px-8 py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl font-bold shadow-lg transition-all hover:shadow-green-500/20"
+                      className="flex items-center gap-2 px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold shadow-lg transition-all"
                     >
                       Submit Test
                       <CheckCircle size={20} />
@@ -1038,7 +879,7 @@ export const FreeTests: React.FC = () => {
                 ) : (
                   <button
                     onClick={handleNext}
-                    className="flex items-center gap-2 px-8 py-3 bg-brand-pink hover:bg-brand-light text-white rounded-xl font-bold shadow-lg transition-all hover:shadow-brand-pink/20"
+                    className="flex items-center gap-2 px-8 py-3 bg-brand-gold hover:opacity-90 text-dark-950 rounded-xl font-bold shadow-lg transition-all shadow-brand-gold/10"
                   >
                     Next
                     <ChevronRight size={20} />
@@ -1051,7 +892,7 @@ export const FreeTests: React.FC = () => {
           <div className="lg:col-span-1">
             <div className="bg-dark-900 rounded-2xl p-6 border border-white/10 sticky top-24 shadow-xl">
               <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <BookOpen size={18} className="text-brand-pink" />
+                <BookOpen size={18} className="text-brand-gold" />
                 Question Palette
               </h3>
               
@@ -1075,7 +916,7 @@ export const FreeTests: React.FC = () => {
                   }
 
                   if (isCurrent) {
-                    btnClass += ' ring-2 ring-brand-pink ring-offset-2 ring-offset-dark-900';
+                    btnClass += ' ring-2 ring-brand-gold ring-offset-2 ring-offset-dark-900';
                   }
 
                   return (
@@ -1126,10 +967,10 @@ export const FreeTests: React.FC = () => {
           className="max-w-2xl mx-auto mt-12"
         >
           <div className="bg-dark-900 rounded-3xl p-8 md:p-12 border border-white/10 shadow-2xl text-center relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-pink to-brand-purple"></div>
+            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-gold via-yellow-400 to-amber-500"></div>
             
-            <div className="w-24 h-24 bg-dark-800 rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-dark-950 shadow-xl relative z-10">
-              <Award size={48} className="text-yellow-400" />
+            <div className="w-24 h-24 bg-dark-800 rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-dark-950 shadow-xl relative z-10 text-brand-gold border-brand-gold/30">
+              <Award size={48} />
             </div>
 
             <h2 className="text-3xl font-bold text-white mb-2">Test Completed!</h2>
@@ -1138,11 +979,11 @@ export const FreeTests: React.FC = () => {
             <div className="grid grid-cols-2 gap-4 mb-8">
               <div className="bg-dark-950 p-6 rounded-2xl border border-white/5">
                 <p className="text-slate-400 text-sm mb-1">Total Score</p>
-                <p className="text-4xl font-bold text-brand-light">{score} <span className="text-lg text-slate-500">/ 20</span></p>
+                <p className="text-4xl font-bold text-brand-gold">{score} <span className="text-lg text-slate-500">/ 20</span></p>
               </div>
               <div className="bg-dark-950 p-6 rounded-2xl border border-white/5">
                 <p className="text-slate-400 text-sm mb-1">Percentage</p>
-                <p className="text-4xl font-bold text-brand-purple">{Math.round((score / 20) * 100)}%</p>
+                <p className="text-4xl font-bold text-yellow-400">{Math.round((score / 20) * 100)}%</p>
               </div>
             </div>
 
@@ -1154,11 +995,11 @@ export const FreeTests: React.FC = () => {
                 Review Answers
               </button>
               <button
-                onClick={downloadMarksheet}
-                className="px-8 py-3 bg-gradient-to-r from-brand-pink to-brand-purple hover:from-brand-light hover:to-brand-purple text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-brand-pink/20 flex items-center justify-center gap-2"
+                onClick={() => setShowMarksheetModal(true)}
+                className="px-8 py-3 bg-gradient-to-r from-brand-gold via-yellow-400 to-amber-500 text-dark-950 rounded-xl font-bold transition-all shadow-lg shadow-brand-gold/20 flex items-center justify-center gap-2"
               >
-                <Download size={20} />
-                Download Marksheet
+                <Award size={20} />
+                Merit Marksheet & Certificate
               </button>
               <button
                 onClick={resetTest}
@@ -1173,11 +1014,11 @@ export const FreeTests: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.5 }}
-              className="mt-12 bg-dark-950 border border-brand-pink/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6 text-left"
+              className="mt-12 bg-dark-950 border border-brand-gold/30 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6 text-left"
             >
               <div>
                 <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
-                  <Star className="text-yellow-400 fill-yellow-400" size={20} />
+                  <Star className="text-brand-gold fill-brand-gold" size={20} />
                   Want Step-by-Step Solutions?
                 </h3>
                 <p className="text-slate-400 text-sm">
@@ -1188,7 +1029,7 @@ export const FreeTests: React.FC = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => { setView('list'); setActiveTab('paid'); setSelectedExam(null); setSelectedTopic(null); }}
-                className="px-6 py-2 bg-brand-pink hover:bg-brand-light text-white font-bold rounded-xl transition-colors whitespace-nowrap text-sm"
+                className="px-6 py-2 bg-brand-gold text-dark-950 font-bold rounded-xl transition-colors whitespace-nowrap text-sm"
               >
                 Get Premium
               </motion.button>
@@ -1232,7 +1073,7 @@ export const FreeTests: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button 
                   onClick={() => setShowExitWarning(false)}
-                  className="flex-1 px-6 py-3 bg-brand-pink hover:bg-brand-light text-white rounded-xl font-bold transition-colors"
+                  className="flex-1 px-6 py-3 bg-brand-gold text-dark-950 rounded-xl font-bold transition-colors"
                 >
                   Resume Test
                 </button>
@@ -1250,6 +1091,26 @@ export const FreeTests: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Official Student Merit Marksheet Modal */}
+      {selectedTest && (
+        <StudentMarksheetModal
+          isOpen={showMarksheetModal}
+          onClose={() => setShowMarksheetModal(false)}
+          data={{
+            studentName: user.name || 'Student Candidate',
+            testTitle: selectedTest.title,
+            topicTitle: selectedTest.topic || 'Mathematics',
+            score: score,
+            maxScore: 20,
+            correctAnswers: Math.round(score),
+            incorrectAnswers: Math.max(0, 20 - Math.round(score)),
+            unanswered: 0,
+            percentage: Math.round((score / 20) * 100),
+            isChallengeMode: true
+          }}
+        />
+      )}
 
     </div>
   );

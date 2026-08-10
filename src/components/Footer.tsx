@@ -11,7 +11,7 @@ export const Footer: React.FC = () => {
           {/* Brand */}
           <div className="col-span-1 md:col-span-1">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-pink to-brand-purple flex items-center justify-center text-white font-bold">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-gold to-yellow-600 flex items-center justify-center text-white font-bold">
                 RS
               </div>
               <span className="text-xl font-display text-white">Raj Sir Math Academy</span>
@@ -63,10 +63,10 @@ export const Footer: React.FC = () => {
           <div>
             <h4 className="text-white font-bold mb-6">Quick Links</h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="#" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">Home</a></li>
-              <li><a href="#courses" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">Courses</a></li>
-              <li><a href="#about" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">About Us</a></li>
-              <li><a href="#contact" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">Contact</a></li>
+              <li><a href="#" className="hover:text-brand-gold hover:translate-x-1 transition-all inline-block">Home</a></li>
+              <li><a href="#courses" className="hover:text-brand-gold hover:translate-x-1 transition-all inline-block">Courses</a></li>
+              <li><a href="#about" className="hover:text-brand-gold hover:translate-x-1 transition-all inline-block">About Us</a></li>
+              <li><a href="#contact" className="hover:text-brand-gold hover:translate-x-1 transition-all inline-block">Contact</a></li>
             </ul>
           </div>
           
@@ -74,10 +74,10 @@ export const Footer: React.FC = () => {
            <div>
             <h4 className="text-white font-bold mb-6">Top Courses</h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="#" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">Class 10 (Madhyamik)</a></li>
-              <li><a href="#" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">Class 12 (HS)</a></li>
-              <li><a href="#" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">WBJEE Competitive</a></li>
-              <li><a href="#" className="hover:text-brand-light hover:translate-x-1 transition-all inline-block">B.Sc Math Honours</a></li>
+              <li><a href="#" className="hover:text-brand-gold hover:translate-x-1 transition-all inline-block">Class 10 (Madhyamik)</a></li>
+              <li><a href="#" className="hover:text-brand-gold hover:translate-x-1 transition-all inline-block">Class 12 (HS)</a></li>
+              <li><a href="#" className="hover:text-brand-gold hover:translate-x-1 transition-all inline-block">WBJEE Competitive</a></li>
+              <li><a href="#" className="hover:text-brand-gold hover:translate-x-1 transition-all inline-block">B.Sc Math Honours</a></li>
             </ul>
           </div>
           
@@ -95,8 +95,8 @@ export const Footer: React.FC = () => {
         <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
           <p>© {new Date().getFullYear()} Raj Sir Math Academy. All rights reserved.</p>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-brand-light">Privacy Policy</a>
-            <a href="#" className="hover:text-brand-light">Terms of Service</a>
+            <a href="#" className="hover:text-brand-gold">Privacy Policy</a>
+            <a href="#" className="hover:text-brand-gold">Terms of Service</a>
           </div>
         </div>
       </div>

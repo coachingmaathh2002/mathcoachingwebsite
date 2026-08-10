@@ -67,7 +67,7 @@ export const Header: React.FC = () => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); window.scrollTo(0,0); }} className="flex items-center gap-3 group">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-br from-brand-pink to-brand-purple flex items-center justify-center shadow-[0_0_15px_rgba(219,39,119,0.5)] group-hover:shadow-[0_0_25px_rgba(219,39,119,0.7)] transition-shadow duration-300">
+            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-br from-brand-gold to-yellow-500 flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.5)] group-hover:shadow-[0_0_25px_rgba(212,175,55,0.7)] transition-shadow duration-300">
               <svg className="w-6 h-6 md:w-7 md:h-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 4h6v6H4z"/>
                 <path d="M14 4h6v6h-6z"/>
@@ -76,7 +76,7 @@ export const Header: React.FC = () => {
               </svg>
             </div>
             <div className="flex flex-col">
-              <span className="text-xl md:text-2xl font-display text-white tracking-tight drop-shadow-md">Raj Sir Math <span className="text-brand-light">Academy</span></span>
+              <span className="text-xl md:text-2xl font-display text-white tracking-tight drop-shadow-md">Raj Sir Math <span className="text-brand-gold">Academy</span></span>
               <span className="text-xs font-medium tracking-widest text-slate-400 uppercase hidden sm:block">
                 Excellence in Mathematics
               </span>
@@ -90,17 +90,17 @@ export const Header: React.FC = () => {
                 key={link.name}
                 href={link.path + link.hash}
                 onClick={(e) => handleNavClick(e, link)}
-                className={`text-slate-300 hover:text-brand-light font-medium transition-colors relative group text-sm uppercase tracking-wide ${location.pathname === link.path && link.path !== '/' ? 'text-brand-light font-bold' : ''}`}
+                className={`text-slate-300 hover:text-brand-gold font-medium transition-colors relative group text-sm uppercase tracking-wide ${location.pathname === link.path && link.path !== '/' ? 'text-brand-gold font-bold' : ''}`}
               >
                 {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-brand-pink to-brand-purple transition-all duration-300 group-hover:w-full box-shadow-[0_0_10px_currentColor]"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-brand-gold to-yellow-500 transition-all duration-300 group-hover:w-full box-shadow-[0_0_10px_currentColor]"></span>
               </a>
             ))}
             
             <a 
               href="#contact"
               onClick={(e) => handleNavClick(e, { path: '/', hash: '#contact' })}
-              className="px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-brand-pink/30 hover:border-brand-pink text-white text-sm font-semibold transition-all duration-300 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)]"
+              className="px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-brand-gold/30 hover:border-brand-gold text-white text-sm font-semibold transition-all duration-300 hover:shadow-[0_0_15px_rgba(212,175,55,0.3)]"
             >
               Enquire Now
             </a>
@@ -109,7 +109,7 @@ export const Header: React.FC = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden p-2 text-white hover:text-brand-pink transition-colors"
+            className="md:hidden p-2 text-white hover:text-brand-gold transition-colors"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -139,7 +139,7 @@ export const Header: React.FC = () => {
                 key={link.name}
                 href={link.path + link.hash}
                 onClick={(e) => handleNavClick(e, link)}
-                className="text-lg text-slate-300 font-medium hover:text-brand-pink transition-colors border-b border-white/5 pb-2"
+                className="text-lg text-slate-300 font-medium hover:text-brand-gold transition-colors border-b border-white/5 pb-2"
               >
                 {link.name}
               </a>

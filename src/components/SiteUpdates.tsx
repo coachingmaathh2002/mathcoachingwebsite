@@ -52,16 +52,16 @@ export const SiteUpdates: React.FC = () => {
   ];
 
   return (
-    <div className="bg-gradient-to-r from-brand-pink to-brand-purple text-white py-2.5 overflow-hidden relative z-50 flex border-b border-white/10 group">
+    <div className="bg-gradient-to-r from-brand-gold via-yellow-600 to-brand-gold text-white py-2.5 overflow-hidden relative z-50 flex border-b border-white/10 group shadow-[0_4px_20px_rgba(212,175,55,0.2)]">
       <div className="flex whitespace-nowrap animate-marquee items-center w-max shrink-0 group-hover:[animation-play-state:paused]">
         {[...Array(2)].map((_, i) => (
           <div key={i} className="flex items-center">
             {updates.map((item, j) => (
               <React.Fragment key={j}>
                 <span className="mx-6 text-sm font-bold tracking-wide flex items-center gap-3">
-                  {j % 2 === 0 && !item.isNew && <Sparkles size={14} className="text-brand-light" />}
+                  {j % 2 === 0 && !item.isNew && <Sparkles size={14} className="text-white opacity-80" />}
                   {item.isNew && (
-                    <span className="px-2 py-0.5 text-[10px] uppercase font-black bg-yellow-400 text-black rounded-md animate-pulse shadow-[0_0_10px_rgba(250,204,21,0.6)]">
+                    <span className="px-2 py-0.5 text-[10px] uppercase font-black bg-white text-yellow-600 rounded-md animate-pulse shadow-[0_0_10px_rgba(255,255,255,0.6)]">
                       NEW
                     </span>
                   )}
@@ -69,7 +69,7 @@ export const SiteUpdates: React.FC = () => {
                   {item.ctaText && (
                     <button 
                       onClick={item.action}
-                      className="ml-2 flex items-center gap-1 px-3 py-1 text-[11px] uppercase tracking-wider font-bold bg-white text-brand-purple hover:bg-brand-light hover:text-white rounded-full transition-colors shadow-sm cursor-pointer"
+                      className="ml-2 flex items-center gap-1 px-3 py-1 text-[11px] uppercase tracking-wider font-bold bg-dark-950 text-brand-gold hover:bg-white hover:text-dark-950 border border-brand-gold/30 rounded-full transition-all duration-300 shadow-sm cursor-pointer"
                     >
                       {item.ctaText}
                       <ArrowRight size={12} />

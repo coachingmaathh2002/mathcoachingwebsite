@@ -15,13 +15,13 @@ export const EnquiryForm: React.FC = () => {
       setStatus('success');
       toast.success('Message Sent Successfully! We will contact you soon.', {
         style: {
-          background: '#1e1b4b',
-          color: '#fff',
-          border: '1px solid #db2777',
+          background: '#18181b',
+          color: '#f1f5f9',
+          border: '1px solid #d4af37',
         },
         iconTheme: {
-          primary: '#db2777',
-          secondary: '#fff',
+          primary: '#d4af37',
+          secondary: '#18181b',
         },
       });
       e.currentTarget.reset();
@@ -33,12 +33,12 @@ export const EnquiryForm: React.FC = () => {
 
   return (
     <section id="contact" className="py-24 bg-dark-950 relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-purple/50 to-transparent"></div>
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-gold/50 to-transparent"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <span className="text-brand-light font-bold uppercase tracking-widest text-sm mb-3 block">Get In Touch</span>
+          <span className="text-brand-gold font-bold uppercase tracking-widest text-sm mb-3 block">Get In Touch</span>
           <h2 className="text-4xl md:text-5xl font-display text-white mb-6">
             Start Your Journey
           </h2>
@@ -47,10 +47,10 @@ export const EnquiryForm: React.FC = () => {
           </p>
           
           <div className="grid md:grid-cols-3 gap-6 mb-16">
-            <a href={`tel:${CONTACT_INFO.phone}`} className="group relative p-8 bg-dark-900 rounded-2xl border border-white/5 hover:border-brand-pink/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(219,39,119,0.3)] overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-pink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <a href={`tel:${CONTACT_INFO.phone}`} className="group relative p-8 bg-dark-900 rounded-2xl border border-white/5 hover:border-brand-gold/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(212,175,55,0.3)] overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-full bg-dark-800 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-pink group-hover:text-white text-brand-pink transition-colors duration-500 shadow-inner">
+                <div className="w-14 h-14 rounded-full bg-dark-800 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-gold group-hover:text-dark-950 text-brand-gold transition-colors duration-500 shadow-inner">
                   <Phone size={24} />
                 </div>
                 <p className="text-white font-bold text-lg mb-1">Call Us</p>
@@ -58,10 +58,10 @@ export const EnquiryForm: React.FC = () => {
               </div>
             </a>
             
-            <a href={`mailto:${CONTACT_INFO.email}`} className="group relative p-8 bg-dark-900 rounded-2xl border border-white/5 hover:border-brand-pink/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(219,39,119,0.3)] overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-pink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <a href={`mailto:${CONTACT_INFO.email}`} className="group relative p-8 bg-dark-900 rounded-2xl border border-white/5 hover:border-brand-gold/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(212,175,55,0.3)] overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-full bg-dark-800 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-pink group-hover:text-white text-brand-pink transition-colors duration-500 shadow-inner">
+                <div className="w-14 h-14 rounded-full bg-dark-800 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-gold group-hover:text-dark-950 text-brand-gold transition-colors duration-500 shadow-inner">
                   <Mail size={24} />
                 </div>
                 <p className="text-white font-bold text-lg mb-1">Email Us</p>
@@ -69,10 +69,10 @@ export const EnquiryForm: React.FC = () => {
               </div>
             </a>
             
-            <div className="group relative p-8 bg-dark-900 rounded-2xl border border-white/5 hover:border-brand-pink/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(219,39,119,0.3)] overflow-hidden cursor-default">
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-pink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="group relative p-8 bg-dark-900 rounded-2xl border border-white/5 hover:border-brand-gold/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(212,175,55,0.3)] overflow-hidden cursor-default">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-full bg-dark-800 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-pink group-hover:text-white text-brand-pink transition-colors duration-500 shadow-inner">
+                <div className="w-14 h-14 rounded-full bg-dark-800 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-gold group-hover:text-dark-950 text-brand-gold transition-colors duration-500 shadow-inner">
                   <MapPin size={24} />
                 </div>
                 <p className="text-white font-bold text-lg mb-1">Visit Us</p>
@@ -84,9 +84,9 @@ export const EnquiryForm: React.FC = () => {
 
         {/* Form */}
         <div className="max-w-3xl mx-auto">
-           <div className="bg-dark-900 p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden">
+           <div className="bg-dark-900 p-8 md:p-12 rounded-3xl border border-white/10 shadow-[0_10px_50px_rgba(212,175,55,0.05)] relative overflow-hidden">
             {/* Background Glow */}
-            <div className="absolute -top-20 -right-20 w-64 h-64 bg-brand-pink/10 rounded-full blur-[80px]"></div>
+            <div className="absolute -top-20 -right-20 w-64 h-64 bg-brand-gold/10 rounded-full blur-[80px]"></div>
 
             {status === 'success' ? (
               <div className="text-center py-12 relative z-10">
@@ -97,7 +97,7 @@ export const EnquiryForm: React.FC = () => {
                 <p className="text-slate-400 mb-8 text-lg">We will be in touch with you shortly.</p>
                 <button 
                   onClick={() => setStatus('idle')}
-                  className="text-brand-light font-bold hover:text-white transition-colors border-b-2 border-brand-light pb-1"
+                  className="text-brand-gold font-bold hover:text-white transition-colors border-b-2 border-brand-gold pb-1"
                 >
                   Send another message
                 </button>
@@ -117,7 +117,7 @@ export const EnquiryForm: React.FC = () => {
                       name="name"
                       id="name"
                       required
-                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink outline-none transition-all shadow-inner"
+                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold outline-none transition-all shadow-inner"
                       placeholder="John Doe"
                     />
                   </div>
@@ -128,7 +128,7 @@ export const EnquiryForm: React.FC = () => {
                       name="phone"
                       id="phone"
                       required
-                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink outline-none transition-all shadow-inner"
+                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold outline-none transition-all shadow-inner"
                       placeholder="+91 98765 00000"
                     />
                   </div>
@@ -142,7 +142,7 @@ export const EnquiryForm: React.FC = () => {
                       name="email"
                       id="email"
                       required
-                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink outline-none transition-all shadow-inner"
+                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold outline-none transition-all shadow-inner"
                       placeholder="john@example.com"
                     />
                   </div>
@@ -153,7 +153,7 @@ export const EnquiryForm: React.FC = () => {
                       id="course"
                       required
                       defaultValue=""
-                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink outline-none transition-all appearance-none shadow-inner"
+                      className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold outline-none transition-all appearance-none shadow-inner"
                     >
                       <option value="" disabled>Select a course</option>
                       <option value="Class 10">WB Board Class 10</option>
@@ -173,15 +173,15 @@ export const EnquiryForm: React.FC = () => {
                     name="message"
                     id="message"
                     rows={4}
-                    className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink outline-none transition-all shadow-inner"
+                    className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold outline-none transition-all shadow-inner"
                     placeholder="Any specific questions regarding timing or fees?"
                   ></textarea>
                 </div>
 
-                <button
+                  <button
                   type="submit"
                   disabled={status === 'submitting'}
-                  className="w-full bg-accent-gradient text-white font-bold py-4 rounded-xl hover:shadow-[0_0_20px_rgba(219,39,119,0.4)] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed mt-4"
+                  className="w-full bg-accent-gradient text-dark-950 font-bold py-4 rounded-xl hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed mt-4"
                 >
                   {status === 'submitting' ? (
                     <>

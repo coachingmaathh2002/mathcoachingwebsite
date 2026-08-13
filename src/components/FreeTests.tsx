@@ -315,6 +315,13 @@ export const FreeTests: React.FC = () => {
                 <History size={18} />
                 My History
               </button>
+              <button
+                onClick={() => setShowMarksheetModal(true)}
+                className="flex items-center gap-2 px-6 py-3 rounded-lg font-bold transition-all text-brand-gold bg-brand-gold/10 hover:bg-brand-gold/20 border border-brand-gold/30 shadow-[0_0_15px_rgba(212,175,55,0.15)]"
+              >
+                <Award size={18} className="text-brand-gold animate-pulse" />
+                Sample Marksheet
+              </button>
             </div>
           </div>
 
@@ -1093,24 +1100,33 @@ export const FreeTests: React.FC = () => {
       </AnimatePresence>
 
       {/* Official Student Merit Marksheet Modal */}
-      {selectedTest && (
-        <StudentMarksheetModal
-          isOpen={showMarksheetModal}
-          onClose={() => setShowMarksheetModal(false)}
-          data={{
-            studentName: user.name || 'Student Candidate',
-            testTitle: selectedTest.title,
-            topicTitle: selectedTest.topic || 'Mathematics',
-            score: score,
-            maxScore: 20,
-            correctAnswers: Math.round(score),
-            incorrectAnswers: Math.max(0, 20 - Math.round(score)),
-            unanswered: 0,
-            percentage: Math.round((score / 20) * 100),
-            isChallengeMode: true
-          }}
-        />
-      )}
+      <StudentMarksheetModal
+        isOpen={showMarksheetModal}
+        onClose={() => setShowMarksheetModal(false)}
+        data={selectedTest ? {
+          studentName: user.name || 'Student Candidate',
+          testTitle: selectedTest.title,
+          topicTitle: selectedTest.topic || 'Mathematics',
+          score: score,
+          maxScore: 20,
+          correctAnswers: Math.round(score),
+          incorrectAnswers: Math.max(0, 20 - Math.round(score)),
+          unanswered: 0,
+          percentage: Math.round((score / 20) * 100),
+          isChallengeMode: true
+        } : {
+          studentName: user.name || 'Pritam Sengupta (Sample)',
+          testTitle: 'Raj Sir Academy Speed Test: Higher Calculus & Trigonometry',
+          topicTitle: 'Higher Mathematics',
+          score: 18,
+          maxScore: 20,
+          correctAnswers: 18,
+          incorrectAnswers: 2,
+          unanswered: 0,
+          percentage: 90,
+          isChallengeMode: true
+        }}
+      />
 
     </div>
   );

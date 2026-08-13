@@ -34,5 +34,9 @@
     "@vitejs/plugin-react": "^4.2.1",
     "typescript": "^5.2.2",
     "vite": "^6.0.0"
+  },
+  "supportedArchitectures": {
+    "os": ["current", "android", "darwin", "freebsd", "linux", "openbsd", "win32"],
+    "cpu": ["current", "arm", "arm64", "ia32", "x64", "loong64", "ppc64", "riscv64", "s390x"]
   }
 }

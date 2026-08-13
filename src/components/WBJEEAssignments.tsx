@@ -348,6 +348,17 @@ export const WBJEEAssignments: React.FC = () => {
               <span className="text-[11px] text-slate-400 font-medium">Detailed Solutions</span>
             </div>
           </div>
+
+          {/* Sample Merit Certificate Trigger Button */}
+          <div className="mt-6 flex justify-center">
+            <button
+              onClick={() => setShowMarksheetModal(true)}
+              className="px-6 py-2.5 bg-gradient-to-r from-amber-500/20 via-brand-gold/20 to-yellow-500/20 hover:from-amber-500/30 hover:via-brand-gold/30 hover:to-yellow-500/30 text-brand-gold font-bold text-xs sm:text-sm rounded-full border border-brand-gold/40 transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(212,175,55,0.2)] hover:scale-105 cursor-pointer"
+            >
+              <Award size={18} className="text-brand-gold animate-pulse" />
+              <span>📜 View Sample Official Merit Marksheet & Certificate</span>
+            </button>
+          </div>
         </div>
 
         {/* Global Chapter Search Input */}
@@ -1153,24 +1164,33 @@ export const WBJEEAssignments: React.FC = () => {
       </AnimatePresence>
 
       {/* Official Student Merit Marksheet Modal */}
-      {selectedMock && (
-        <StudentMarksheetModal
-          isOpen={showMarksheetModal}
-          onClose={() => setShowMarksheetModal(false)}
-          data={{
-            studentName: 'WBJEE Aspirant',
-            testTitle: `${selectedMock.title} (${selectedChapter?.title || 'WBJEE'})`,
-            topicTitle: selectedChapter?.title || 'WBJEE Mathematics',
-            score: calculateScore().score,
-            maxScore: calculateScore().maxScore,
-            correctAnswers: calculateScore().correct,
-            incorrectAnswers: calculateScore().incorrect,
-            unanswered: calculateScore().unanswered,
-            percentage: calculateScore().percentage,
-            isChallengeMode: isChallengeMode
-          }}
-        />
-      )}
+      <StudentMarksheetModal
+        isOpen={showMarksheetModal}
+        onClose={() => setShowMarksheetModal(false)}
+        data={selectedMock ? {
+          studentName: 'WBJEE Aspirant',
+          testTitle: `${selectedMock.title} (${selectedChapter?.title || 'WBJEE'})`,
+          topicTitle: selectedChapter?.title || 'WBJEE Mathematics',
+          score: calculateScore().score,
+          maxScore: calculateScore().maxScore,
+          correctAnswers: calculateScore().correct,
+          incorrectAnswers: calculateScore().incorrect,
+          unanswered: calculateScore().unanswered,
+          percentage: calculateScore().percentage,
+          isChallengeMode: isChallengeMode
+        } : {
+          studentName: 'Rohan Sharma (Sample Candidate)',
+          testTitle: 'WBJEE Rankers Mock Test 01: Calculus & Coordinate Geometry',
+          topicTitle: 'Unit 2: Calculus & Coordinate Geometry',
+          score: 18,
+          maxScore: 20,
+          correctAnswers: 18,
+          incorrectAnswers: 2,
+          unanswered: 0,
+          percentage: 90,
+          isChallengeMode: true
+        }}
+      />
 
     </div>
   );

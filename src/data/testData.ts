@@ -1,3 +1,11 @@
+import { topic2Tests } from './tests/topic2_relations_functions';
+import { topic3Tests } from './tests/topic3_trigonometry';
+import { topic4Tests } from './tests/topic4_complex_numbers';
+import { topic5Tests } from './tests/topic5_quadratic_equations';
+import { topic6Tests } from './tests/topic6_linear_inequalities';
+import { topic7Tests } from './tests/topic7_permutations_combinations';
+import { topic8Tests } from './tests/topic8_limits_derivatives';
+
 export interface Question {
   id: number;
   text: string;
@@ -15,7 +23,7 @@ export interface Test {
   questions: Question[];
 }
 
-export const tests: Test[] = [
+const baseTests: Test[] = [
   {
     id: 't1',
     title: 'Sets: Basics & Operations',
@@ -1091,3 +1099,15 @@ export const tests: Test[] = [
     ]
   }
 ];
+
+export const tests: Test[] = [
+  ...baseTests,
+  ...topic2Tests,
+  ...topic3Tests,
+  ...topic4Tests,
+  ...topic5Tests,
+  ...topic6Tests,
+  ...topic7Tests,
+  ...topic8Tests,
+];
+

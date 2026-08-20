@@ -1,205 +1,1300 @@
 import { Test } from '../testData';
+import { topic5JeeTests } from './topic5_quadratic_equations_jee';
 
-export const topic5Tests: Test[] = [
+const baseTopic5Tests: Test[] = [
   {
-    id: 'quad_t1',
-    title: '৫.১ দ্বিঘাত সমীকরণ ও বীজের প্রকৃতি (Nature of Roots & Discriminant)',
+    id: 'quad_mock_1',
+    title: '৫.১ দ্বিঘাত সমীকরণ মক টেস্ট ১ (Quadratic Equations Mock 1)',
     topic: '৫. দ্বিঘাত সমীকরণ',
     exam: 'WB Class-XI First Semester',
     duration: 20,
     questions: [
-      { id: 1, text: "$ax^2 + bx + c = 0$ ($a \\neq 0$) সমীকরণের নিরূপক (Discriminant) $D$ কত?", options: ["$b^2 - 4ac$", "$b^2 + 4ac$", "$4ac - b^2$", "$\\sqrt{b^2 - 4ac}$"], correctAnswer: 0 },
-      { id: 2, text: "যদি $D > 0$ এবং পূর্ণবর্গ না হয়, তবে বীজদ্বয় কেমন হবে?", options: ["বাস্তব, অসমান ও অমূলদ", "বাস্তব, সমান ও মূলদ", "জটিল অনুবন্ধী", "বাস্তব ও সমান"], correctAnswer: 0 },
-      { id: 3, text: "যদি $D = 0$ হয়, তবে বীজদ্বয় কেমন হবে?", options: ["বাস্তব ও সমান", "বাস্তব ও অসমান", "কাল্পনিক", "অমূলদ"], correctAnswer: 0 },
-      { id: 4, text: "যদি $D < 0$ হয়, তবে বীজদ্বয় কেমন হবে?", options: ["অবাস্তব বা জটিল অনুবন্ধী", "বাস্তব ও সমান", "বাস্তব ও অসমান", "মূলদ"], correctAnswer: 0 },
-      { id: 5, text: "$x^2 - 4x + 4 = 0$ সমীকরণের বীজদ্বয় কেমন?", options: ["বাস্তব ও সমান ($2, 2$)", "বাস্তব ও অসমান", "কাল্পনিক", "অমূলদ"], correctAnswer: 0 },
-      { id: 6, text: "$2x^2 - 3x + 5 = 0$ সমীকরণের নিরূপক কত?", options: ["$-31$", "$31$", "$-49$", "$49$"], correctAnswer: 0 },
-      { id: 7, text: "$k$ এর কোন মানের জন্য $x^2 - kx + 9 = 0$ সমীকরণের বীজদ্বয় সমান হবে?", options: ["$\\pm 6$", "$\\pm 3$", "$\\pm 9$", "$\\pm 18$"], correctAnswer: 0 },
-      { id: 8, text: "যদি একটি দ্বিঘাত সমীকরণের একটি বীজ $2 + \\sqrt{3}$ হয়, তবে অপর বীজটি কী হবে (সহগগুলি মূলদ)?", options: ["$2 - \\sqrt{3}$", "$-2 + \\sqrt{3}$", "$-2 - \\sqrt{3}$", "$\\sqrt{3} - 2$"], correctAnswer: 0 },
-      { id: 9, text: "যদি একটি দ্বিঘাত সমীকরণের একটি বীজ $3 - 4i$ হয়, তবে সমীকরণটির অপর বীজ কী হবে (সহগগুলি বাস্তব)?", options: ["$3 + 4i$", "$-3 - 4i$", "$-3 + 4i$", "$4 - 3i$"], correctAnswer: 0 },
-      { id: 10, text: "$x^2 + 1 = 0$ সমীকরণের বীজদ্বয় কী?", options: ["$\\pm i$", "$\\pm 1$", "$1, 0$", "$-1, 0$"], correctAnswer: 0 },
-      { id: 11, text: "$ax^2 + bx + c = 0$ সমীকরণে $a$ ও $c$ বিপরীত চিহ্নযুক্ত হলে বীজদ্বয় সর্বদা কেমন হবে?", options: ["বাস্তব ও অসমান", "কাল্পনিক", "সমান", "অমূলদ"], correctAnswer: 0 },
-      { id: 12, text: "$kx^2 + 2x + 1 = 0$ সমীকরণের বীজদ্বয় বাস্তব ও অসমান হওয়ার শর্ত কী?", options: ["$k < 1$ এবং $k \\neq 0$", "$k > 1$", "$k = 1$", "$k \\le 1$"], correctAnswer: 0 },
-      { id: 13, text: "শ্রীধর আচার্যের সূত্রের সাহায্যে $ax^2 + bx + c = 0$ এর সমাধান কী?", options: ["$x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$", "$x = \\frac{-b \\pm \\sqrt{b^2+4ac}}{2a}$", "$x = \\frac{b \\pm \\sqrt{b^2-4ac}}{2a}$", "$x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{a}$"], correctAnswer: 0 },
-      { id: 14, text: "$x^2 - 5x + 6 = 0$ সমীকরণের বীজদ্বয় কী কী?", options: ["$2, 3$", "$-2, -3$", "$1, 6$", "$-1, -6$"], correctAnswer: 0 },
-      { id: 15, text: "যদি সমীকরণের নিরূপক $D > 0$ এবং একটি পূর্ণবর্গ সংখ্যা হয় (সহগগুলি মূলদ), তবে বীজদ্বয় কেমন হবে?", options: ["বাস্তব, অসমান ও মূলদ", "অবাস্তব", "সমান", "অমূলদ"], correctAnswer: 0 },
-      { id: 16, text: "$p$ এর কোন মানের জন্য $2x^2 + px + 8 = 0$ এর বীজদ্বয় বাস্তব ও সমান?", options: ["$\\pm 8$", "$\\pm 4$", "$\\pm 16$", "$\\pm 2$"], correctAnswer: 0 },
-      { id: 17, text: "$x^2 + x + 1 = 0$ সমীকরণের বীজদ্বয়ের প্রকৃতি কী?", options: ["কাল্পনিক অনুবন্ধী", "বাস্তব ও সমান", "বাস্তব ও অসমান", "মূলদ"], correctAnswer: 0 },
-      { id: 18, text: "যদি $ax^2 + bx + c = 0$ সমীকরণে $b = 0$ হয়, তবে বীজদ্বয় কেমন হবে?", options: ["পরস্পর সমান কিন্তু বিপরীত চিহ্নযুক্ত", "পরস্পর অনন্যক", "উভয়েই শূন্য", "একটি শূন্য"], correctAnswer: 0 },
-      { id: 19, text: "যদি $ax^2 + bx + c = 0$ সমীকরণে $c = 0$ হয়, তবে সমীকরণের একটি বীজ কত হবে?", options: ["0", "1", "-1", "নির্ণয় করা যায় না"], correctAnswer: 0 },
-      { id: 20, text: "যদি $ax^2 + bx + c = 0$ সমীকরণে $a = c$ হয়, তবে বীজদ্বয় কেমন হবে?", options: ["পরস্পর অনন্যক (Reciprocal)", "সমান কিন্তু বিপরীত চিহ্নযুক্ত", "উভয়েই শূন্য", "কাল্পনিক"], correctAnswer: 0 }
+      {
+        id: 1,
+        text: "$\\log_4\\{\\log_2(\\sqrt{x+8}-\\sqrt{x})\\} = 0$ সমীকরণটির একটি বাস্তব মূল হলো:",
+        options: ["1", "2", "3", "4"],
+        correctAnswer: 0
+      },
+      {
+        id: 2,
+        text: "$7^{\\log_7(x^2 - 4x + 5)} = x - 1$ সমীকরণের মূলগুলি হলো:",
+        options: ["4, 5", "2, -3", "2, 3", "3, 5"],
+        correctAnswer: 2
+      },
+      {
+        id: 3,
+        text: "$\\log_x 2 \\cdot \\log_{2x} 2 = \\log_{4x} 2$ সমীকরণটির সমাধান সেট হলো:",
+        options: ["$\\{2^{-\\sqrt{2}}, 2^{\\sqrt{2}}\\}$", "$\\{\\frac{1}{2}, 2\\}$", "$\\{\\frac{1}{4}, 2^2\\}$", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 4,
+        text: "$3^{\\log_a x} + 3x^{\\log_a 3} = 2$ সমীকরণটির সমাধান হলো:",
+        options: ["$3^{\\log_2 a}$", "$3^{-\\log_2 a}$", "$2^{\\log_3 a}$", "$2^{-\\log_3 a}$"],
+        correctAnswer: 3
+      },
+      {
+        id: 5,
+        text: "যদি $3^{x+1} = 6^{\\log_2 3}$ হয়, তবে $x$-এর মান হলো:",
+        options: ["3", "2", "$\\log_3 2$", "$\\log_2 3$"],
+        correctAnswer: 3
+      },
+      {
+        id: 6,
+        text: "$\\left|\\frac{x}{x-1}\\right| + |x| = \\frac{x^2}{|x-1|}$ সমীকরণটির সমাধান হলো:",
+        options: ["$x \\ge 0$", "$x > 0$", "$x \\in (1, \\infty)$", "কোনোটিই নয়"],
+        correctAnswer: 2
+      },
+      {
+        id: 7,
+        text: "যদি $2\\log(x+1) - \\log(x^2 - 1) = \\log 2$ হয়, তবে $x$-এর মান হলো:",
+        options: ["1", "0", "2", "3"],
+        correctAnswer: 3
+      },
+      {
+        id: 8,
+        text: "$x^2 + 5|x| + 4 = 0$ সমীকরণটির বাস্তব মূলগুলি হলো:",
+        options: ["$\\{-1, -4\\}$", "$\\{1, 4\\}$", "$\\{-4, 4\\}$", "কোনোটিই নয়"],
+        correctAnswer: 3
+      },
+      {
+        id: 9,
+        text: "যদি $|x^2 - x - 6| = x + 2$ হয়, তবে $x$-এর মানগুলি হলো:",
+        options: ["-2, 2, -4", "-2, 2, 4", "3, 2, -2", "4, 4, 3"],
+        correctAnswer: 1
+      },
+      {
+        id: 10,
+        text: "$\\{x \\in \\mathbb{R} : |x - 2| = x^2\\} =$ কত?",
+        options: ["$\\{-1, 2\\}$", "$\\{1, 2\\}$", "$\\{-1, -2\\}$", "$\\{1, -2\\}$"],
+        correctAnswer: 3
+      },
+      {
+        id: 11,
+        text: "যদি $ax^2 + bx + c = 0$ হয়, তবে $x =$",
+        options: ["$\\frac{b \\pm \\sqrt{b^2 - 4ac}}{2a}$", "$\\frac{-b \\pm \\sqrt{b^2 - ac}}{2a}$", "$\\frac{2c}{-b \\pm \\sqrt{b^2 - 4ac}}$", "কোনোটিই নয়"],
+        correctAnswer: 3
+      },
+      {
+        id: 12,
+        text: "যদি $x^{2/3} - 7x^{1/3} + 10 = 0$ হয়, তবে $x =$",
+        options: ["$\\{125\\}$", "$\\{8\\}$", "$\\phi$", "$\\{125, 8\\}$"],
+        correctAnswer: 3
+      },
+      {
+        id: 13,
+        text: "$(p - q)x^2 + (q - r)x + (r - p) = 0$ সমীকরণটির মূলগুলি হলো:",
+        options: ["$\\frac{p - q}{r - p}, 1$", "$\\frac{q - r}{p - q}, 1$", "$\\frac{r - p}{p - q}, 1$", "$1, \\frac{q - r}{p - q}$"],
+        correctAnswer: 2
+      },
+      {
+        id: 14,
+        text: "$x + \\frac{1}{x} = 2$ সমীকরণটির সমাধান হবে:",
+        options: ["2, -1", "$0, -1, -\\frac{1}{5}$", "$-1, -\\frac{1}{5}$", "কোনোটিই নয়"],
+        correctAnswer: 3
+      },
+      {
+        id: 15,
+        text: "$2x^5 - 14x^4 + 31x^3 - 64x^2 + 19x + 130 = 0$ সমীকরণটির একটি মূল হলো:",
+        options: ["1", "3", "5", "7"],
+        correctAnswer: 2
+      },
+      {
+        id: 16,
+        text: "$x^4 - 4x^3 + 6x^2 - 4x + 1 = 0$ সমীকরণটির মূলগুলি হলো:",
+        options: ["1, 1, 1, 1", "2, 2, 2, 2", "3, 1, 3, 1", "1, 2, 1, 2"],
+        correctAnswer: 0
+      },
+      {
+        id: 17,
+        text: "$(x+1)(x+3)(x+2)(x+4) = 120$ সমীকরণটির একটি মূল হলো:",
+        options: ["-1", "2", "1", "0"],
+        correctAnswer: 2
+      },
+      {
+        id: 18,
+        text: "যদি $9^x - 4 \\cdot 3^{x+2} + 3^5 = 0$ হয়, তবে সমাধানের জোড়াটি হলো:",
+        options: ["(1, 2)", "(2, 3)", "(2, 4)", "(1, 3)"],
+        correctAnswer: 1
+      },
+      {
+        id: 19,
+        text: "$4^{x+2} = 2^{2x+3} + 48$ সমীকরণে $x$-এর মান হবে:",
+        options: ["$-\\frac{3}{2}$", "-2", "-3", "1"],
+        correctAnswer: 3
+      },
+      {
+        id: 20,
+        text: "$4^x - 3 \\cdot 2^{x+3} + 128 = 0$ সমীকরণের মূলগুলি হলো:",
+        options: ["1 এবং 2", "2 এবং 3", "3 এবং 4", "4 এবং 5"],
+        correctAnswer: 2
+      }
     ]
   },
   {
-    id: 'quad_t2',
-    title: '৫.২ বীজ ও সহগের সম্পর্ক ও প্রতিসম রাশি (Roots, Coefficients & Symmetric Expressions)',
+    id: 'quad_mock_2',
+    title: '৫.২ দ্বিঘাত সমীকরণ মক টেস্ট ২ (Quadratic Equations Mock 2)',
     topic: '৫. দ্বিঘাত সমীকরণ',
     exam: 'WB Class-XI First Semester',
     duration: 20,
     questions: [
-      { id: 1, text: "যদি $ax^2 + bx + c = 0$ সমীকরণের বীজদ্বয় $\\alpha, \\beta$ হয়, তবে $\\alpha + \\beta = ?$", options: ["$-b/a$", "$b/a$", "$c/a$", "$-c/a$"], correctAnswer: 0 },
-      { id: 2, text: "বীজদ্বয়ের গুণফল $\\alpha\\beta = ?$", options: ["$c/a$", "$-c/a$", "$b/a$", "$-b/a$"], correctAnswer: 0 },
-      { id: 3, text: "যে দ্বিঘাত সমীকরণের বীজদ্বয় $\\alpha$ এবং $\\beta$, সেই সমীকরণটি কী?", options: ["$x^2 - (\\alpha+\\beta)x + \\alpha\\beta = 0$", "$x^2 + (\\alpha+\\beta)x + \\alpha\\beta = 0$", "$x^2 - (\\alpha+\\beta)x - \\alpha\\beta = 0$", "$x^2 + (\\alpha+\\beta)x - \\alpha\\beta = 0$"], correctAnswer: 0 },
-      { id: 4, text: "যদি $\\alpha, \\beta$ হলো $x^2 - 5x + 6 = 0$ এর বীজ, তবে $\\alpha^2 + \\beta^2 = ?$", options: ["13", "25", "19", "37"], correctAnswer: 0 },
-      { id: 5, text: "যদি $\\alpha, \\beta$ হলো $ax^2 + bx + c = 0$ এর বীজ, তবে $\\frac{1}{\\alpha} + \\frac{1}{\\beta} = ?$", options: ["$-b/c$", "$b/c$", "$-c/b$", "$c/b$"], correctAnswer: 0 },
-      { id: 6, text: "$\\alpha^3 + \\beta^3$ এর মান কোনটি?", options: ["$(\\alpha+\\beta)^3 - 3\\alpha\\beta(\\alpha+\\beta)$", "$(\\alpha+\\beta)^3 + 3\\alpha\\beta(\\alpha+\\beta)$", "$(\\alpha+\\beta)(\\alpha^2 + \\beta^2)$", "$(\\alpha-\\beta)^3$"], correctAnswer: 0 },
-      { id: 7, text: "$(\\alpha - \\beta)^2$ কার সমান?", options: ["$(\\alpha+\\beta)^2 - 4\\alpha\\beta$", "$(\\alpha+\\beta)^2 + 4\\alpha\\beta$", "$\\alpha^2 + \\beta^2$", "$\\frac{b^2-4ac}{a}$"], correctAnswer: 0 },
-      { id: 8, text: "যে সমীকরণের বীজদ্বয় $2$ এবং $-3$, সেই সমীকরণটি কী?", options: ["$x^2 + x - 6 = 0$", "$x^2 - x - 6 = 0$", "$x^2 + 5x + 6 = 0$", "$x^2 - 5x - 6 = 0$"], correctAnswer: 0 },
-      { id: 9, text: "যদি $x^2 - px + q = 0$ সমীকরণের একটি বীজ অপরটির দ্বিগুণ হয়, তবে $p$ ও $q$ এর সম্পর্ক কী?", options: ["$2p^2 = 9q$", "$p^2 = 8q$", "$9p^2 = 2q$", "$4p^2 = 9q$"], correctAnswer: 0 },
-      { id: 10, text: "যদি $ax^2 + bx + c = 0$ এর একটি বীজ অপরটির তিনগুণ হয়, তবে সম্পর্কটি কী?", options: ["$3b^2 = 16ac$", "$b^2 = 12ac$", "$16b^2 = 3ac$", "$b^2 = 16ac$"], correctAnswer: 0 },
-      { id: 11, text: "যদি $ax^2 + bx + c = 0$ এর বীজদ্বয়ের অনুপাত $m : n$ হয়, তবে কোনটি সঠিক?", options: ["$\\frac{b^2}{ac} = \\frac{(m+n)^2}{mn}$", "$\\frac{b^2}{ac} = \\frac{mn}{(m+n)^2}$", "$\\frac{b}{ac} = \\frac{m+n}{mn}$", "$b^2 mn = ac(m+n)$"], correctAnswer: 0 },
-      { id: 12, text: "যদি $\\alpha, \\beta$ সমীকরণ $x^2 + px + q = 0$ এর বীজ হয়, তবে $\\alpha^2\\beta + \\alpha\\beta^2$ এর মান কত?", options: ["$-pq$", "$pq$", "$p/q$", "$-p/q$"], correctAnswer: 0 },
-      { id: 13, text: "যে সমীকরণের বীজদ্বয় $ax^2 + bx + c = 0$ এর বীজদ্বয়ের অনন্যক, সেই সমীকরণটি কী?", options: ["$cx^2 + bx + a = 0$", "$ax^2 - bx + c = 0$", "$cx^2 - bx + a = 0$", "$bx^2 + ax + c = 0$"], correctAnswer: 0 },
-      { id: 14, text: "যে সমীকরণের বীজদ্বয় $ax^2 + bx + c = 0$ এর বীজদ্বয়ের বিপরীত চিহ্নযুক্ত, সেই সমীকরণটি কী?", options: ["$ax^2 - bx + c = 0$", "$cx^2 + bx + a = 0$", "$-ax^2 + bx - c = 0$", "$ax^2 + bx - c = 0$"], correctAnswer: 0 },
-      { id: 15, text: "যদি $x^2 - 6x + a = 0$ সমীকরণের বীজদ্বয়ের অন্তর 2 হয়, তবে $a$ এর মান কত?", options: ["8", "5", "9", "4"], correctAnswer: 0 },
-      { id: 16, text: "যদি $x^2 + px + 12 = 0$ এর একটি বীজ 4 হয় এবং $x^2 + px + q = 0$ এর বীজদ্বয় সমান হয়, তবে $q = ?$", options: ["$49/4$", "$49$", "$7$", "$12$"], correctAnswer: 0 },
-      { id: 17, text: "$\\frac{\\alpha}{\\beta} + \\frac{\\beta}{\\alpha}$ এর মান $a, b, c$ এর মাধ্যমে কত?", options: ["$\\frac{b^2 - 2ac}{ac}$", "$\\frac{b^2 + 2ac}{ac}$", "$\\frac{b^2 - 4ac}{2ac}$", "$\\frac{b^2 - 2ac}{a^2}$"], correctAnswer: 0 },
-      { id: 18, text: "যদি $ax^2 + bx + c = 0$ এর বীজদ্বয়ের সমষ্টি ও গুণফল উভয়েই 4 হয়, তবে $a, b, c$ এর সম্পর্ক কী?", options: ["$b = -4a, c = 4a$", "$b = 4a, c = 4a$", "$b = -4a, c = -4a$", "$b = 4, c = 4$"], correctAnswer: 0 },
-      { id: 19, text: "দ্বিঘাত রাশি $ax^2 + bx + c$ এর চরম মান (Maximum/Minimum) কোন বিন্দুতে ঘটে?", options: ["$x = -\\frac{b}{2a}$", "$x = -\\frac{b}{a}$", "$x = -\\frac{c}{a}$", "$x = \\frac{b}{2a}$"], correctAnswer: 0 },
-      { id: 20, text: "যদি $a > 0$ হয়, তবে $ax^2 + bx + c$ এর সর্বনিম্ন মান কত?", options: ["$\\frac{4ac - b^2}{4a}$", "$\\frac{b^2 - 4ac}{4a}$", "$-\\frac{b}{2a}$", "$0$"], correctAnswer: 0 }
+      {
+        id: 1,
+        text: "$\\sqrt{2x - 2} + \\sqrt{x - 3} = 2$ সমীকরণটির মূল হলো:",
+        options: ["3", "19", "3, 19", "3, -19"],
+        correctAnswer: 2
+      },
+      {
+        id: 2,
+        text: "$\\sqrt{x + 1} + \\sqrt{x - 1} = 0$ সমীকরণটির সমাধান হলো:",
+        options: ["1", "-1", "5/4", "কোনোটিই নয়"],
+        correctAnswer: 3
+      },
+      {
+        id: 3,
+        text: "যদি $x = \\sqrt{6 + \\sqrt{6 + \\sqrt{6 + \\dots \\infty}}}$ হয়, তবে:",
+        options: ["$x$ একটি অমূলদ সংখ্যা", "$2 < x < 3$", "$x = 3$", "কোনোটিই নয়"],
+        correctAnswer: 2
+      },
+      {
+        id: 4,
+        text: "$(5 + 2\\sqrt{6})^{x^2 - 3} + (5 - 2\\sqrt{6})^{x^2 - 3} = 10$ সমীকরণটিকে সিদ্ধ করে এমন বাস্তব $x$-এর মানগুলি হলো:",
+        options: ["$\\pm 2$", "$\\pm \\sqrt{2}$", "$\\pm 2, \\pm \\sqrt{2}$", "$2, \\sqrt{2}$"],
+        correctAnswer: 2
+      },
+      {
+        id: 5,
+        text: "যদি $a(b-c)x^2 + b(c-a)x + c(a-b) = 0$ সমীকরণের একটি মূল 1 হয়, তবে অন্য মূলটি হলো:",
+        options: ["$\\frac{a(b-c)}{b(c-a)}$", "$\\frac{c(a-b)}{a(b-c)}$", "$\\frac{b(c-a)}{a(b-c)}$", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 6,
+        text: "$(x^2 + 2)^2 + 8x^2 = 6x(x^2 + 2)$ সমীকরণটির কাল্পনিক মূলগুলি হলো:",
+        options: ["$1 \\pm i$", "$2 \\pm i$", "$-1 \\pm i$", "কোনোটিই নয়"],
+        correctAnswer: 2
+      },
+      {
+        id: 7,
+        text: "$x^2 - 18x + 9 = 0$ সমীকরণের মূলগুলির গুণোত্তর গড় (GM) হলো:",
+        options: ["6", "3", "-3", "$\\pm 3$"],
+        correctAnswer: 3
+      },
+      {
+        id: 8,
+        text: "$(x+1)^2 + [x-1]^2 = (x-1)^2 + [x+1]^2$ সমীকরণটির সমাধান সেট হলো:",
+        options: ["$x \\in \\mathbb{R}$", "$x \\in \\mathbb{N}$", "$x \\in \\mathbb{I}$ (পূর্ণসংখ্যা)", "$x \\in \\mathbb{Q}$"],
+        correctAnswer: 2
+      },
+      {
+        id: 9,
+        text: "$\\left[\\frac{1}{4}\\right] + \\left[\\frac{1}{4} + \\frac{1}{200}\\right] + \\left[\\frac{1}{4} + \\frac{1}{100}\\right] + \\dots + \\left[\\frac{1}{4} + \\frac{199}{200}\\right]$-এর মান হলো:",
+        options: ["49", "50", "51", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 10,
+        text: "$x = \\sqrt{2 + \\sqrt{2 + \\sqrt{2 + \\dots}}}$ এর মান হলো:",
+        options: ["-1", "1", "2", "3"],
+        correctAnswer: 2
+      },
+      {
+        id: 11,
+        text: "যদি $x^2 - x + 1 = 0$ হয়, তবে $x^{3n}$-এর মান হলো:",
+        options: ["-1, 1", "1", "-1", "0"],
+        correctAnswer: 1
+      },
+      {
+        id: 12,
+        text: "$a$-এর কোন মানের জন্য $y = x^2 + ax + 25$ বক্ররেখাটি $x$-অক্ষকে স্পর্শ করবে?",
+        options: ["0", "$\\pm 5$", "$\\pm 10$", "কোনোটিই নয়"],
+        correctAnswer: 2
+      },
+      {
+        id: 13,
+        text: "ধরি $\\alpha, \\beta$ হলো $x^2 + px + p^3 = 0$ সমীকরণের মূল ($p \\ne 0$)। যদি $(\\alpha, \\beta)$ বিন্দুটি $y^2 = x$ অধিবৃত্তের ওপর থাকে, তবে সমীকরণটির মূলগুলি হলো:",
+        options: ["4, -2", "-4, -2", "4, 2", "-4, 2"],
+        correctAnswer: 0
+      },
+      {
+        id: 14,
+        text: "যদি $e^{(\\sin^2 x + \\sin^4 x + \\sin^6 x + \\dots \\infty)\\ln 2}$ রাশিটি $x^2 - 9x + 8 = 0$ সমীকরণকে সিদ্ধ করে, তবে $\\frac{\\cos x}{\\cos x + \\sin x}$ ($0 < x < \\frac{\\pi}{2}$)-এর মান কত?",
+        options: ["$\\frac{1}{1 + \\sqrt{3}}$", "$\\frac{1}{1 - \\sqrt{3}}$", "$\\frac{2}{1 - \\sqrt{2}}$", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 15,
+        text: "$\\frac{2x+31}{9} = \\frac{x^2+7}{x^2-7} + \\frac{2x+47}{9}$ সমীকরণের মূলগুলি হলো:",
+        options: ["3, -3", "5, -5", "$\\sqrt{3}, -\\sqrt{3}$", "$\\sqrt{5}, -\\sqrt{5}$"],
+        correctAnswer: 1
+      },
+      {
+        id: 16,
+        text: "যদি $x^2 + y^2 = 25$ এবং $xy = 12$ হয়, তবে $x =$",
+        options: ["$\\{3, 4\\}$", "$\\{3, -3\\}$", "$\\{3, 4, -3, -4\\}$", "$\\{-3, -3\\}$"],
+        correctAnswer: 2
+      },
+      {
+        id: 17,
+        text: "$|x-2|^2 + |x-2| - 2 = 0$ সমীকরণের সকল বাস্তব মূলের যোগফল হলো:",
+        options: ["2", "4", "1", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 18,
+        text: "একটি দুই অঙ্কের সংখ্যা তার অঙ্কদ্বয়ের যোগফলের ৪ গুণ এবং অঙ্কদ্বয়ের গুণফলের ৩ গুণ। সংখ্যাটি হলো:",
+        options: ["42", "24", "12", "21"],
+        correctAnswer: 1
+      },
+      {
+        id: 19,
+        text: "$|x^2 + 4x + 3| + 2x + 5 = 0$ সমীকরণের বাস্তব সমাধানের সংখ্যা হলো:",
+        options: ["1", "2", "3", "4"],
+        correctAnswer: 1
+      },
+      {
+        id: 20,
+        text: "$|3x^2 + 12x + 6| = 5x + 16$ সমীকরণটিকে সিদ্ধ করে এমন বাস্তব $x$-এর মানের সংখ্যা হলো:",
+        options: ["4", "3", "2", "1"],
+        correctAnswer: 2
+      }
     ]
   },
   {
-    id: 'quad_t3',
-    title: '৫.৩ সাধারণ বীজ সংক্রান্ত শর্ত ও সমীকরণ রূপান্তর (Common Roots & Transformation of Equations)',
+    id: 'quad_mock_3',
+    title: '৫.৩ দ্বিঘাত সমীকরণ মক টেস্ট ৩ (Quadratic Equations Mock 3)',
     topic: '৫. দ্বিঘাত সমীকরণ',
     exam: 'WB Class-XI First Semester',
     duration: 20,
     questions: [
-      { id: 1, text: "$a_1 x^2 + b_1 x + c_1 = 0$ এবং $a_2 x^2 + b_2 x + c_2 = 0$ সমীকরণদ্বয়ের একটি বীজ সাধারণ হওয়ার শর্ত কী?", options: ["$(c_1 a_2 - c_2 a_1)^2 = (a_1 b_2 - a_2 b_1)(b_1 c_2 - b_2 c_1)$", "$(a_1 a_2 - b_1 b_2)^2 = c_1 c_2$", "$(b_1 b_2 - c_1 c_2)^2 = a_1 a_2$", "$a_1 b_2 + a_2 b_1 = c_1 c_2$"], correctAnswer: 0 },
-      { id: 2, text: "$a_1 x^2 + b_1 x + c_1 = 0$ এবং $a_2 x^2 + b_2 x + c_2 = 0$ সমীকরণদ্বয়ের উভয় বীজই সাধারণ হওয়ার শর্ত কী?", options: ["$\\frac{a_1}{a_2} = \\frac{b_1}{b_2} = \\frac{c_1}{c_2}$", "$a_1 a_2 = b_1 b_2 = c_1 c_2$", "$a_1 + a_2 = b_1 + b_2 = c_1 + c_2$", "$a_1 b_2 = a_2 b_1$"], correctAnswer: 0 },
-      { id: 3, text: "যদি $x^2 + bx + c = 0$ এবং $x^2 + cx + b = 0$ ($b \\neq c$) এর একটি সাধারণ বীজ থাকে, তবে $b + c$ এর মান কত?", options: ["$-1$", "$1$", "$0$", "$2$"], correctAnswer: 0 },
-      { id: 4, text: "$x^2 - 11x + a = 0$ এবং $x^2 - 14x + 2a = 0$ সমীকরণদ্বয়ের একটি সাধারণ বীজ থাকলে $a$-এর অশূন্য মান কত?", options: ["24", "12", "36", "48"], correctAnswer: 0 },
-      { id: 5, text: "যদি $x^2 + ax + 1 = 0$ এবং $x^2 + x + a = 0$ সমীকরণদ্বয়ের একটি সাধারণ বীজ থাকে, তবে $a$-এর বাস্তব মান কত?", options: ["$-2$", "$1$", "$2$", "$-1$"], correctAnswer: 0 },
-      { id: 6, text: "যদি $ax^2 + bx + c = 0$ এবং $bx^2 + cx + a = 0$ এর একটি সাধারণ বীজ থাকে ($a, b, c \\neq 0$), তবে $a^3 + b^3 + c^3 = ?$", options: ["$3abc$", "$0$", "$abc$", "$-3abc$"], correctAnswer: 0 },
-      { id: 7, text: "যদি $x^2 + 2x + 3 = 0$ এবং $ax^2 + bx + c = 0$ ($a, b, c \\in \\mathbb{R}$) সমীকরণদ্বয়ের একটি বীজ সাধারণ হয়, তবে $a : b : c$ কত?", options: ["$1 : 2 : 3$", "$1 : 3 : 2$", "$3 : 2 : 1$", "$2 : 1 : 3$"], correctAnswer: 0 },
-      { id: 8, text: "যদি $x^2 + ax + b = 0$ এবং $x^2 + bx + a = 0$ ($a \\neq b$) এর একটি সাধারণ বীজ থাকে, তবে সাধারণ বীজটি কত?", options: ["$1$", "$-1$", "$0$", "$ab$"], correctAnswer: 0 },
-      { id: 9, text: "যদি $ax^2 + bx + c = 0$ এর বীজদ্বয় $\\alpha, \\beta$ হয়, তবে যে সমীকরণের বীজদ্বয় $\\alpha + k, \\beta + k$ তা কী হবে?", options: ["$a(x-k)^2 + b(x-k) + c = 0$", "$a(x+k)^2 + b(x+k) + c = 0$", "$ax^2 + bx + c + k = 0$", "$ax^2 + b(x-k) + c = 0$"], correctAnswer: 0 },
-      { id: 10, text: "যে সমীকরণের বীজদ্বয় $ax^2 + bx + c = 0$ এর বীজদ্বয়ের $k$ গুণ (অর্থাৎ $k\\alpha, k\\beta$) সেই সমীকরণটি কী?", options: ["$ax^2 + kbx + k^2c = 0$", "$k^2ax^2 + kbx + c = 0$", "$ax^2 + bx + kc = 0$", "$kax^2 + kbx + kc = 0$"], correctAnswer: 0 },
-      { id: 11, text: "যে সমীকরণের বীজদ্বয় $-\\alpha$ এবং $-\\beta$ ($ax^2 + bx + c = 0$ এর বীজের বিপরীত চিহ্নযুক্ত), তা হলো—", options: ["$ax^2 - bx + c = 0$", "$-ax^2 + bx + c = 0$", "$cx^2 - bx + a = 0$", "$ax^2 + bx - c = 0$"], correctAnswer: 0 },
-      { id: 12, text: "যদি $ax^2 + bx + c = 0$ এর বীজ $\\alpha, \\beta$ হয়, তবে $\\alpha^2, \\beta^2$ বিশিষ্ট সমীকরণটি কী?", options: ["$a^2x^2 - (b^2-2ac)x + c^2 = 0$", "$a^2x^2 + (b^2-2ac)x + c^2 = 0$", "$ax^2 - (b^2-4ac)x + c = 0$", "$a^2x^2 - b^2x + c^2 = 0$"], correctAnswer: 0 },
-      { id: 13, text: "$x^2 - 3x + 2 = 0$ এবং $x^2 - 5x + 6 = 0$ সমীকরণদ্বয়ের সাধারণ বীজটি কত?", options: ["2", "1", "3", "-2"], correctAnswer: 0 },
-      { id: 14, text: "যদি $x^2 + px + q = 0$ এবং $x^2 + qx + p = 0$ ($p \\neq q$) এর একটি সাধারণ বীজ থাকে, তবে তাদের অপর বীজ দুটির যোগফল কত?", options: ["1", "-1", "0", "$p+q$"], correctAnswer: 0 },
-      { id: 15, text: "যদি $2x^2 + kx - 5 = 0$ এবং $x^2 - 3x - 4 = 0$ সমীকরণদ্বয়ের একটি সাধারণ ঋণাত্মক বীজ থাকে, তবে $k$ এর মান কত?", options: ["$-3$", "$3$", "$-5$", "$5$"], correctAnswer: 0 },
-      { id: 16, text: "যদি $x^2 - 4x + 3 = 0$ এবং $x^2 - ax + 6 = 0$ এর একটি সাধারণ বীজ থাকে, তবে $a$-এর সম্ভাব্য মানগুলি কী?", options: ["5 অথবা 7", "4 অথবা 6", "-5 অথবা -7", "3 অথবা 8"], correctAnswer: 0 },
-      { id: 17, text: "যদি $x^2 + ax + bc = 0$ এবং $x^2 + bx + ca = 0$ ($a \\neq b$) এর একটি সাধারণ বীজ থাকে, তবে $a + b + c = ?$", options: ["0", "1", "-1", "$abc$"], correctAnswer: 0 },
-      { id: 18, text: "যদি $3x^2 + 4kx + 2 = 0$ এবং $2x^2 + 3x - 2 = 0$ এর একটি সাধারণ বীজ থাকে, তবে $k$-এর একটি সম্ভাব্য মান—", options: ["$-7/8$", "$7/8$", "$3/4$", "$-3/4$"], correctAnswer: 0 },
-      { id: 19, text: "যে সমীকরণের বীজদ্বয় $\\alpha^3$ এবং $\\beta^3$ (যেখানে $\\alpha, \\beta$ হলো $x^2 - x + 1 = 0$ এর বীজ), তা কী?", options: ["$(x+1)^2 = 0$", "$x^2 - x + 1 = 0$", "$x^2 + 2x + 1 = 0$", "$x^2 - 2x + 1 = 0$"], correctAnswer: 0 },
-      { id: 20, text: "যদি $x^2 - px + q = 0$ এর বীজদ্বয় $\\alpha, \\beta$ হয়, তবে $\\frac{1}{\\alpha^2}, \\frac{1}{\\beta^2}$ বীজবিশিষ্ট সমীকরণ কোনটি?", options: ["$q^2x^2 - (p^2-2q)x + 1 = 0$", "$q^2x^2 + (p^2-2q)x + 1 = 0$", "$px^2 - (p^2-2q)x + q = 0$", "$x^2 - (p^2-2q)x + q^2 = 0$"], correctAnswer: 0 }
+      {
+        id: 1,
+        text: "$\\sin(e^x) = 5^x + 5^{-x}$ সমীকরণের বাস্তব সমাধানের সংখ্যা হলো:",
+        options: ["0", "1", "2", "অসংখ্য"],
+        correctAnswer: 0
+      },
+      {
+        id: 2,
+        text: "$-x^2 + x - 1 = \\sin^4 x$ সমীকরণের বাস্তব সমাধানের সংখ্যা হলো:",
+        options: ["1", "2", "0", "4"],
+        correctAnswer: 2
+      },
+      {
+        id: 3,
+        text: "$\\cos x = \\frac{|x|}{80}$ সমীকরণের সমাধানের সংখ্যা হলো:",
+        options: ["50", "52", "53", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 4,
+        text: "$\\sqrt{x+1} - \\sqrt{x-1} = \\sqrt{4x-1}$ সমীকরণটির:",
+        options: ["কোনো সমাধান নেই", "একটি সমাধান আছে", "দুটি সমাধান আছে", "দুইয়ের অধিক সমাধান আছে"],
+        correctAnswer: 0
+      },
+      {
+        id: 5,
+        text: "$\\sqrt{5x^2 - 6x + 8} - \\sqrt{5x^2 - 6x - 7} = 1$ সমীকরণের বাস্তব মূলের সংখ্যা হলো:",
+        options: ["1", "2", "3", "4"],
+        correctAnswer: 3
+      },
+      {
+        id: 6,
+        text: "$8\\sec^2 \\theta - 6\\sec \\theta + 1 = 0$ সমীকরণের মূলের সংখ্যা হলো:",
+        options: ["অসীম", "1", "2", "0"],
+        correctAnswer: 3
+      },
+      {
+        id: 7,
+        text: "$[0, 5\\pi]$ ব্যবধিতে $3\\sin^2 x - 7\\sin x + 2 = 0$ সমীকরণকে সিদ্ধ করে এমন $x$-এর মানের সংখ্যা হলো:",
+        options: ["0", "5", "6", "10"],
+        correctAnswer: 2
+      },
+      {
+        id: 8,
+        text: "$x^{2n} - 1 = 0$ সমীকরণের সর্বোচ্চ বাস্তব মূলের সংখ্যা হলো:",
+        options: ["2", "3", "n", "2n"],
+        correctAnswer: 0
+      },
+      {
+        id: 9,
+        text: "$x + \\frac{2}{1-x} = 1 + \\frac{2}{1-x}$ সমীকরণটির:",
+        options: ["কোনো বাস্তব মূল নেই", "একটি বাস্তব মূল আছে", "দুটি সমান মূল আছে", "অসংখ্য বাস্তব মূল আছে"],
+        correctAnswer: 0
+      },
+      {
+        id: 10,
+        text: "$(x-1)^2 + (x-2)^2 + (x-3)^2 = 0$ সমীকরণের বাস্তব মূলের সংখ্যা হলো:",
+        options: ["2", "1", "0", "3"],
+        correctAnswer: 2
+      },
+      {
+        id: 11,
+        text: "$\\log(-2x) = 2\\log(x+1)$ সমীকরণের মূলের সংখ্যা হলো:",
+        options: ["3", "2", "1", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 12,
+        text: "$\\sum_{r=1}^{10} (x-r)^3 = 0$ সমীকরণের বাস্তব মূলের সংখ্যা হলো:",
+        options: ["0", "1", "2", "3"],
+        correctAnswer: 0
+      },
+      {
+        id: 13,
+        text: "$|x-3| + |x-2| + |x-5|$-এর সর্বনিম্ন মান হলো:",
+        options: ["3", "7", "5", "9"],
+        correctAnswer: 0
+      },
+      {
+        id: 14,
+        text: "$\\frac{1}{\\sqrt{2} + \\sqrt{3} + \\sqrt{5}}$-এর হর মূলদীকরণ করলে পাওয়া যায়:",
+        options: ["$\\frac{2\\sqrt{3} + 3\\sqrt{2} - \\sqrt{30}}{12}$", "$\\frac{3\\sqrt{2} - 2\\sqrt{3} - \\sqrt{30}}{15}$", "$\\frac{2\\sqrt{3} - 3\\sqrt{2} + \\sqrt{40}}{10}$", "$\\frac{2\\sqrt{3} + 3\\sqrt{2} - \\sqrt{20}}{15}$"],
+        correctAnswer: 0
+      },
+      {
+        id: 15,
+        text: "যদি $x = 7 + 4\\sqrt{3}$ হয়, তবে $x + \\frac{1}{x} =$",
+        options: ["4", "6", "3", "2"],
+        correctAnswer: 0
+      },
+      {
+        id: 16,
+        text: "যদি $\\log_x 2 + \\log_2 x = \\frac{10}{3} = \\log_2 y + \\log_y 2$ এবং $x \\ne y$ হয়, তবে $x + y =$",
+        options: ["2", "65/8", "37/6", "কোনোটিই নয়"],
+        correctAnswer: 3
+      },
+      {
+        id: 17,
+        text: "$\\log_e x + \\log_e(1+x) = 0$ সমীকরণটিকে যেভাবে লেখা যায়:",
+        options: ["$x^2 + x - e = 0$", "$x^2 + x - 1 = 0$", "$x^2 + x + 1 = 0$", "$x^2 + xe - e = 0$"],
+        correctAnswer: 1
+      },
+      {
+        id: 18,
+        text: "যদি $f(x) = 2x^3 + mx^2 - 13x + n$ এবং $f(x) = 0$-এর দুটি মূল 2 ও 3 হয়, তবে $m$ ও $n$-এর মান হলো:",
+        options: ["-5, -30", "-5, 30", "5, 30", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 19,
+        text: "$e^x = x$ সমীকরণের বাস্তব সমাধানের সংখ্যা হলো:",
+        options: ["1", "2", "0", "কোনোটিই নয়"],
+        correctAnswer: 2
+      },
+      {
+        id: 20,
+        text: "$x^2 + |x| - 6 = 0$ সমীকরণের বাস্তব মূলগুলির যোগফল হলো:",
+        options: ["4", "0", "-1", "কোনোটিই নয়"],
+        correctAnswer: 1
+      }
     ]
   },
   {
-    id: 'quad_t4',
-    title: '৫.৪ দ্বিঘাত সমীকরণ অ্যাডভান্সড মক টেস্ট - ১ (Quadratic Equations Advanced Mock Test I - WBJEE/JEE)',
+    id: 'quad_mock_4',
+    title: '৫.৪ দ্বিঘাত সমীকরণ মক টেস্ট ৪ (Quadratic Equations Mock 4)',
     topic: '৫. দ্বিঘাত সমীকরণ',
     exam: 'WB Class-XI First Semester',
-    duration: 25,
+    duration: 20,
     questions: [
-      { id: 1, text: "যদি $p, q \\in \\mathbb{R}$ এবং $x^2 + px + q = 0$ এর বীজদ্বয় $\\alpha, \\beta$ হয়, তবে $\\alpha^4 + \\beta^4 = ?$", options: ["$(p^2 - 2q)^2 - 2q^2$", "$p^4 - 4p^2q + 2q^2$", "$p^4 - 2q^2$", "$(p^2 - q)^2 - 2q^2$"], correctAnswer: 0 },
-      { id: 2, text: "সমীকরণ $(a^2 - 5a + 6)x^2 + (a^2 - 3a + 2)x + (a^2 - 4) = 0$ একটি অভেদ (Identity in $x$) হওয়ার জন্য $a$-এর মান কত?", options: ["2", "3", "1", "-2"], correctAnswer: 0 },
-      { id: 3, text: "যদি $\\alpha, \\beta$ হলো $x^2 - 2x + 4 = 0$ এর বীজ, তবে $\\alpha^6 + \\beta^6$ এর মান কত?", options: ["128", "64", "-128", "256"], correctAnswer: 0 },
-      { id: 4, text: "যদি $\\alpha, \\beta$ হলো $x^2 + x + 1 = 0$ এর বীজ, তবে $\\alpha^{19}, \\beta^7$ বীজবিশিষ্ট সমীকরণটি কী?", options: ["$x^2 + x + 1 = 0$", "$x^2 - x + 1 = 0$", "$x^2 + x - 1 = 0$", "$x^2 - x - 1 = 0$"], correctAnswer: 0 },
-      { id: 5, text: "$k$-এর কোন মানের জন্য $x^2 - (k-2)x + (k^2 - 3k + 5) = 0$ সমীকরণের বীজদ্বয়ের বর্গের সমষ্টি সর্বোচ্চ হবে?", options: ["$k = 1$", "$k = 2$", "$k = 0$", "$k = -1$"], correctAnswer: 0 },
-      { id: 6, text: "যদি $x^2 - 3x + 1 = 0$ এর বীজ $\\alpha, \\beta$ হয়, তবে $\\alpha^5 + \\beta^5$ এর মান কত?", options: ["123", "125", "118", "130"], correctAnswer: 0 },
-      { id: 7, text: "সমীকরণ $3^{|x^2 - 2|} = 9$ এর বাস্তব সমাধানের মোট সংখ্যা কত?", options: ["4", "2", "3", "1"], correctAnswer: 0 },
-      { id: 8, text: "যদি $\\alpha, \\beta$ সমীকরণ $x^2 - 6x + a = 0$ এর বীজ হয় এবং $3\\alpha + 2\\beta = 16$ হয়, তবে $a$-এর মান কত?", options: ["8", "6", "9", "12"], correctAnswer: 0 },
-      { id: 9, text: "যদি $ax^2 + bx + c = 0$ এর বীজদ্বয় $\\tan A, \\tan B$ হয়, তবে $\\tan(A+B)$ এর মান কত?", options: ["$\\frac{b}{c-a}$", "$\\frac{b}{a-c}$", "$\\frac{a}{b-c}$", "$\\frac{c}{a-b}$"], correctAnswer: 0 },
-      { id: 10, text: "যদি $a + b + c = 0$ ($a, b, c \\in \\mathbb{Q}, a \\neq 0$), তবে $ax^2 + bx + c = 0$ এর বীজদ্বয় সর্বদা কেমন হবে?", options: ["মূলদ (Rational)", "অমূলদ", "কাল্পনিক", "সমান"], correctAnswer: 0 },
-      { id: 11, text: "$(x-a)(x-b) + (x-b)(x-c) + (x-c)(x-a) = 0$ সমীকরণের বীজদ্বয় সর্বদা—", options: ["বাস্তব (Real)", "কাল্পনিক", "ঋণাত্মক", "অমূলদ"], correctAnswer: 0 },
-      { id: 12, text: "$x^2 - 4x + \\log_{\\frac{1}{2}} a = 0$ সমীকরণের কোনো বাস্তব বীজ না থাকার শর্ত কী?", options: ["$a > 1/16$", "$a < 1/16$", "$a > 16$", "$0 < a < 1/16$"], correctAnswer: 0 },
-      { id: 13, text: "যদি $\\alpha$ হলো $x^2 - 2x + 3 = 0$ এর বীজ, তবে $\\alpha^3 - 3\\alpha^2 + 5\\alpha - 1$ এর মান কত?", options: ["2", "-2", "0", "1"], correctAnswer: 0 },
-      { id: 14, text: "$k$-এর কোন মানের জন্য $x^2 - 2kx + 7k - 12 = 0$ এর উভয় বীজ বাস্তব ও ধনাত্মক হবে?", options: ["$k \\in [3, 4] \\cup [4, \\infty)$ বা $k \\ge 3$", "$k < 3$", "$k > 4$", "$k = 3$"], correctAnswer: 0 },
-      { id: 15, text: "যদি $ax^2 + bx + c = 0$ সমীকরণে $a, b, c$ গুণোত্তর প্রগতিতে (GP) থাকে, তবে সমীকরণের বীজদ্বয় কেমন?", options: ["কাল্পনিক বা অবাস্তব", "বাস্তব ও সমান", "বাস্তব ও অসমান", "মূলদ"], correctAnswer: 0 },
-      { id: 16, text: "সমীকরণ $|x-2|^2 + |x-2| - 2 = 0$ এর বাস্তব সমাধানগুলি হলো—", options: ["$x = 1, 3$", "$x = 0, 4$", "$x = 2, 3$", "$x = -1, 3$"], correctAnswer: 0 },
-      { id: 17, text: "যদি $\\alpha, \\beta$ হলো $x^2 - p(x+1) - c = 0$ এর বীজ, তবে $(\\alpha+1)(\\beta+1)$ এর মান কত?", options: ["$1 - c$", "$1 + c$", "$c$", "$p + c$"], correctAnswer: 0 },
-      { id: 18, text: "উপরের রাশিতে $\\frac{1}{\\alpha+1} + \\frac{1}{\\beta+1}$ এর মান কত?", options: ["$\\frac{p+2}{1-c}$", "$\\frac{p}{1-c}$", "$\\frac{p-2}{1-c}$", "$\\frac{1}{1-c}$"], correctAnswer: 0 },
-      { id: 19, text: "$k$-এর কোন মানের জন্য $x^2 - (k+1)x + k^2 + k - 8 = 0$ সমীকরণের একটি বীজ $2$ অপেক্ষা বড় এবং অপর বীজটি $2$ অপেক্ষা ছোট হবে?", options: ["$-2 < k < 3$", "$k > 3$", "$k < -2$", "$-3 < k < 2$"], correctAnswer: 0 },
-      { id: 20, text: "যদি $x^2 - 2x \\sec\\theta + 1 = 0$ সমীকরণটির বীজদ্বয় বাস্তব হয়, তবে $\\theta$-এর বিস্তার কী?", options: ["সকল $\\theta \\in \\mathbb{R} \\setminus \\{(2n+1)\\pi/2\\}$", "$0 < \\theta < \\pi/2$", "$\\theta = 0$", "কোনো মানেই নয়"], correctAnswer: 0 }
+      {
+        id: 1,
+        text: "$a$-এর কতগুলি মানের জন্য $(a^2 - 3a + 2)x^2 + (a^2 - 5a + 6)x + a^2 - 4 = 0$ সমীকরণটি $x$-এর একটি অভেদ হবে?",
+        options: ["0", "2", "1", "3"],
+        correctAnswer: 2
+      },
+      {
+        id: 2,
+        text: "কত জোড়া $(a, b)$-এর জন্য $a(x+1)^2 + b(x^2 - 3x - 2) + x + 1 = 0$ সমীকরণটি $x$-এর একটি অভেদ হবে?",
+        options: ["0", "1", "2", "অসীম"],
+        correctAnswer: 0
+      },
+      {
+        id: 3,
+        text: "যদি $(\\sqrt{2})^x + (\\sqrt{3})^x = (\\sqrt{13})^{x/2}$ হয়, তবে $x$-এর মানের সংখ্যা হলো:",
+        options: ["2", "4", "1", "কোনোটিই নয়"],
+        correctAnswer: 2
+      },
+      {
+        id: 4,
+        text: "$\\frac{6-x}{x^2-4} = 2 + \\frac{x}{x+2}$ সমীকরণের বাস্তব সমাধানের সংখ্যা হলো:",
+        options: ["দুটি", "একটি", "শূন্য", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 5,
+        text: "$\\sqrt{x^2 - 4x + 3} + \\sqrt{x^2 - 9} = \\sqrt{4x^2 - 14x + 6}$ সমীকরণের বাস্তব সমাধানের সংখ্যা হলো:",
+        options: ["একটি", "দুটি", "তিনটি", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 6,
+        text: "যদি $-1 \\le x < 0$ হয়, তবে $|x+1| - |x| + 3|x-1||x-2| = x + 2$ সমীকরণটির সমাধান হলো:",
+        options: ["1, 5/3", "5/3", "1/3", "কোনোটিই নয়"],
+        correctAnswer: 3
+      },
+      {
+        id: 7,
+        text: "$|x|^3 - 3x^2 + 3|x| - 2 = 0$ সমীকরণের বাস্তব মূলগুলি হলো:",
+        options: ["0, 2", "$\\pm 1$", "$\\pm 2$", "1, 2"],
+        correctAnswer: 2
+      },
+      {
+        id: 8,
+        text: "$2^{x/2} + (\\sqrt{2}+1)^x = (5 + 2\\sqrt{2})^{x/2}$ সমীকরণের বাস্তব সমাধানের সংখ্যা হলো:",
+        options: ["একটি", "দুটি", "চারটি", "অসীম"],
+        correctAnswer: 0
+      },
+      {
+        id: 9,
+        text: "$x^2 \\cdot 2^{x+1} + 2^{|x-3|+2} = x^2 \\cdot 2^{|x-3|+4} + 2^{x-1}$ সমীকরণের ঋণাত্মক পূর্ণসংখ্যার সমাধানের সংখ্যা হলো:",
+        options: ["0", "1", "2", "4"],
+        correctAnswer: 0
+      },
+      {
+        id: 10,
+        text: "$e^x - x - 1 = 0$ সমীকরণটির:",
+        options: ["কেবল একটি বাস্তব মূল $x = 0$ আছে", "অন্তত দুটি বাস্তব মূল আছে", "ঠিক দুটি বাস্তব মূল আছে", "অসংখ্য বাস্তব মূল আছে"],
+        correctAnswer: 0
+      },
+      {
+        id: 11,
+        text: "$e^{\\sin x} - e^{-\\sin x} - 4 = 0$ সমীকরণের বাস্তব মূলের সংখ্যা হলো:",
+        options: ["1", "2", "অসীম", "কোনোটিই নয়"],
+        correctAnswer: 3
+      },
+      {
+        id: 12,
+        text: "যদি $a, b, c$ ধনাত্মক বাস্তব সংখ্যা হয়, তবে $ax^2 + b|x| + c = 0$ সমীকরণের বাস্তব মূলের সংখ্যা হলো:",
+        options: ["2", "4", "0", "কোনোটিই নয়"],
+        correctAnswer: 2
+      },
+      {
+        id: 13,
+        text: "$\\log_{10}[98 + \\sqrt{x^3 - x^2 - 12x + 36}] = 2$ সমীকরণের বাস্তব সমাধানের সংখ্যা হলো:",
+        options: ["4", "1", "2", "3"],
+        correctAnswer: 1
+      },
+      {
+        id: 14,
+        text: "$x^{\\frac{3}{4}(\\log_2 x)^2 + \\log_2 x - \\frac{5}{4}} = \\sqrt{2}$ সমীকরণটির:",
+        options: ["অন্তত একটি বাস্তব সমাধান আছে", "ঠিক তিনটি বাস্তব সমাধান আছে", "ঠিক একটি অমূলদ সমাধান আছে", "উপরের সবকটিই সঠিক"],
+        correctAnswer: 3
+      },
+      {
+        id: 15,
+        text: "$|[x] - 2x| = 4$ সমীকরণের সমাধানের সংখ্যা হলো (যেখানে $[x]$ হলো গরিষ্ঠ পূর্ণসংখ্যা $\\le x$):",
+        options: ["2", "4", "1", "অসীম"],
+        correctAnswer: 1
+      },
+      {
+        id: 16,
+        text: "ধরি $f(x) = x - [x], 0 \\ne x \\in \\mathbb{R}$; তবে $f(x) + f(1/x) = 1$ সমীকরণের সমাধানের সংখ্যা হলো:",
+        options: ["0", "অসীম", "1", "2"],
+        correctAnswer: 1
+      },
+      {
+        id: 17,
+        text: "যদি $m$ হলো $2x^2 - 3xy - 9y^2 - 11 = 0$-এর পূর্ণসাংখ্যিক সমাধান সংখ্যা এবং $n$ হলো $x^3 - [x] - 3 = 0$-এর বাস্তব সমাধান সংখ্যা, তবে $m =$",
+        options: ["n", "2n", "n/2", "3n"],
+        correctAnswer: 1
+      },
+      {
+        id: 18,
+        text: "$c$-এর যে মানের সেটের জন্য $x^3 - 6x^2 + 9x - c$-কে $(x-\\alpha)^2(x-\\beta)$ আকারে লেখা যায় ($\\alpha, \\beta$ বাস্তব), তা হলো:",
+        options: ["$\\{0\\}$", "$\\{4\\}$", "$\\{0, 4\\}$", "ফাঁকা সেট"],
+        correctAnswer: 2
+      },
+      {
+        id: 19,
+        text: "যদি $0 < a_r < 1$ ($r = 1, 2, \\dots, k$) এবং $\\sum_{r=1}^k (a_r)^x = 1$-এর বাস্তব সমাধান সংখ্যা $m$ ও $\\sum_{r=1}^k (x-a_r)^{101} = 0$-এর বাস্তব সমাধান সংখ্যা $n$ হয়, তবে:",
+        options: ["$m = n$", "$m \\le n$", "$m \\ge n$", "$m > n$"],
+        correctAnswer: 1
+      },
+      {
+        id: 20,
+        text: "ধরি $P_n(x) = 1 + 2x + 3x^2 + \\dots + (n+1)x^n$ একটি বহুপদী যেখানে $n$ জোড় সংখ্যা। তবে $P_n(x) = 0$-এর বাস্তব মূলের সংখ্যা হলো:",
+        options: ["0", "n", "1", "কোনোটিই নয়"],
+        correctAnswer: 0
+      }
     ]
   },
   {
-    id: 'quad_t5',
-    title: '৫.৫ দ্বিঘাত সমীকরণ অ্যাডভান্সড মক টেস্ট - ২ (Quadratic Equations Advanced Mock Test II - JEE Main & Advanced)',
+    id: 'quad_mock_5',
+    title: '৫.৫ দ্বিঘাত সমীকরণ মক টেস্ট ৫ (Quadratic Equations Mock 5)',
     topic: '৫. দ্বিঘাত সমীকরণ',
     exam: 'WB Class-XI First Semester',
-    duration: 25,
+    duration: 20,
     questions: [
-      { id: 1, text: "যদি $\\alpha, \\beta$ হলো $x^2 - x + 1 = 0$ এর বীজ, তবে $\\alpha^{2025} + \\beta^{2025}$ এর মান কত?", options: ["$-2$", "$2$", "$1$", "$-1$"], correctAnswer: 0 },
-      { id: 2, text: "সমীকরণ $\\sqrt{x+1} - \\sqrt{x-1} = 1$ এর সমাধান কোনটি?", options: ["$x = 5/4$", "$x = 4/5$", "$x = 5/3$", "$x = 2$"], correctAnswer: 0 },
-      { id: 3, text: "সমীকরণ $2^{x^2} = 3^x$ এর অশূন্য বাস্তব সমাধান কোনটি?", options: ["$x = \\log_2 3$", "$x = \\log_3 2$", "$x = \\ln 3$", "$x = 2/3$"], correctAnswer: 0 },
-      { id: 4, text: "যদি $ax^2 + bx + c = 0$ এর একটি বীজ অপর বীজের বর্গ হয়, তবে কোনটি সঠিক?", options: ["$b^3 + a^2c + ac^2 = 3abc$", "$b^3 + a^3 = 3abc$", "$b^2 = 4ac$", "$a^3 + c^3 = 3abc$"], correctAnswer: 0 },
-      { id: 5, text: "যদি $x^2 - 3x + k = 0$ এর বীজদ্বয়ের ঘনের সমষ্টি (Sum of cubes) 9 হয়, তবে $k$ এর মান কত?", options: ["2", "3", "1", "4"], correctAnswer: 0 },
-      { id: 6, text: "যদি $x^2 - 10cx - 11d = 0$ এর বীজদ্বয় $a, b$ এবং $x^2 - 10ax - 11b = 0$ এর বীজদ্বয় $c, d$ হয়, তবে $a+b+c+d = ?$", options: ["1210", "1100", "1331", "1200"], correctAnswer: 0 },
-      { id: 7, text: "যদি $ax^2 + bx + c = 0$ সমীকরণে $b^2 < 4ac$ হয় এবং $a > 0$ হয়, তবে $a(a+b+c)$ সর্বদা কী হবে?", options: ["ধনাত্মক ($> 0$)", "ঋণাত্মক ($< 0$)", "শূন্য", "অনির্দিষ্ট"], correctAnswer: 0 },
-      { id: 8, text: "সমীকরণ $\\log_2(x^2 - 4x + 5) = (x-2)^2$ এর বাস্তব সমাধান কোনটি?", options: ["$x = 2$", "$x = 0$", "$x = 4$", "$x = 1$"], correctAnswer: 0 },
-      { id: 9, text: "সমীকরণ $\\sqrt{2x+3} + \\sqrt{x-2} = 4$ এর সঠিক সমাধান কোনটি?", options: ["$x = 3$", "$x = 6$", "$x = 2$", "$x = 11$"], correctAnswer: 0 },
-      { id: 10, text: "যদি $x^2 - px + q = 0$ এর বীজ $\\alpha, \\beta$ হয়, তবে $\\alpha^4\\beta^3 + \\alpha^3\\beta^4$ এর মান কত?", options: ["$pq^3$", "$p^3q$", "$p^4q^3$", "$pq$"], correctAnswer: 0 },
-      { id: 11, text: "যদি $a, b, c$ বিজোড় পূর্ণসংখ্যা হয়, তবে $ax^2 + bx + c = 0$ এর বীজদ্বয়—", options: ["কোনো মূলদ বীজ থাকতে পারে না", "উভয়েই মূলদ", "উভয়েই পূর্ণসংখ্যা", "সমান"], correctAnswer: 0 },
-      { id: 12, text: "$x^2 - 5x + 6 = 0$ এবং $x^2 - 7x + 12 = 0$ সমীকরণদ্বয়ের লঘিষ্ঠ সাধারণ গুণিতক সমীকরণ কোনটি?", options: ["$(x-2)(x-3)(x-4) = 0$", "$(x-2)(x-3)^2(x-4) = 0$", "$(x-1)(x-2)(x-3) = 0$", "$x^3 - 9x^2 + 26x - 24 = 0$"], correctAnswer: 0 },
-      { id: 13, text: "$f(x) = x^2 + 2(m-1)x + m+5$ অপেক্ষকটি $\\forall x \\in \\mathbb{R}$ এর জন্য অ-ঋণাত্মক হওয়ার শর্ত কী?", options: ["$m \\in [-1, 4]$", "$m > 4$", "$m < -1$", "$m \\in [0, 4]$"], correctAnswer: 0 },
-      { id: 14, text: "সমীকরণ $4^x - 10 \\cdot 2^{x-1} + 4 = 0$ এর সমাধানদ্বয় হলো—", options: ["$x = 0, 2$", "$x = 1, 2$", "$x = 0, 1$", "$x = -1, 2$"], correctAnswer: 0 },
-      { id: 15, text: "যদি $\\alpha, \\beta$ হলো $x^2 - (1+n^2)x + \\frac{1}{2}(1+n^2+n^4) = 0$ এর বীজ, তবে $\\alpha^2 + \\beta^2 = ?$", options: ["$n^2$", "$n^4$", "$1+n^2$", "$2n^2$"], correctAnswer: 0 },
-      { id: 16, text: "যদি $x^2 - 2ax + a^2 + a - 3 = 0$ এর উভয় বীজ 3 অপেক্ষা ছোট হয়, তবে $a$-এর বিস্তার কোনটি?", options: ["$a < 2$", "$a > 3$", "$2 < a < 3$", "$a \\le 3$"], correctAnswer: 0 },
-      { id: 17, text: "$y = \\frac{x^2 - 2x + 22}{x^2 - 4x + 29}$ এর সর্বনিম্ন ও সর্বোচ্চ মান যথাক্রমে—", options: ["$1/2$ এবং $2$", "$1/3$ এবং $3$", "$0$ এবং $2$", "$1$ এবং $4$"], correctAnswer: 0 },
-      { id: 18, text: "সমীকরণ $x^2 - |x-1| = 1$ এর বাস্তব সমাধান কোনটি?", options: ["$x = 0, \\frac{1+\\sqrt{5}}{2}$", "$x = 1, -1$", "$x = 2, -2$", "$x = 0, 1$"], correctAnswer: 0 },
-      { id: 19, text: "যদি $x^2 - 2x + a = 0$ এবং $x^2 - 4x + b = 0$ উভয়েরই মূলদ বীজ থাকে এবং তাদের একটি সাধারণ বীজ থাকে, তবে $a$ ও $b$-এর মান হতে পারে—", options: ["$a = 1, b = 3$", "$a = 0, b = 0$", "$a = 2, b = 4$", "$a = -1, b = -3$"], correctAnswer: 0 },
-      { id: 20, text: "যদি $\\alpha, \\beta$ সমীকরণ $x^2 - px + q = 0$ এর বীজ হয়, তবে $\\frac{1}{\\alpha+\\beta}, \\alpha\\beta$ বীজবিশিষ্ট সমীকরণ কোনটি?", options: ["$px^2 - (1+pq)x + q = 0$", "$x^2 - (p+q)x + pq = 0$", "$qx^2 - (1+pq)x + p = 0$", "$px^2 + (1-pq)x - q = 0$"], correctAnswer: 0 }
+      {
+        id: 1,
+        text: "সকল $x$-এর জন্য $a_1 + a_2\\cos 2x + a_3\\sin^2 x = 0$ হওয়ার মতো সম্ভাব্য ট্রিপলেট $(a_1, a_2, a_3)$-এর সংখ্যা হলো:",
+        options: ["শূন্য", "এক", "তিন", "অসীম"],
+        correctAnswer: 3
+      },
+      {
+        id: 2,
+        text: "$2x - 2[x] = 1$ সমীকরণের সমাধানগুলি হলো:",
+        options: ["$x = n + \\frac{1}{2}, n \\in \\mathbb{N}$", "$x = n - \\frac{1}{2}, n \\in \\mathbb{N}$", "$x = n + \\frac{1}{2}, n \\in \\mathbb{Z}$", "$n < x < n+1, n \\in \\mathbb{Z}$"],
+        correctAnswer: 2
+      },
+      {
+        id: 3,
+        text: "$1 + |e^x - 1| = e^x(e^x - 2)$ সমীকরণের বাস্তব সমাধানের সংখ্যা হলো:",
+        options: ["0", "1", "2", "4"],
+        correctAnswer: 1
+      },
+      {
+        id: 4,
+        text: "$2\\sin^2\\frac{x}{2}\\cos^2 x = x + \\frac{1}{x}$ ($0 < x \\le \\frac{\\pi}{2}$) সমীকরণটির:",
+        options: ["একটি বাস্তব সমাধান আছে", "কোনো বাস্তব সমাধান নেই", "অসংখ্য বাস্তব সমাধান আছে", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 5,
+        text: "যদি $y \\ne 0$ হয়, তবে $x + y + \\frac{x}{y} = \\frac{1}{2}$ এবং $(x+y)\\frac{x}{y} = -\\frac{1}{2}$ সিদ্ধকারী $(x, y)$ জোড়ার সংখ্যা হলো:",
+        options: ["1", "2", "0", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 6,
+        text: "$\\log_{0.5} x = |x|$ সমীকরণের বাস্তব সমাধানের সংখ্যা হলো:",
+        options: ["1", "2", "0", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 7,
+        text: "$(x-2)^2 - 3|x-2| + 2 = 0$ সমীকরণের সকল সমাধানের গুণফল হলো:",
+        options: ["2", "-4", "0", "কোনোটিই নয়"],
+        correctAnswer: 2
+      },
+      {
+        id: 8,
+        text: "যদি $0 < x < 1000$ এবং $\\left[\\frac{x}{2}\\right] + \\left[\\frac{x}{3}\\right] + \\left[\\frac{x}{5}\\right] = \\frac{31}{30}x$ হয়, তবে $x$-এর সম্ভাব্য মানের সংখ্যা হলো:",
+        options: ["34", "32", "33", "কোনোটিই নয়"],
+        correctAnswer: 2
+      },
+      {
+        id: 9,
+        text: "$(x)^2 + (x+1)^2 = 25$ সমীকরণের সমাধান সেট হলো (যেখানে $(x)$ হলো লঘিষ্ঠ পূর্ণসংখ্যা $\\ge x$):",
+        options: ["(2, 4)", "$(-5, -4] \\cup (2, 3]$", "$[-4, -3) \\cup (3, 4]$", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 10,
+        text: "যদি $[x]^2 = [x+2]$ হয়, তবে $x$-এর মান হবে:",
+        options: ["$x = 2, -1$", "$x \\in [2, 3)$", "$x \\in [-1, 0)$", "কোনোটিই নয়"],
+        correctAnswer: 3
+      },
+      {
+        id: 11,
+        text: "$\\frac{x+1}{x} + |x+1| = \\frac{(x+1)^2}{|x|}$ সমীকরণের সমাধান সেট হলো:",
+        options: ["$\\{x \\mid x \\ge 0\\}$", "$\\{x \\mid x > 0\\} \\cup \\{-1\\}$", "$\\{-1, 1\\}$", "$\\{x \\mid x \\ge 1 \\text{ বা } x \\le -1\\}$"],
+        correctAnswer: 1
+      },
+      {
+        id: 12,
+        text: "যদি $a \\cdot 3^{\\tan x} + a \\cdot 3^{-\\tan x} - 2 = 0$ সমীকরণের বাস্তব সমাধান থাকে ($x \\ne \\frac{\\pi}{2}, 0 \\le x \\le \\pi$), তবে প্যারামিটার $a$-এর সম্ভাব্য মানের সেট হলো:",
+        options: ["[-1, 1]", "[-1, 0)", "(0, 1]", "$(0, +\\infty)$"],
+        correctAnswer: 2
+      },
+      {
+        id: 13,
+        text: "$2x^2 + 3x + 1 = 0$ দ্বিঘাত সমীকরণটির মূলগুলি হলো:",
+        options: ["অমূলদ", "মূলদ", "কাল্পনিক", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 14,
+        text: "$x^2 + 2\\sqrt{3}x + 3 = 0$ সমীকরণটির মূলগুলি হলো:",
+        options: ["বাস্তব ও সমান", "মূলদ ও সমান", "অমূলদ ও সমান", "অমূলদ ও অসমান"],
+        correctAnswer: 2
+      },
+      {
+        id: 15,
+        text: "যদি $l, m, n$ বাস্তব এবং $l \\ne m$ হয়, তবে $(l-m)x^2 - 5(l+m)x - 2(l-m) = 0$ সমীকরণের মূলগুলি হলো:",
+        options: ["জটিল", "বাস্তব ও অসমান", "বাস্তব ও সমান", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 16,
+        text: "যদি $a$ ও $b$ বিজোড় পূর্ণসংখ্যা হয়, তবে $2ax^2 + (2a+b)x + b = 0$ ($a \\ne 0$) সমীকরণের মূলগুলি হবে:",
+        options: ["মূলদ", "অমূলদ", "অবাস্তব", "সমান"],
+        correctAnswer: 0
+      },
+      {
+        id: 17,
+        text: "যদি $k \\in (-\\infty, -2) \\cup (2, \\infty)$ হয়, তবে $x^2 + 2kx + 4 = 0$ সমীকরণের মূলগুলি হলো:",
+        options: ["জটিল", "বাস্তব ও অসমান", "বাস্তব ও সমান", "একটি বাস্তব ও একটি কাল্পনিক"],
+        correctAnswer: 1
+      },
+      {
+        id: 18,
+        text: "ধরি $a, b, c$ বাস্তব সংখ্যা যেন $4a + 2b + c = 0$ এবং $ab > 0$; তবে $ax^2 + bx + c = 0$ দ্বিঘাত সমীকরণটির:",
+        options: ["বাস্তব মূল আছে", "জটিল মূল আছে", "বিশুদ্ধ কাল্পনিক মূল আছে", "কেবল একটি মূল আছে"],
+        correctAnswer: 0
+      },
+      {
+        id: 19,
+        text: "যদি $a < b < c < d$ হয়, তবে $(x-a)(x-c) + 2(x-b)(x-d) = 0$ সমীকরণের মূলগুলি হলো:",
+        options: ["বাস্তব ও অসমান", "বাস্তব ও সমান", "কাল্পনিক", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 20,
+        text: "যদি $b_1 b_2 = 2(c_1 + c_2)$ হয়, তবে $x^2 + b_1 x + c_1 = 0$ এবং $x^2 + b_2 x + c_2 = 0$ সমীকরণ দুটির অন্তত একটির:",
+        options: ["বাস্তব মূল থাকবে", "বিশুদ্ধ কাল্পনিক মূল থাকবে", "কাল্পনিক মূল থাকবে", "কোনোটিই নয়"],
+        correctAnswer: 0
+      }
     ]
   },
   {
-    id: 'quad_t6',
-    title: '৫.৬ দ্বিঘাত সমীকরণ WBJEE ও বোর্ড স্পেশাল প্র্যাকটিস সেট - ১ (Quadratic Equations WBJEE & Board Special Practice Set I)',
+    id: 'quad_mock_6',
+    title: '৫.৬ দ্বিঘাত সমীকরণ মক টেস্ট ৬ (Quadratic Equations Mock 6)',
     topic: '৫. দ্বিঘাত সমীকরণ',
     exam: 'WB Class-XI First Semester',
-    duration: 25,
+    duration: 20,
     questions: [
-      { id: 1, text: "$5 + 4x - 4x^2$ রাশিটির সর্বোচ্চ মান (Maximum value) কত?", options: ["$6$", "$7$", "$2$", "$3$"], correctAnswer: 0 },
-      { id: 2, text: "$(a+c-b)x^2 - 2cx + (b+c-a) = 0$ সমীকরণটির বীজদ্বয় হলো—", options: ["$1, \\frac{b+c-a}{a+c-b}$", "$1, \\frac{2c}{a+c-b}$", "$1, \\frac{b+c-a}{2c}$", "$1, \\frac{a+c-b}{b+c-a}$"], correctAnswer: 0 },
-      { id: 3, text: "যদি $(b-c)x^2 + (c-a)x + (a-b) = 0$ সমীকরণের বীজদ্বয় সমান হয়, তবে $a+c =$", options: ["$2b$", "$b^2$", "$3b$", "$b$"], correctAnswer: 0 },
-      { id: 4, text: "যদি $a_1x^2 + b_1x + c_1 = 0$ এবং $a_2x^2 + b_2x + c_2 = 0$ সমীকরণদ্বয়ের একটি সাধারণ বীজ থাকে, তবে $(a_1b_2 - a_2b_1)(b_1c_2 - b_2c_1)$ এর মান কোনটি?", options: ["$(a_1c_2 - a_2c_1)^2$", "$(a_1a_2 - c_1c_2)^2$", "$(a_1c_1 - a_2c_2)^2$", "$(a_1c_2 - a_2c_1)^3$"], correctAnswer: 0 },
-      { id: 5, text: "যদি $f(x) = 2x^3 + mx^2 - 13x + n$ এবং $f(x) = 0$ সমীকরণের দুটি বীজ $2$ ও $3$ হয়, তবে $m$ এবং $n$-এর মান যথাক্রমে—", options: ["$-5, 30$", "$-5, -30$", "$5, 30$", "কোনোটিই নয়"], correctAnswer: 0 },
-      { id: 6, text: "যদি $7^{\\log_7(x^2 - 4x + 5)} = x - 1$ হয়, তবে $x$-এর সম্ভাব্য মানগুলি হলো—", options: ["$2, 3$", "$7$", "$-2, -3$", "$2, -3$"], correctAnswer: 0 },
-      { id: 7, text: "$2x^2 - 5x + 1 = 0$ এবং $x^2 + 5x + 2 = 0$ সমীকরণদ্বয়ের বীজগুলি পরস্পর—", options: ["অনন্যক এবং বিপরীত চিহ্নযুক্ত (Reciprocal and of opposite sign)", "অনন্যক এবং একই চিহ্নযুক্ত (Reciprocal and of the same sign)", "পরম মানে সমান (Equal in magnitude)", "কোনোটিই নয়"], correctAnswer: 0 },
-      { id: 8, text: "যদি $x^2 + px + q = 0$ সমীকরণের একটি বীজ অপরটির দ্বিগুণ হয়, তবে $p$-এর মাধ্যমে $q$-এর মান কত?", options: ["$\\frac{2p^2}{9}$", "$\\frac{p^2}{5}$", "$\\frac{2p^2}{3}$", "কোনোটিই নয়"], correctAnswer: 0 },
-      { id: 9, text: "যদি $x^2 + px + 12 = 0$ সমীকরণের বীজদ্বয়ের অনুপাত $1 : 3$ হয়, তবে $p =$", options: ["$\\pm 8$", "$\\pm 9$", "$\\pm 3$", "$\\pm 6$"], correctAnswer: 0 },
-      { id: 10, text: "যদি $x^2 - bx + c = 0$ সমীকরণের বীজদ্বয় দুটি ক্রমিক পূর্ণসংখ্যা হয়, তবে $b^2 - 4c$ এর মান কত?", options: ["$1$", "$0$", "$2$", "কোনোটিই নয়"], correctAnswer: 0 },
-      { id: 11, text: "সমীকরণ $x^2 + |x| - 6 = 0$ এর বীজগুলি কেমন?", options: ["বাস্তব এবং তাদের যোগফল শূন্য (Real with sum zero)", "একটি এবং শুধুমাত্র একটি বাস্তব সংখ্যা", "বাস্তব এবং তাদের যোগফল ১", "বাস্তব এবং তাদের গুণফল শূন্য"], correctAnswer: 0 },
-      { id: 12, text: "সমীকরণ $\\frac{\\log 5 + \\log(x^2 + 1)}{\\log(x - 2)} = 2$ এর বাস্তব সমাধানের মোট সংখ্যা কত?", options: ["$0$ (কোনো সমাধান নেই / None of these)", "$2$", "$3$", "$1$"], correctAnswer: 0 },
-      { id: 13, text: "যদি $a, b, c, \\dots, k$ সমীকরণ $f(x) = 0$ এর বীজ হয়, তবে $\\frac{f'(x)}{x-a} + \\frac{f'(x)}{x-b} + \\dots + \\frac{f'(x)}{x-k}$ এর মান সংক্রান্ত সঠিক মন্তব্য কোনটি?", options: ["কোনোটিই নয় (None of these / $f(x)$ এর সাপেক্ষে ধ্রুবক নয়)", "$2$", "$0$", "$1$"], correctAnswer: 0 },
-      { id: 14, text: "যদি $f(x) = x^2 - 3x + 4$ হয়, তবে $f(1) + f(x) = f(1)f(x)$ সমীকরণটি সিদ্ধ করে এমন $x$-এর মান হলো—", options: ["$1$ এবং $2$", "$1$", "$2$", "$1$ এবং $0$"], correctAnswer: 0 },
-      { id: 15, text: "যদি $\\alpha, \\beta$ সমীকরণ $x^2 - x - 1 = 0$ এর বীজ হয়, তবে $\\frac{1+\\alpha}{2-\\alpha}, \\frac{1+\\beta}{2-\\beta}$ বীজবিশিষ্ট সমীকরণটি (চলক $z$-এ) কী হবে?", options: ["$z^2 - 7z + 1 = 0$", "$z^2 + z + 1 = 0$", "$z^2 + 7z + 1 = 0$", "$z^2 + 7z - 1 = 0$"], correctAnswer: 0 },
-      { id: 16, text: "যদি $a, b, c$ বাস্তব সংখ্যা হয় যাতে $4a + 2b + c = 0$ এবং $ab > 0$ হয়, তবে $ax^2 + bx + c = 0$ সমীকরণের বীজদ্বয় সর্বদা—", options: ["বাস্তব (real roots)", "জটিল (complex roots)", "বিশুদ্ধ কাল্পনিক (purely imaginary roots)", "কেবল একটি বীজ থাকে"], correctAnswer: 0 },
-      { id: 17, text: "যদি $a, b, c, d, x$ অসমান অশূন্য বাস্তব সংখ্যা হয় যাতে $(a^2 + b^2 + c^2)x^2 - 2(ab + bc + cd)x + (b^2 + c^2 + d^2) \\le 0$ হয়, তবে $a, b, c, d$ কোন প্রগতিতে থাকবে?", options: ["G.P. (গুণোত্তর প্রগতি)", "A.P. (সমান্তর প্রগতি)", "H.P. (বিপরীত প্রগতি)", "কোনোটিই নয়"], correctAnswer: 0 },
-      { id: 18, text: "যদি $\\alpha, \\beta, \\gamma$ সমীকরণ $x^3 + 4x + 1 = 0$ এর বীজ হয়, তবে $(\\alpha + \\beta)^{-1} + (\\beta + \\gamma)^{-1} + (\\gamma + \\alpha)^{-1}$ এর মান কত?", options: ["$4$", "$2$", "$3$", "$5$"], correctAnswer: 0 },
-      { id: 19, text: "যদি $x^3 + ax^2 + bx + c = 0$ সমীকরণের দুটি বীজের সমষ্টি শূন্য হয়, তবে $ab$ এর মান কত?", options: ["$c$", "$2c$", "$-2c$", "$-c$"], correctAnswer: 0 },
-      { id: 20, text: "যদি $a, b, c$ বাস্তব সংখ্যা সমান্তর প্রগতিতে (A.P.) থাকে, তবে $ax^2 + bx + c = 0$ এর বীজদ্বয় বাস্তব হবে যখন—", options: ["$|c/a - 7| \\ge 4\\sqrt{3}$", "সকল $a$ ও $c$-এর জন্য", "কোনো $a$ ও $c$-এর জন্য নয়", "$|c/a + 7| \\ge 2\\sqrt{3}$"], correctAnswer: 0 }
+      {
+        id: 1,
+        text: "$x^3 + 3Hx + G = 0$ সমীকরণে $G, H$ বাস্তব এবং $G^2 + 4H^3 > 0$ হলে মূলগুলি হলো:",
+        options: ["সবগুলি বাস্তব ও সমান", "সবগুলি বাস্তব ও অসমান", "একটি বাস্তব ও দুটি কাল্পনিক", "সবগুলি বাস্তব ও দুটি সমান"],
+        correctAnswer: 2
+      },
+      {
+        id: 2,
+        text: "$(x-a)^3 + (x-b)^3 + (x-c)^3 = 0$ সমীকরণটির:",
+        options: ["সবগুলি মূল বাস্তব", "একটি বাস্তব ও দুটি কাল্পনিক মূল আছে", "তিনটি বাস্তব মূল $x = a, x = b, x = c$", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 3,
+        text: "$|x|^2 + |x| - 6 = 0$ সমীকরণের মূলগুলি হলো:",
+        options: ["একটি এবং কেবল একটি বাস্তব সংখ্যা", "বাস্তব যাদের যোগফল 1", "বাস্তব যাদের যোগফল 0", "বাস্তব যাদের গুণফল 0"],
+        correctAnswer: 2
+      },
+      {
+        id: 4,
+        text: "যদি $a > 0, b > 0, c > 0$ হয়, তবে $ax^2 + bx + c = 0$ সমীকরণের মূলদ্বয়:",
+        options: ["বাস্তব এবং ঋণাত্মক", "ঋণাত্মক বাস্তব অংশ বিশিষ্ট", "মূলদ সংখ্যা", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 5,
+        text: "$ax^2 + bx + c = 0$ ($a, b, c$ পূর্ণসংখ্যা) সমীকরণের একটি মূল $3 + \\sqrt{5}$ হলে অন্য মূলটি হলো:",
+        options: ["$3 - \\sqrt{5}$", "3", "$\\sqrt{5}$", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 6,
+        text: "যদি $2+i$ সমীকরণ $x^3 - 5x^2 + 9x - 5 = 0$-এর একটি মূল হয়, তবে অন্য মূলগুলি হলো:",
+        options: ["1 এবং $2-i$", "-1 এবং $3+i$", "0 এবং 1", "-1 এবং $i-2$"],
+        correctAnswer: 0
+      },
+      {
+        id: 7,
+        text: "যদি $a, b, c$ অশূন্য অসমান মূলদ সংখ্যা হয়, তবে $abc^2 x^2 + (3a^2 + b^2)cx - 6a^2 - ab + 2b^2 = 0$ সমীকরণের মূলগুলি হলো:",
+        options: ["মূলদ", "কাল্পনিক", "অমূলদ", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 8,
+        text: "$x^2 - 6x + 8 + \\lambda(x^2 - 4x + 3) = 0$ ($\\lambda \\in \\mathbb{R}$) সমীকরণটির:",
+        options: ["সকল $\\lambda$-এর জন্য বাস্তব ও অসমান মূল থাকবে", "কেবল $\\lambda < 0$-এর জন্য বাস্তব মূল থাকবে", "কেবল $\\lambda > 0$-এর জন্য বাস্তব মূল থাকবে", "কেবল $\\lambda = 0$-এর জন্য বাস্তব ও অসমান মূল থাকবে"],
+        correctAnswer: 0
+      },
+      {
+        id: 9,
+        text: "যদি $a > 1$ হয়, তবে $(1-a)x^2 + 3ax - 1 = 0$ সমীকরণের মূলগুলি হলো:",
+        options: ["একটি ধনাত্মক ও একটি ঋণাত্মক", "উভয়েই ঋণাত্মক", "উভয়েই ধনাত্মক", "উভয়েই অবাস্তব জটিল"],
+        correctAnswer: 2
+      },
+      {
+        id: 10,
+        text: "যদি $ax^2 + x + b = 0$ সমীকরণের মূলদ্বয় বাস্তব হয়, তবে $x^2 - 4\\sqrt{ab}x + 1 = 0$ সমীকরণের মূলদ্বয় হবে:",
+        options: ["মূলদ", "অমূলদ", "বাস্তব", "কাল্পনিক"],
+        correctAnswer: 3
+      },
+      {
+        id: 11,
+        text: "যদি $x^2 - 8x + (a^2 - 6a) = 0$ সমীকরণের মূলগুলি বাস্তব হয়, তবে:",
+        options: ["$-2 < a < 8$", "$2 < a < 8$", "$-2 \\le a \\le 8$", "$2 \\le a \\le 8$"],
+        correctAnswer: 2
+      },
+      {
+        id: 12,
+        text: "যদি $(\\cos p - 1)x^2 + (\\cos p)x + \\sin p = 0$ সমীকরণের মূলগুলি বাস্তব হয়, তবে:",
+        options: ["$p \\in (-\\pi, 0)$", "$p \\in \\left(-\\frac{\\pi}{2}, \\frac{\\pi}{2}\\right)$", "$p \\in (0, \\pi)$", "$p \\in (0, 2\\pi)$"],
+        correctAnswer: 2
+      },
+      {
+        id: 13,
+        text: "অঋণাত্মক বাস্তব সংখ্যা $\\lambda$-এর বৃহত্তম মান যার জন্য $2x^2 + (\\lambda-1)x + 8 = 0$ এবং $x^2 - 8x + \\lambda + 4 = 0$ উভয়েরই বাস্তব মূল থাকে:",
+        options: ["9", "12", "15", "16"],
+        correctAnswer: 1
+      },
+      {
+        id: 14,
+        text: "যদি $p, q, r$ ধনাত্মক ও সমান্তর প্রগমনে (A.P.) থাকে, তবে $px^2 + qx + r = 0$ সমীকরণের মূলগুলি বাস্তব হবে যদি:",
+        options: ["$\\left|\\frac{r}{p} - 7\\right| \\ge 4\\sqrt{3}$", "$\\left|\\frac{p}{r} - 7\\right| \\ge 4\\sqrt{3}$", "$p, r$-এর সকল মানের জন্য", "$p, r$-এর কোনো মানের জন্য নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 15,
+        text: "ধরি $p, q \\in \\{1, 2, 3, 4\\}$। $px^2 + qx + 1 = 0$ আকারের কতগুলি সমীকরণের বাস্তব মূল থাকবে?",
+        options: ["15", "9", "7", "8"],
+        correctAnswer: 2
+      },
+      {
+        id: 16,
+        text: "$k$-এর ক্ষুদ্রতম পূর্ণসাংখ্যিক মান যার জন্য $x^2 + 5x + k = 0$ সমীকরণের মূলগুলি কাল্পনিক হবে:",
+        options: ["4", "5", "6", "7"],
+        correctAnswer: 3
+      },
+      {
+        id: 17,
+        text: "যদি $0 < a < b < c$ হয় এবং $ax^2 + bx + c = 0$ সমীকরণের মূল $\\alpha, \\beta$ অবাস্তব জটিল সংখ্যা হয়, তবে:",
+        options: ["$|\\alpha| = |\\beta|$", "$|\\alpha| > 1$", "$|\\beta| < 1$", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 18,
+        text: "যদি $a(b-c)x^2 + b(c-a)x + c(a-b) = 0$ সমীকরণের মূলদ্বয় সমান হয়, তবে $a, b, c$ আছে:",
+        options: ["A.P.-তে", "G.P.-তে", "H.P.-তে", "কোনোটিই নয়"],
+        correctAnswer: 2
+      },
+      {
+        id: 19,
+        text: "যদি $(m-n)x^2 + (n-l)x + (l-m) = 0$ সমীকরণের মূলদ্বয় সমান হয়, তবে $l, m, n$ সিদ্ধ করে:",
+        options: ["$2l = m+n$", "$2m = n+l$", "$m = n+l$", "$l = m+n$"],
+        correctAnswer: 1
+      },
+      {
+        id: 20,
+        text: "$(c^2 - ab)x^2 - 2(a^2 - bc)x + (b^2 - ac) = 0$ সমীকরণের মূলদ্বয় সমান হওয়ার শর্ত হলো:",
+        options: ["$a = 0$", "$b = 0$", "$c = 0$", "কোনোটিই নয়"],
+        correctAnswer: 0
+      }
     ]
   },
   {
-    id: 'quad_t7',
-    title: '৫.৭ দ্বিঘাত সমীকরণ WBJEE ও বোর্ড স্পেশাল প্র্যাকটিস সেট - ২ (Quadratic Equations WBJEE & Board Special Practice Set II)',
+    id: 'quad_mock_7',
+    title: '৫.৭ দ্বিঘাত সমীকরণ মক টেস্ট ৭ (Quadratic Equations Mock 7)',
     topic: '৫. দ্বিঘাত সমীকরণ',
     exam: 'WB Class-XI First Semester',
-    duration: 25,
+    duration: 20,
     questions: [
-      { id: 1, text: "যদি $\\alpha$ এবং $\\beta$ সমীকরণ $x^2 - 6x - 2 = 0$ এর বীজ হয় এবং $a_n = \\alpha^n - \\beta^n$ ($n \\ge 1$) হয়, তবে $\\frac{a_{10} - 2a_8}{2a_9}$ এর মান কত?", options: ["$3$", "$-3$", "$6$", "$-6$"], correctAnswer: 0 },
-      { id: 2, text: "অসমতা $[x]^2 - 5[x] + 6 \\le 0$ (যেখানে $[.]$ গরিষ্ঠ অখণ্ড অপেক্ষক) সিদ্ধ হবে যদি—", options: ["$2 \\le x < 4$ এবং $2 \\le [x] \\le 3$ উভয়েই", "$2 \\le [x] < 3$", "$2 \\le x < 4$", "$2 \\le [x] \\le 3$"], correctAnswer: 0 },
-      { id: 3, text: "যদি সমীকরণ $x^2 + \\alpha^2 = 8x + 6\\alpha$ এর বীজদ্বয় বাস্তব হয়, তবে কোনটি সঠিক?", options: ["$-2 \\le \\alpha \\le 8$", "$2 \\le \\alpha \\le 8$", "$-2 < \\alpha \\le 8$", "$-2 \\le \\alpha < 8$"], correctAnswer: 0 },
-      { id: 4, text: "যদি $x$ এবং $a$ বাস্তব হয়, তবে $a$-এর যে মানের জন্য $x^2 - \\frac{3ax}{2} + 1 - a^2$ সর্বদা ধনাত্মক হবে, তা হলো—", options: ["$|a| < 4/5$", "$-4/25 < a < 4/25$", "$-4/5 < a < 4/5$", "$|a| > 4/5$"], correctAnswer: 0 },
-      { id: 5, text: "সমীকরণ $x^2 - 3|x| + 2 = 0$ এর বাস্তব বীজের সংখ্যা কত?", options: ["চারটি বাস্তব বীজ (four real roots)", "কোনো বাস্তব বীজ নেই", "একটি বাস্তব বীজ", "দুটি বাস্তব বীজ"], correctAnswer: 0 },
-      { id: 6, text: "সমীকরণ $|x - 2|^2 + |x - 2| - 2 = 0$ এর সমস্ত বাস্তব বীজের সমষ্টি কত?", options: ["$4$", "$7$", "$1$", "$5$"], correctAnswer: 0 },
-      { id: 7, text: "যদি $a, b, c$ বাস্তব সংখ্যা হয়, তবে $(x - b)(x - c) + (x - c)(x - a) + (x - a)(x - b) = 0$ সমীকরণের উভয় বীজ সর্বদা—", options: ["বাস্তব (real)", "ধনাত্মক (positive)", "ঋণাত্মক (negative)", "কাল্পনিক (imaginary)"], correctAnswer: 0 },
-      { id: 8, text: "দ্বিঘাত সমীকরণ $x^2 - 2\\sqrt{3}x - 22 = 0$ এর বীজদ্বয়ের প্রকৃতি কেমন?", options: ["বাস্তব, অমূলদ ও অসমান (real, irrational and unequal)", "কাল্পনিক (imaginary)", "বাস্তব, মূলদ ও সমান", "বাস্তব, মূলদ ও অসমান"], correctAnswer: 0 },
-      { id: 9, text: "সমীকরণদ্বয় $x^2 + x + a = 0$ এবং $x^2 + ax + 1 = 0$ এর একটি সাধারণ বাস্তব বীজ থাকবে—", options: ["$a$-এর ঠিক একটি মানের জন্য (for exactly one value of a)", "$a$-এর কোনো মানের জন্য নয়", "$a$-এর ঠিক দুটি মানের জন্য", "$a$-এর ঠিক তিনটি মানের জন্য"], correctAnswer: 0 },
-      { id: 10, text: "দ্বিঘাত সমীকরণ $2x^2 - (a^3 + 8a - 1)x + a^2 - 4a = 0$ এর বীজদ্বয় বিপরীত চিহ্নযুক্ত হওয়ার শর্ত কী?", options: ["$0 < a < 4$", "$a > 0$", "$4 \\le a < 8$", "$a \\ge 8$"], correctAnswer: 0 },
-      { id: 11, text: "$px^2 - qx + q = 0$ ($p, q \\neq 0$) সমীকরণের বীজদ্বয়ের অনুপাত $p : q$ হওয়ার শর্ত কী?", options: ["কোনোটিই নয় (None of these)", "$p + q = 0$", "$2p - q = 0$", "$2p + q = 0$"], correctAnswer: 0 },
-      { id: 12, text: "যদি $ax^2 + bx + c = 0$ সমীকরণের বীজদ্বয়ের অনুপাত $p : q$ হয়, তবে $\\sqrt{\\frac{p}{q}} + \\sqrt{\\frac{q}{p}} =$", options: ["$-\\frac{b}{\\sqrt{ac}}$", "$\\sqrt{\\frac{a}{2c}}$", "$\\sqrt{\\frac{c}{a}}$", "কোনোটিই নয়"], correctAnswer: 0 },
-      { id: 13, text: "যদি সমীকরণ $\\frac{x^2 - bx}{ax - c} = \\frac{m - 1}{m + 1}$ এর বীজদ্বয় পরম মানে সমান কিন্তু বিপরীত চিহ্নযুক্ত হয়, তবে $m =$", options: ["$\\frac{a - b}{a + b}$", "$\\frac{a + b}{a - b}$", "$\\frac{b - a}{b + a}$", "কোনোটিই নয়"], correctAnswer: 0 },
-      { id: 14, text: "সমীকরণ $3x^2 + 2x + p(p - 1) = 0$ এর বীজদ্বয় বিপরীত চিহ্নযুক্ত হওয়ার জন্য $p$-এর বিস্তার কোনটি?", options: ["$(0, 1)$", "$(-\\infty, 0)$", "$(1, -\\infty)$", "$(0, \\infty)$"], correctAnswer: 0 },
-      { id: 15, text: "যদি $\\alpha, \\beta$ হলো $ax^2 + bx + c = 0$ এর বীজ এবং $\\gamma, \\delta$ হলো $px^2 + qx + r = 0$ এর বীজ এবং $D_1, D_2$ এদের নিরূপক। যদি $\\alpha, \\beta, \\gamma, \\delta$ সমান্তর প্রগতিতে থাকে, তবে $D_1 : D_2 =$", options: ["$a^2 / p^2$", "$a^2 / b^2$", "$b^2 / p^2$", "$a^2 / q^2$"], correctAnswer: 0 },
-      { id: 16, text: "দেওয়া আছে সমস্ত বাস্তব $x$-এর জন্য $\\frac{x^2 - 2x + 4}{x^2 + 2x + 4}$ রাশিটি $1/3$ এবং $3$-এর মধ্যবর্তী। তাহলে $\\frac{9 \\cdot 3^{2x} + 6 \\cdot 3^x + 4}{9 \\cdot 3^{2x} - 6 \\cdot 3^x + 4}$ রাশিটির মান কোন দুটির মধ্যবর্তী হবে?", options: ["$1/3$ এবং $3$", "$-2$ এবং $0$", "$-1$ এবং $1$", "$0$ এবং $2$"], correctAnswer: 0 },
-      { id: 17, text: "যদি সমীকরণত্রয় $x^2 + px + qr = 0$, $x^2 + qx + rp = 0$ এবং $x^2 + rx + pq = 0$ এর প্রতিটি জোড়ার একটি সাধারণ বীজ থাকে, তবে তিনটি সাধারণ বীজের সমষ্টি কত?", options: ["$p + q + r$", "$2(p + q + r)$", "$-(p + q + r)$", "$pqr$"], correctAnswer: 0 },
-      { id: 18, text: "যদি $\\sin\\alpha$ এবং $\\cos\\alpha$ সমীকরণ $px^2 + qx + r = 0$ এর বীজদ্বয় হয়, তবে কোনটি সঠিক?", options: ["$p^2 - q^2 + 2pr = 0$", "$(p + r)^2 = q^2 - r^2$", "$p^2 + q^2 - 2pr = 0$", "$(p - r)^2 = q^2 + r^2$"], correctAnswer: 0 }
+      {
+        id: 1,
+        text: "যদি $(a^2 + b^2)t^2 - 2(ac+bd)t + (c^2 + d^2) = 0$ সমীকরণের মূলদ্বয় সমান হয়, তবে:",
+        options: ["$ab = dc$", "$ac = bd$", "$ad + bc = 0$", "$\\frac{a}{b} = \\frac{c}{d}$"],
+        correctAnswer: 3
+      },
+      {
+        id: 2,
+        text: "যদি $x^2 + px + 12 = 0$ সমীকরণের একটি মূল 4 হয় এবং $x^2 + px + q = 0$ সমীকরণের মূলদ্বয় সমান হয়, তবে $q =$",
+        options: ["49/4", "4/49", "4", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 3,
+        text: "যদি $x^2 + 2mx + m^2 - 2m + 6 = 0$ সমীকরণের মূলদ্বয় সমান হয়, তবে $m$-এর মান হবে:",
+        options: ["3", "0", "2", "-1"],
+        correctAnswer: 0
+      },
+      {
+        id: 4,
+        text: "যদি $x^2 - 15 - m(2x-8) = 0$ সমীকরণের মূলদ্বয় সমান হয়, তবে $m$-এর মান হলো:",
+        options: ["3, -5", "-3, 5", "3, 5", "-3, -5"],
+        correctAnswer: 2
+      },
+      {
+        id: 5,
+        text: "$k$-এর কোন মানের জন্য $x^2 - (3k-1)x + 2k^2 - 11 = 0$ সমীকরণের মূলদ্বয় সমান হবে?",
+        options: ["5", "9", "উভয়ই সঠিক", "0"],
+        correctAnswer: 2
+      },
+      {
+        id: 6,
+        text: "$kx^2 + 1 = kx + 3x - 11x^2$ সমীকরণের বাস্তব ও সমান মূল থাকার জন্য $k$-এর মানগুলি হলো:",
+        options: ["-11, -3", "5, 7", "5, -7", "কোনোটিই নয়"],
+        correctAnswer: 2
+      },
+      {
+        id: 7,
+        text: "যদি $4x^2 + px + 9 = 0$ সমীকরণের মূলদ্বয় সমান হয়, তবে $|p|$-এর মান হলো:",
+        options: ["144", "12", "-12", "$\\pm 12$"],
+        correctAnswer: 3
+      },
+      {
+        id: 8,
+        text: "$2x^2 - kx + x + 8 = 0$ সমীকরণের বাস্তব ও সমান মূল থাকার জন্য $k$-এর মান হলো:",
+        options: ["-9 এবং -7", "9 এবং 7", "-9 এবং 7", "9 এবং -7"],
+        correctAnswer: 3
+      },
+      {
+        id: 9,
+        text: "$4x^2 + 6px + 1 = 0$ সমীকরণের মূলদ্বয় সমান হলে $p$-এর মান হলো:",
+        options: ["$\\frac{4}{5}$", "$\\frac{1}{3}$", "$\\frac{2}{3}$", "$\\frac{4}{3}$"],
+        correctAnswer: 2
+      },
+      {
+        id: 10,
+        text: "যদি $x^2 - (2+m)x + (m^2 - 4m + 4) = 0$ সমীকরণের সমাপতিত মূল থাকে, তবে:",
+        options: ["$m=0, m=1$", "$m=0, m=2$", "$m=\\frac{2}{3}, m=6$", "$m=\\frac{2}{3}, m=1$"],
+        correctAnswer: 2
+      },
+      {
+        id: 11,
+        text: "যদি $x^3 - 3x + 2 = 0$ সমীকরণের দুটি মূল সমান হয়, তবে মূলগুলি হবে:",
+        options: ["2, 2, 3", "1, 1, -2", "-2, 3, 3", "-2, -2, 1"],
+        correctAnswer: 1
+      },
+      {
+        id: 12,
+        text: "$||x-1| + a| = 4$ সমীকরণের বাস্তব সমাধান থাকতে পারে যদি $a$ যে ব্যবধিতে থাকে:",
+        options: ["$(-\\infty, 4]$", "$(-\\infty, -4]$", "$(4, \\infty)$", "[-4, 4]"],
+        correctAnswer: 1
+      },
+      {
+        id: 13,
+        text: "$m$-এর যে সকল মানের জন্য $x^2 - (m+1)x + m + 4 = 0$ সমীকরণের উভয় মূলই বাস্তব ও ঋণাত্মক হয়, তা হলো:",
+        options: ["$-3 < m \\le -1$", "$-4 < m \\le -3$", "$-3 \\le m \\le 5$", "$-3 \\ge m$ বা $m \\ge 5$"],
+        correctAnswer: 1
+      },
+      {
+        id: 14,
+        text: "$(x-a)(x-b) + (x-b)(x-c) + (x-c)(x-a) = 0$ সমীকরণের উভয় মূল সর্বদা:",
+        options: ["ধনাত্মক", "ঋণাত্মক", "বাস্তব", "কাল্পনিক"],
+        correctAnswer: 2
+      },
+      {
+        id: 15,
+        text: "যদি $P(x) = ax^2 + bx + c$ এবং $Q(x) = -ax^2 + dx + c$ ($ac \\ne 0$) হয়, তবে $P(x)Q(x) = 0$-এর অন্তত:",
+        options: ["চারটি বাস্তব মূল থাকবে", "দুটি বাস্তব মূল থাকবে", "চারটি কাল্পনিক মূল থাকবে", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 16,
+        text: "$ax^2 + bx + c = 0$ সমীকরণের উভয় মূল ধনাত্মক হওয়ার শর্ত হলো:",
+        options: ["$a, b, c$ একই চিহ্নযুক্ত", "$a$ এবং $b$ একই চিহ্নযুক্ত", "$b$ ও $c$ একই চিহ্নযুক্ত এবং $a$-এর বিপরীত চিহ্নযুক্ত", "$a$ ও $c$ একই চিহ্নযুক্ত এবং $b$-এর বিপরীত চিহ্নযুক্ত"],
+        correctAnswer: 3
+      },
+      {
+        id: 17,
+        text: "যদি $[x]$ দ্বারা $x$-এর পূর্ণসংখ্যা অংশ বোঝায় এবং $k = \\sin^{-1}\\frac{1+t^2}{2t} > 0$ হয়, তবে $(x-[k])(x+\\alpha) - 1 = 0$-এর পূর্ণসাংখ্যিক মূল থাকার জন্য $\\alpha$-এর পূর্ণসাংখ্যিক মান:",
+        options: ["1", "2", "4", "কোনোটিই নয়"],
+        correctAnswer: 3
+      },
+      {
+        id: 18,
+        text: "যদি $ax^2 + bx + c = 0$ সমীকরণের মূলগুলি বাস্তব এবং $\\frac{\\alpha}{\\alpha-1}$ ও $\\frac{\\alpha+1}{\\alpha}$ আকারের হয়, তবে $(a+b+c)^2$-এর মান হলো:",
+        options: ["$b^2 - 4ac$", "$b^2 - 2ac$", "$2b^2 - ac$", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 19,
+        text: "$\\frac{a^2}{x-\\alpha} + \\frac{b^2}{x-\\beta} + \\frac{c^2}{x-\\gamma} = m - n^2 x$ ($a, b, c, m, n \\in \\mathbb{R}$) সমীকরণটির আবশ্যিকভাবে:",
+        options: ["সবগুলি মূল বাস্তব", "সবগুলি মূল কাল্পনিক", "দুটি বাস্তব ও দুটি কাল্পনিক মূল আছে", "দুটি মূলদ ও দুটি অমূলদ মূল আছে"],
+        correctAnswer: 0
+      },
+      {
+        id: 20,
+        text: "যদি $\\cos\\theta, \\sin\\phi, \\sin\\theta$ গুণোত্তর প্রগমনে থাকে, তবে $x^2 + 2\\cot\\phi x + 1 = 0$ সমীকরণের মূলগুলি সর্বদা:",
+        options: ["সমান", "বাস্তব", "কাল্পনিক", "1-এর চেয়ে বড়"],
+        correctAnswer: 1
+      }
+    ]
+  },
+  {
+    id: 'quad_mock_8',
+    title: '৫.৮ দ্বিঘাত সমীকরণ মক টেস্ট ৮ (Quadratic Equations Mock 8)',
+    topic: '৫. দ্বিঘাত সমীকরণ',
+    exam: 'WB Class-XI First Semester',
+    duration: 20,
+    questions: [
+      {
+        id: 1,
+        text: "যদি $f(x)$ একটি অবিচ্ছিন্ন ফাংশন হয় যা কেবল মূলদ মান গ্রহণ করে এবং $f(0) = 3$ হয়, তবে $f(1)x^2 + f(3)x + f(5) = 0$ সমীকরণের মূলগুলি হলো:",
+        options: ["কাল্পনিক", "মূলদ", "অমূলদ", "বাস্তব ও সমান"],
+        correctAnswer: 0
+      },
+      {
+        id: 2,
+        text: "$ax^2 + bx + c = 0$ ($a \\ne 0$, সহগসমূহ বাস্তব) সমীকরণের মূলগুলি অবাস্তব জটিল এবং $a+c < b$ হলে:",
+        options: ["$4a + c > 2b$", "$4a + c < 2b$", "$4a + c = 2b$", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 3,
+        text: "$(a+2)x^2 + (a-3)x = 2a-1$ ($a \\ne -2$) সমীকরণের মূলগুলি মূলদ হবে:",
+        options: ["$a=-2$ ব্যতীত $a$-এর সকল মূলদ মানের জন্য", "$a=-2$ ব্যতীত $a$-এর সকল বাস্তব মানের জন্য", "$a > \\frac{1}{2}$-এর মূলদ মানের জন্য", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 4,
+        text: "$x^2 - 2x - \\lambda = 0$ ($\\lambda \\ne 0$) দ্বিঘাত সমীকরণটির:",
+        options: ["বাস্তব মূল থাকতে পারে না যদি $\\lambda < 1$", "মূলদ মূল থাকতে পারে যদি $\\lambda$ পূর্ণবর্গ হয়", "পূর্ণসাংখ্যিক মূল থাকতে পারে না যদি $n^2 - 1 < \\lambda < n^2 + 2n$", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 5,
+        text: "যদি $x^2 + px + q = 0$-এর মূল $\\alpha, \\beta$ এবং $x^2 - xr + s = 0$-এর মূল $\\alpha^4, \\beta^4$ হয়, তবে $x^2 - 4qx + 2q^2 - r = 0$-এর মূলগুলি হবে:",
+        options: ["উভয়েই ঋণাত্মক", "উভয়েই ধনাত্মক", "উভয়েই বাস্তব", "একটি ঋণাত্মক ও একটি ধনাত্মক"],
+        correctAnswer: 2
+      },
+      {
+        id: 6,
+        text: "যদি $a(b-c)x^2 + b(c-a)x + c(a-b) = 0$ সমীকরণের মূলদ্বয় সমান হয় ($a, b, c > 0, n \\in \\mathbb{N}$), তবে:",
+        options: ["$a^n + c^n \\ge 2b^n$", "$a^n + c^n > 2b^n$", "$a^n + c^n \\le 2b^n$", "$a^n + c^n < 2b^n$"],
+        correctAnswer: 1
+      },
+      {
+        id: 7,
+        text: "যদি $\\sum_{r=0}^{k-1} x^{2r} / \\sum_{r=0}^{k-1} x^r$ রাশিটি $k$-এর দুটি মান $p$ ও $q$-এর জন্য একটি বহুপদী হয়, তবে $x^2 + px + q = 0$ সমীকরণের মূলগুলি হতে পারে না:",
+        options: ["বাস্তব", "কাল্পনিক", "মূলদ", "অমূলদ"],
+        correctAnswer: 2
+      },
+      {
+        id: 8,
+        text: "$x > 0$-এর জন্য $f(x) = (a-x^n)^{1/n}, g(x) = x^2 + px + q$ ($p, q \\in \\mathbb{R}$) এবং $g(x)-x = 0$ সমীকরণের মূলগুলি কাল্পনিক হলে, $g(g(x)) - f(f(x)) = 0$ সমীকরণের বাস্তব মূলের সংখ্যা হলো:",
+        options: ["0", "2", "4", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 9,
+        text: "ধরি $p, q \\in \\{1, 2, 3, 4\\}$। $px^2 + qx + 1 = 0$ আকারের কতগুলি সমীকরণের মূল বাস্তব ও অসমান হবে?",
+        options: ["15", "9", "7", "8"],
+        correctAnswer: 2
+      },
+      {
+        id: 10,
+        text: "যদি $\\alpha_1, \\alpha_2$ এবং $\\beta_1, \\beta_2$ যথাক্রমে $ax^2 + bx + c = 0$ এবং $px^2 + qx + r = 0$ সমীকরণের মূল হয় এবং $\\alpha_1 y + \\alpha_2 z = 0$ ও $\\beta_1 y + \\beta_2 z = 0$ জোটটির একটি অশূন্য সমাধান থাকে, তবে:",
+        options: ["$a^2 qc = p^2 br$", "$p^2 br = q^2 ac$", "$c^2 ar = r^2 pb$", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 11,
+        text: "যদি $a, b, c, d$ একটি বর্ধনশীল সমান্তর প্রগমনের (A.P.) চারটি ক্রমিক পদ হয়, তবে $(x-a)(x-c) + 2(x-b)(x-d) = 0$ সমীকরণের মূলগুলি হলো:",
+        options: ["বাস্তব ও অসমান", "অবাস্তব জটিল", "বাস্তব ও সমান", "পূর্ণসংখ্যা"],
+        correctAnswer: 0
+      },
+      {
+        id: 12,
+        text: "যদি $a, b, c$ তিনটি ভিন্ন ধনাত্মক বাস্তব সংখ্যা হয়, তবে $ax^2 + 2b|x| - c = 0$ সমীকরণের বাস্তব মূলের সংখ্যা হলো:",
+        options: ["4", "2", "0", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 13,
+        text: "যদি $a, b \\in \\mathbb{R}$ হয়, তবে $x^2 - abx - a^2 = 0$ সমীকরণটির:",
+        options: ["একটি ধনাত্মক ও একটি ঋণাত্মক মূল আছে", "উভয় মূলই ধনাত্মক", "উভয় মূলই ঋণাত্মক", "কাল্পনিক মূল আছে"],
+        correctAnswer: 0
+      },
+      {
+        id: 14,
+        text: "$a$-এর কতগুলি পূর্ণসাংখ্যিক মানের জন্য $x^2 - (a-1)x + 3 = 0$-এর উভয় মূল ধনাত্মক এবং $x^2 + 3x + 6 - a = 0$-এর উভয় মূল ঋণাত্মক হবে?",
+        options: ["0", "1", "2", "অসীম"],
+        correctAnswer: 3
+      },
+      {
+        id: 15,
+        text: "$x^2 + (a^2-2)x - 2a^2 = 0$ এবং $x^2 - 3x + 2 = 0$ দ্বিঘাত সমীকরণদ্বয়ের:",
+        options: ["সকল $a \\in \\mathbb{R}$-এর জন্য কোনো সাধারণ মূল নেই", "সকল $a \\in \\mathbb{R}$-এর জন্য ঠিক একটি সাধারণ মূল আছে", "কিছু $a \\in \\mathbb{R}$-এর জন্য দুটি সাধারণ মূল আছে", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 16,
+        text: "সকল বাস্তব $x$-এর জন্য $f(x) = \\frac{x^2-1}{x^2+1}$ হলে $f$-এর সর্বনিম্ন মান:",
+        options: ["বিদ্যমান নেই কারণ $f$ সীমাবদ্ধ নয়", "সীমাবদ্ধ হলেও অর্জিত হয় না", "1-এর সমান", "-1-এর সমান"],
+        correctAnswer: 3
+      },
+      {
+        id: 17,
+        text: "যদি $x, y, z$ বাস্তব ও অসমান হয়, তবে $f(x, y) = x^2 + 4y^2 + 9z^2 - 6yz - 3zx - 2xy$ সর্বদা:",
+        options: ["অঋণাত্মক", "অ-ধনাত্মক", "শূন্য", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 18,
+        text: "যদি $a, b \\in \\mathbb{R}$ হয়, তবে $a(x^2 - y^2) - bxy$ রাশির উৎপাদকগুলি হলো:",
+        options: ["বাস্তব ও ভিন্ন", "বাস্তব ও অভিন্ন", "জটিল", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 19,
+        text: "যদি $a, b, c$ ভাজিত প্রগমনে (H.P.) থাকে, তবে $a(b-c)x^2 + b(c-a)x + c(a-b)$ রাশিটি:",
+        options: ["বাস্তব ও অসমান উৎপাদকবিশিষ্ট", "একটি পূর্ণবর্গ রাশি", "কোনো বাস্তব উৎপাদক নেই", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 20,
+        text: "যদি $a, b, c$ গুণোত্তর প্রগমনে (G.P.) থাকে (যেখানে $a, c$ ধনাত্মক), তবে $ax^2 + bx + c = 0$ সমীকরণটির:",
+        options: ["বাস্তব মূল আছে", "কাল্পনিক মূল আছে", "মূলদ্বয়ের অনুপাত $1 : \\omega$", "মূলদ্বয়ের অনুপাত $b : ac$"],
+        correctAnswer: 1
+      }
+    ]
+  },
+  {
+    id: 'quad_mock_9',
+    title: '৫.৯ দ্বিঘাত সমীকরণ মক টেস্ট ৯ (Quadratic Equations Mock 9)',
+    topic: '৫. দ্বিঘাত সমীকরণ',
+    exam: 'WB Class-XI First Semester',
+    duration: 20,
+    questions: [
+      {
+        id: 1,
+        text: "$(ax^2 + bx + c)(ax^2 - dx - c)$ বহুপদীটির ($ac \\ne 0$):",
+        options: ["চারটি বাস্তব শূন্য আছে", "কমপক্ষে দুটি বাস্তব শূন্য আছে", "সর্বাধিক দুটি বাস্তব শূন্য আছে", "কোনো বাস্তব শূন্য নেই"],
+        correctAnswer: 1
+      },
+      {
+        id: 2,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $ax^2 + bx + c = 0$-এর মূল হয়, তবে $\\alpha^3 + \\beta^3$-এর মান হলো:",
+        options: ["$\\frac{3abc + b^3}{a^3}$", "$\\frac{a^3 + b^3}{3ab}$", "$\\frac{3abc - b^3}{a^3}$", "$\\frac{b^3 - 3abc}{a^3}$"],
+        correctAnswer: 2
+      },
+      {
+        id: 3,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $x^2 - (1+n^2)x + \\frac{1}{2}(1+n^2+n^4) = 0$-এর মূল হয়, তবে $\\alpha^2 + \\beta^2 =$ কত?",
+        options: ["2n", "$n^2$", "$n^3$", "$2n^2$"],
+        correctAnswer: 1
+      },
+      {
+        id: 4,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $ax^2 + bx + c = 0$-এর মূল হয়, তবে $(1+\\alpha+\\alpha^2)(1+\\beta+\\beta^2)$-এর মান সর্বদা:",
+        options: ["শূন্য", "ধনাত্মক", "ঋণাত্মক", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 5,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $8x^2 - 3x + 27 = 0$-এর মূল হয়, তবে $\\left(\\frac{\\alpha^2}{\\beta}\\right)^{1/3} + \\left(\\frac{\\beta^2}{\\alpha}\\right)^{1/3}$-এর মান হলো:",
+        options: ["$\\frac{1}{3}$", "$\\frac{1}{4}$", "$\\frac{7}{2}$", "4"],
+        correctAnswer: 1
+      },
+      {
+        id: 6,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $x^2 + px + p^2 + q = 0$-এর মূল হয়, তবে $\\alpha^2 + \\alpha\\beta + \\beta^2 + q$-এর মান হলো:",
+        options: ["0", "1", "q", "2q"],
+        correctAnswer: 0
+      },
+      {
+        id: 7,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $x^2 - p(x+1) - c = 0$-এর মূল হয়, তবে $(\\alpha+1)(\\beta+1) =$",
+        options: ["c", "c - 1", "1 - c", "কোনোটিই নয়"],
+        correctAnswer: 2
+      },
+      {
+        id: 8,
+        text: "যদি $\\alpha, \\beta, \\gamma$ সমীকরণ $x^3 + 4x + 1 = 0$-এর মূল হয়, তবে $(\\alpha+\\beta)^{-1} + (\\beta+\\gamma)^{-1} + (\\gamma+\\alpha)^{-1} =$",
+        options: ["2", "3", "4", "5"],
+        correctAnswer: 2
+      },
+      {
+        id: 9,
+        text: "যদি $x^2 - 7x + 6 = 0$ সমীকরণের মূল $\\alpha, \\beta$ হয়, তবে $\\frac{1}{\\alpha} + \\frac{1}{\\beta} =$",
+        options: ["6/7", "7/6", "7/10", "8/9"],
+        correctAnswer: 1
+      },
+      {
+        id: 10,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $x^2 - 2x + 4 = 0$-এর মূল হয়, তবে $\\alpha^5 + \\beta^5$-এর মান হলো:",
+        options: ["16", "32", "64", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 11,
+        text: "যদি $ax^2 + bx + c = 0$ সমীকরণের মূল $\\alpha, \\beta$ হয়, তবে $\\alpha\\beta^2 + \\alpha^2\\beta + \\alpha\\beta$-এর মান হবে:",
+        options: ["$\\frac{c(a-b)}{a^2}$", "0", "$-\\frac{bc}{a^2}$", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 12,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $2x^2 - 35x + 2 = 0$-এর মূল হয়, তবে $(2\\alpha-35)^3 \\cdot (2\\beta-35)^3$-এর মান:",
+        options: ["1", "64", "8", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 13,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $ax^2 + 2bx + c = 0$-এর মূল হয়, তবে $\\sqrt{\\frac{\\alpha}{\\beta}} + \\sqrt{\\frac{\\beta}{\\alpha}}$-এর মান:",
+        options: ["$\\frac{2b}{ac}$", "$\\frac{2b}{\\sqrt{ac}}$", "$-\\frac{2b}{\\sqrt{ac}}$", "$-\\frac{b}{\\sqrt{2}}$"],
+        correctAnswer: 2
+      },
+      {
+        id: 14,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $x^2 + 2x + 4 = 0$-এর মূল হয়, তবে $\\frac{1}{\\alpha^3} + \\frac{1}{\\beta^3}$-এর মান হলো:",
+        options: ["$-\\frac{1}{2}$", "$\\frac{1}{2}$", "32", "$\\frac{1}{4}$"],
+        correctAnswer: 3
+      },
+      {
+        id: 15,
+        text: "যদি $\\alpha, \\beta, \\gamma$ সমীকরণ $x^3 + ax^2 + bx + c = 0$-এর মূল হয়, তবে $\\alpha^{-1} + \\beta^{-1} + \\gamma^{-1} =$",
+        options: ["a / c", "-b / c", "b / a", "c / a"],
+        correctAnswer: 1
+      },
+      {
+        id: 16,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $x^2 - 3x + 1 = 0$-এর মূল হয়, তবে $\\alpha^3 + \\beta^3$-এর মান হলো:",
+        options: ["9", "18", "-9", "-18"],
+        correctAnswer: 1
+      },
+      {
+        id: 17,
+        text: "একটি দ্বিঘাত সমীকরণের মূলদ্বয়ের সমান্তরীয় মধ্যক (A.M.) 8/5 এবং তাদের অন্যোন্যকের সমান্তরীয় মধ্যক 8/7 হলে সমীকরণটি হলো:",
+        options: ["$5x^2 - 16x + 7 = 0$", "$7x^2 - 16x + 5 = 0$", "$7x^2 - 16x + 8 = 0$", "$3x^2 - 12x + 7 = 0$"],
+        correctAnswer: 0
+      },
+      {
+        id: 18,
+        text: "$t$-এর যে দ্বিঘাত সমীকরণের মূলদ্বয়ের A.M. হলো $A$ এবং G.M. হলো $G$, তা হলো:",
+        options: ["$t^2 - 2At + G^2 = 0$", "$t^2 - 2At - G^2 = 0$", "$t^2 + 2At + G^2 = 0$", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 19,
+        text: "একটি ত্রিভুজ $ABC$-তে $5\\cos A + 3 = 0$ হলে $\\sin A$ এবং $\\tan A$ মূলবিশিষ্ট সমীকরণটি হবে:",
+        options: ["$15x^3 - 8x + 16 = 0$", "$15x^2 + 8x - 16 = 0$", "$15x^2 - 8\\sqrt{2}x + 16 = 0$", "$15x^2 - 8x - 16 = 0$"],
+        correctAnswer: 1
+      },
+      {
+        id: 20,
+        text: "যদি $x^2 + px + q = 0$ সমীকরণের মূলদ্বয় $a-2$ ও $b-2$ হয় (যেখানে $a, b$ হলো $x^2 - 3x + 1 = 0$-এর মূল), তবে:",
+        options: ["$p = 1, q = 5$", "$p = 1, q = -5$", "$p = -1, q = 1$", "কোনোটিই নয়"],
+        correctAnswer: 3
+      }
+    ]
+  },
+  {
+    id: 'quad_mock_10',
+    title: '৫.১০ দ্বিঘাত সমীকরণ মক টেস্ট ১০ (Quadratic Equations Mock 10)',
+    topic: '৫. দ্বিঘাত সমীকরণ',
+    exam: 'WB Class-XI First Semester',
+    duration: 20,
+    questions: [
+      {
+        id: 1,
+        text: "$x^2 + ax + b = 0$ সমীকরণের মূলদ্বয় $p, q$ হলে $p^2 q$ এবং $pq^2$ মূলবিশিষ্ট সমীকরণটি হলো:",
+        options: ["$x^2 + abx + b^3 = 0$", "$x^2 - abx + b^3 = 0$", "$bx^2 + x + a = 0$", "$x^2 + ax + ab = 0$"],
+        correctAnswer: 0
+      },
+      {
+        id: 2,
+        text: "$\\frac{1}{3+\\sqrt{2}}$ এবং $\\frac{1}{3-\\sqrt{2}}$ মূলবিশিষ্ট সমীকরণটি হলো:",
+        options: ["$7x^2 - 6x + 1 = 0$", "$6x^2 - 7x + 1 = 0$", "$x^2 - 6x + 7 = 0$", "$x^2 - 7x + 6 = 0$"],
+        correctAnswer: 0
+      },
+      {
+        id: 3,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $lx^2 + mx + n = 0$-এর মূল হয়, তবে $\\alpha^3\\beta$ এবং $\\alpha\\beta^3$ মূলবিশিষ্ট সমীকরণটি হলো:",
+        options: ["$l^4 x^2 - nl(m^2 - 2nl)x + n^4 = 0$", "$l^4 x^2 + nl(m^2 - 2nl)x + n^4 = 0$", "$l^4 x^2 + nl(m^2 - 2nl)x - n^4 = 0$", "$l^4 x^2 - nl(m^2 + 2nl)x + n^4 = 0$"],
+        correctAnswer: 0
+      },
+      {
+        id: 4,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $9x^2 + 6x + 1 = 0$-এর মূল হয়, তবে $\\frac{1}{\\alpha}, \\frac{1}{\\beta}$ মূলবিশিষ্ট সমীকরণটি হলো:",
+        options: ["$2x^2 + 3x + 18 = 0$", "$x^2 + 6x - 9 = 0$", "$x^2 + 6x + 9 = 0$", "$x^2 - 6x + 9 = 0$"],
+        correctAnswer: 2
+      },
+      {
+        id: 5,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $ax^2 + bx + c = 0$-এর মূল হয়, তবে $\\alpha + \\frac{1}{\\beta}$ এবং $\\beta + \\frac{1}{\\alpha}$ মূলবিশিষ্ট সমীকরণটি হলো:",
+        options: ["$acx^2 + (a+c)bx + (a+c)^2 = 0$", "$abx^2 + (a+c)bx + (a+c)^2 = 0$", "$acx^2 + (a+b)cx + (a+c)^2 = 0$", "কোনোটিই নয়"],
+        correctAnswer: 0
+      },
+      {
+        id: 6,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $x^2 - 3x + 1 = 0$-এর মূল হয়, তবে $\\frac{1}{\\alpha-2}$ এবং $\\frac{1}{\\beta-2}$ মূলবিশিষ্ট সমীকরণটি হলো:",
+        options: ["$x^2 + x - 1 = 0$", "$x^2 + x + 1 = 0$", "$x^2 - x - 1 = 0$", "কোনোটিই নয়"],
+        correctAnswer: 2
+      },
+      {
+        id: 7,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $ax^2 + bx + c = 0$-এর মূল হয়, তবে $2+\\alpha$ এবং $2+\\beta$ মূলবিশিষ্ট সমীকরণটি হলো:",
+        options: ["$ax^2 + x(4a-b) + 4a - 2b + c = 0$", "$ax^2 + x(4a-b) + 4a + 2b + c = 0$", "$ax^2 + x(b-4a) + 4a + 2b + c = 0$", "$ax^2 + x(b-4a) + 4a - 2b + c = 0$"],
+        correctAnswer: 3
+      },
+      {
+        id: 8,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $ax^2 + bx + c = 0$-এর মূল হয়, তবে $1/\\alpha, 1/\\beta$ মূলবিশিষ্ট সমীকরণটি হবে:",
+        options: ["$cx^2 - bx + a = 0$", "$cx^2 + bx + a = 0$", "$x^2 + bx + a = 0$", "$x^2 + bx - a = 0$"],
+        correctAnswer: 1
+      },
+      {
+        id: 9,
+        text: "ধরি $\\alpha, \\alpha^2$ হলো $x^2 + x + 1 = 0$-এর মূল; তবে $\\alpha^{31}$ এবং $\\alpha^{62}$ মূলবিশিষ্ট সমীকরণটি হলো:",
+        options: ["$x^2 - x + 1 = 0$", "$x^2 + x - 1 = 0$", "$x^2 + x + 1 = 0$", "$x^{60} + x^{30} + 1 = 0$"],
+        correctAnswer: 2
+      },
+      {
+        id: 10,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $x^2 - 2x\\cos 2\\theta + 1 = 0$-এর মূল হয়, তবে $\\alpha^{n/2}$ এবং $\\beta^{n/2}$ মূলবিশিষ্ট সমীকরণটি হবে:",
+        options: ["$x^2 - 2nx\\cos\\theta + 1 = 0$", "$x^2 + 2nx\\cos n\\theta + 1 = 0$", "$x^2 + 2x\\cos n\\theta + 1 = 0$", "$x^2 - 2x\\cos n\\theta + 1 = 0$"],
+        correctAnswer: 3
+      },
+      {
+        id: 11,
+        text: "$3x^2 - 20x + 17 = 0$ সমীকরণের মূলগুলির অন্যোন্যক মূলবিশিষ্ট সমীকরণটি হলো:",
+        options: ["$3x^2 + 20x - 17 = 0$", "$17x^2 - 20x + 3 = 0$", "$17x^2 + 20x + 3 = 0$", "কোনোটিই নয়"],
+        correctAnswer: 1
+      },
+      {
+        id: 12,
+        text: "একটি দ্বিঘাত সমীকরণের মূলদ্বয়ের যোগফল 2 এবং তাদের ঘনের যোগফল 98 হলে সমীকরণটি হলো:",
+        options: ["$x^2 + 2x + 15 = 0$", "$x^2 + 15x + 2 = 0$", "$2x^2 - 2x + 15 = 0$", "$x^2 - 2x - 15 = 0$"],
+        correctAnswer: 3
+      },
+      {
+        id: 13,
+        text: "মূলদ্বয়ের যোগফল -1 এবং তাদের অন্যোন্যকের যোগফল 1/6 হলে সমীকরণটি হলো:",
+        options: ["$x^2 + x - 6 = 0$", "$x^2 - x + 6 = 0$", "$x^2 + x + 1 = 0$", "$x^2 - 6x + 1 = 0$"],
+        correctAnswer: 0
+      },
+      {
+        id: 14,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $x^2 + bx - c = 0$-এর মূল হয়, তবে $b$ এবং $c$ মূলবিশিষ্ট সমীকরণটি হলো:",
+        options: ["$x^2 + \\alpha x - \\beta = 0$", "$x^2 - [(\\alpha+\\beta) + \\alpha\\beta]x - \\alpha\\beta(\\alpha+\\beta) = 0$", "$x^2 + [(\\alpha+\\beta) + \\alpha\\beta]x + \\alpha\\beta(\\alpha+\\beta) = 0$", "$x^2 + [\\alpha\\beta + (\\alpha+\\beta)]x - \\alpha\\beta(\\alpha+\\beta) = 0$"],
+        correctAnswer: 2
+      },
+      {
+        id: 15,
+        text: "যদি $\\alpha, \\beta$ সমীকরণ $x^2 - 5x - 3 = 0$-এর মূল হয়, তবে $\\frac{1}{2\\alpha-3}$ এবং $\\frac{1}{2\\beta-3}$ মূলবিশিষ্ট সমীকরণটি হলো:",
+        options: ["$33x^2 + 4x - 1 = 0$", "$33x^2 - 4x + 1 = 0$", "$33x^2 - 4x - 1 = 0$", "$33x^2 + 4x + 1 = 0$"],
+        correctAnswer: 0
+      },
+      {
+        id: 16,
+        text: "যদি $\\tan\\alpha$ এবং $\\tan\\beta$ সমীকরণ $x^2 - px + q = 0$-এর মূল হয়, তবে $\\sin^2(\\alpha+\\beta)$-এর মান হলো:",
+        options: ["$\\frac{p^2}{p^2 + (1-q)^2}$", "$\\frac{p^2}{p^2 + q^2}$", "$\\frac{q^2}{p^2 + (1-q)^2}$", "$\\frac{p^2}{(p+q)^2}$"],
+        correctAnswer: 0
+      },
+      {
+        id: 17,
+        text: "যদি $2 + i\\sqrt{3}$ সমীকরণ $x^2 + px + q = 0$-এর একটি মূল হয়, তবে $(p, q) =$",
+        options: ["(7, -4)", "(-4, 7)", "(4, 7)", "(7, 4)"],
+        correctAnswer: 1
+      },
+      {
+        id: 18,
+        text: "$x^2 + px + q = 0$ সমীকরণে $x$-এর সহগ 13-এর স্থলে ভুলবশত 17 নেওয়ায় মূল পাওয়া গেল -2 এবং -15। সমীকরণটির সঠিক মূলগুলি হলো:",
+        options: ["-10, -3", "10, 3", "-10, 3", "10, -3"],
+        correctAnswer: 0
+      },
+      {
+        id: 19,
+        text: "একটি দ্বিঘাত সমীকরণ সমাধান করার সময় একজন ছাত্র ধ্রুবক পদ ভুল লিখে মূল পেল 3 এবং 2; অন্যজন ধ্রুবক পদ ও $x^2$-এর সহগ যথাক্রমে -6 এবং 1 সঠিকভাবে লিখল। সঠিক মূলগুলি হলো:",
+        options: ["3, -2", "-3, 2", "-6, -1", "6, -1"],
+        correctAnswer: 3
+      },
+      {
+        id: 20,
+        text: "যদি 8, 2 হলো $x^2 + ax + \\beta = 0$-এর মূল এবং 3, 3 হলো $x^2 + \\alpha x + b = 0$-এর মূল, তবে $x^2 + ax + b = 0$-এর মূলগুলি হলো:",
+        options: ["8, -1", "-9, 2", "-8, -2", "9, 1"],
+        correctAnswer: 3
+      }
     ]
   }
+];
+
+export const topic5Tests: Test[] = [
+  ...baseTopic5Tests,
+  ...topic5JeeTests
 ];

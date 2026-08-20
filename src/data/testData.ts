@@ -112,34 +112,6 @@ const baseTests: Test[] = [
     ]
   },
   {
-    id: 't4',
-    title: 'Complex Numbers: Introduction',
-    topic: '৪. জটিল রাশি',
-    exam: 'WB Class-XI First Semester',
-    questions: [
-      { id: 1, text: "$i$ এর মান কত?", options: ["$\\sqrt{-1}$", "-1", "1", "0"], correctAnswer: 0 },
-      { id: 2, text: "$i^2$ এর মান কত?", options: ["1", "-1", "$i$", "$-i$"], correctAnswer: 1 },
-      { id: 3, text: "জটিল সংখ্যা $z = x + iy$ এর মডুলাস $|z|$ কত?", options: ["$\\sqrt{x^2 + y^2}$", "$x^2 + y^2$", "$x + y$", "$\\sqrt{x^2 - y^2}$"], correctAnswer: 0 },
-      { id: 4, text: "$z = 3 + 4i$ এর মডুলাস কত?", options: ["3", "4", "5", "7"], correctAnswer: 2 },
-      { id: 5, text: "$z = x + iy$ এর অনুবন্ধী জটিল সংখ্যা (Conjugate) কোনটি?", options: ["$x - iy$", "$-x + iy$", "$-x - iy$", "$y + ix$"], correctAnswer: 0 },
-      { id: 6, text: "$i^4$ এর মান কত?", options: ["1", "-1", "$i$", "$-i$"], correctAnswer: 0 },
-      { id: 7, text: "আর্গান্ড তলে (Argand Plane) x-অক্ষকে কী বলা হয়?", options: ["বাস্তব অক্ষ", "কাল্পনিক অক্ষ", "পোলার অক্ষ", "কোনোটিই নয়"], correctAnswer: 0 },
-      { id: 8, text: "এককের ঘনমূলগুলোর যোগফল কত? $(1 + \\omega + \\omega^2)$", options: ["0", "1", "3", "-1"], correctAnswer: 0 },
-      { id: 9, text: "$\\omega^3$ এর মান কত?", options: ["0", "1", "-1", "$\\omega$"], correctAnswer: 1 },
-      { id: 10, text: "দ্বিঘাত সমীকরণ $ax^2 + bx + c = 0$ এর মূলগুলো জটিল হবে যদি-", options: ["$b^2 - 4ac > 0$", "$b^2 - 4ac = 0$", "$b^2 - 4ac < 0$", "$b^2 - 4ac \\ge 0$"], correctAnswer: 2 },
-      { id: 11, text: "$z = 1 + i$ এর আর্গুমেন্ট কত?", options: ["$\\pi/4$", "$\\pi/2$", "$\\pi$", "$\\pi/3$"], correctAnswer: 0 },
-      { id: 12, text: "বিশুদ্ধ কাল্পনিক সংখ্যার বাস্তব অংশ কত?", options: ["0", "1", "-1", "অনির্ণেয়"], correctAnswer: 0 },
-      { id: 13, text: "$(2 + 3i) + (1 - 2i) = ?$", options: ["$3 + i$", "$3 + 5i$", "$1 + i$", "$3 - i$"], correctAnswer: 0 },
-      { id: 14, text: "$i^{10}$ এর মান কত?", options: ["1", "-1", "$i$", "$-i$"], correctAnswer: 1 },
-      { id: 15, text: "$z = -1 - i$ কোন চতুর্ভাগে অবস্থিত?", options: ["প্রথম", "দ্বিতীয়", "তৃতীয়", "চতুর্থ"], correctAnswer: 2 },
-      { id: 16, text: "পোলার আকারে $z = r(\\cos\\theta + i \\sin\\theta)$ এ $r$ কী?", options: ["মডুলাস", "আর্গুমেন্ট", "বাস্তব অংশ", "কাল্পনিক অংশ"], correctAnswer: 0 },
-      { id: 17, text: "$\\sqrt{-9}$ এর মান কত?", options: ["3", "-3", "$3i$", "$\\pm 3$"], correctAnswer: 2 },
-      { id: 18, text: "$z = 5$ এর কাল্পনিক অংশ কত?", options: ["0", "5", "1", "$i$"], correctAnswer: 0 },
-      { id: 19, text: "গুণাত্মক বিপরীত (Multiplicative Inverse) $z^{-1} = ?$", options: ["$z / |z|^2$", "$\\bar{z} / |z|^2$", "$\\bar{z}$", "$|z|$"], correctAnswer: 1 },
-      { id: 20, text: "$x^2 + 1 = 0$ সমীকরণের সমাধান কী?", options: ["$\\pm 1$", "$\\pm i$", "1", "0"], correctAnswer: 1 }
-    ]
-  },
-  {
     id: 't5',
     title: 'Linear Inequalities',
     topic: '৬. রৈখিক অসমীকরণ',

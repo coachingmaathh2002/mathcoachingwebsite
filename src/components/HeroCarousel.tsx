@@ -1,26 +1,84 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronRight, ChevronLeft, Image as ImageIcon } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+
+import banner1 from '../assets/hero/mock-test-hero01.webp';
+import banner2 from '../assets/hero/mock-test-hero02.webp';
+import banner3 from '../assets/hero/mock-test-hero03.webp';
+import banner4 from '../assets/hero/mock-test-hero04.webp';
+import banner5 from '../assets/hero/mock-test-hero05.webp';
+import banner6 from '../assets/hero/mock-test-hero06.webp';
 
 interface BannerItem {
   id: string;
   src: string;
+  fallbackSrc: string;
   title: string;
+  subtitle?: string;
   link?: string;
-  format?: string;
+  tag?: string;
 }
 
 const BANNERS: BannerItem[] = [
-  { id: 'def-1', src: '/mock-test-hero01.webp?v=orig', title: 'Master Mathematics for WBJEE & JEE Advanced', link: '/assignments', format: 'WEBP' },
-  { id: 'def-2', src: '/mock-test-hero02.webp?v=orig', title: 'Comprehensive WBJEE Maths Practice', link: '/tests', format: 'WEBP' },
-  { id: 'def-3', src: '/mock-test-hero03.webp?v=orig', title: 'Interactive Graphing & Coordinate Geometry', link: '/study-materials', format: 'WEBP' },
-  { id: 'def-4', src: '/mock-test-hero04.webp?v=orig', title: 'Calculus & Algebra Deep Dive Series', link: '/assignments', format: 'WEBP' },
-  { id: 'def-5', src: '/mock-test-hero05.webp?v=orig', title: 'Vector Algebra & Matrix Problem Solving', link: '/tests', format: 'WEBP' },
-  { id: 'def-6', src: '/mock-test-hero06.webp?v=orig', title: 'Structured WBJEE Mock Tests & Rank Accelerators', link: '/study-materials', format: 'WEBP' },
+  { 
+    id: 'banner-1', 
+    src: banner1, 
+    fallbackSrc: '/mock-test-hero01.webp',
+    title: 'Master Mathematics for WBJEE & JEE Advanced', 
+    subtitle: 'Comprehensive Chapter-wise Problem Solving & Shortcuts',
+    link: '/assignments', 
+    tag: 'WBJEE SPECIAL' 
+  },
+  { 
+    id: 'banner-2', 
+    src: banner2, 
+    fallbackSrc: '/mock-test-hero02.webp',
+    title: 'Comprehensive WBJEE Maths Practice & Mock Tests', 
+    subtitle: 'Live Timed Tests with Instant Rank Analysis',
+    link: '/tests', 
+    tag: 'MOCK TESTS' 
+  },
+  { 
+    id: 'banner-3', 
+    src: banner3, 
+    fallbackSrc: '/mock-test-hero03.webp',
+    title: 'Interactive Graphing & Coordinate Geometry', 
+    subtitle: 'Conics, Circles, Straight Lines & 3D Geometry',
+    link: '/study-materials', 
+    tag: 'STUDY MODULES' 
+  },
+  { 
+    id: 'banner-4', 
+    src: banner4, 
+    fallbackSrc: '/mock-test-hero04.webp',
+    title: 'Calculus & Algebra Deep Dive Series', 
+    subtitle: 'Integration, Differential Equations, Limits & Continuity',
+    link: '/assignments', 
+    tag: 'ADVANCED CALCULUS' 
+  },
+  { 
+    id: 'banner-5', 
+    src: banner5, 
+    fallbackSrc: '/mock-test-hero05.webp',
+    title: 'Vector Algebra & Matrix Problem Solving', 
+    subtitle: 'High Scoring Topics with 100% Concept Clarity',
+    link: '/tests', 
+    tag: 'RANK BOOSTER' 
+  },
+  { 
+    id: 'banner-6', 
+    src: banner6, 
+    fallbackSrc: '/mock-test-hero06.webp',
+    title: 'Structured WBJEE Mock Tests & Rank Accelerators', 
+    subtitle: 'Exclusive Question Bank Curated by Raj Sir',
+    link: '/study-materials', 
+    tag: 'ACADEMY SPECIAL' 
+  },
 ];
 
 export const HeroCarousel: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
   const navigate = useNavigate();
   const touchStartX = useRef<number | null>(null);
@@ -56,78 +114,116 @@ export const HeroCarousel: React.FC = () => {
     touchEndX.current = null;
   };
 
+  const handleImageError = (id: string, fallbackSrc: string, target: HTMLImageElement) => {
+    if (!imageErrors[id]) {
+      setImageErrors((prev) => ({ ...prev, [id]: true }));
+      target.src = fallbackSrc;
+    }
+  };
+
   return (
-    <div className="w-full pt-[128px] md:pt-[138px] pb-4 z-40 relative group">
+    <div id="hero-banners-section" className="w-full pt-[124px] md:pt-[134px] pb-4 z-30 relative group bg-gradient-to-b from-[#010414] via-[#020726] to-[#010414]">
       {/* Main Carousel Frame */}
       <div 
-        className="relative w-full max-w-full overflow-hidden shadow-2xl mx-auto touch-pan-y group/carousel"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        className="relative w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-6"
       >
         <div 
-          className="flex transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          className="relative w-full overflow-hidden rounded-2xl border border-brand-gold/30 shadow-[0_10px_35px_rgba(0,0,0,0.7)] bg-[#02051e] touch-pan-y group/carousel"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
-          {BANNERS.map((banner, index) => (
-            <div 
-              key={banner.id || index}
-              onClick={() => navigate(banner.link || '/assignments')}
-              className="w-full flex-shrink-0 relative overflow-hidden flex items-center justify-center cursor-pointer bg-[#02051e] h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px]"
-            >
-              <img 
-                src={banner.src} 
-                alt={banner.title || `Slide ${index + 1}`} 
-                className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.01]" 
-                referrerPolicy="no-referrer"
-              />
+          <div 
+            className="flex transition-transform duration-500 ease-out"
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          >
+            {BANNERS.map((banner, index) => (
+              <div 
+                key={banner.id || index}
+                onClick={() => navigate(banner.link || '/assignments')}
+                className="w-full flex-shrink-0 relative overflow-hidden flex items-center justify-center cursor-pointer bg-[#02051e] aspect-[16/9] sm:aspect-[21/9] md:aspect-[24/9] max-h-[480px]"
+              >
+                <img 
+                  src={banner.src} 
+                  alt={banner.title || `Slide ${index + 1}`} 
+                  onError={(e) => handleImageError(banner.id, banner.fallbackSrc, e.currentTarget)}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover/carousel:scale-[1.02]" 
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  referrerPolicy="no-referrer"
+                />
 
-              {/* Format Badge overlay if WebP or Custom */}
-              {banner.format && (
-                <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 z-10 opacity-80 group-hover/carousel:opacity-100 transition-opacity">
-                  <ImageIcon size={10} className="text-brand-gold" />
-                  {banner.format}
+                {/* Subtle gradient vignette overlay for improved text & control contrast */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+
+                {/* Tag Badge */}
+                {banner.tag && (
+                  <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-md border border-brand-gold/40 text-brand-gold text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1.5 z-10 shadow-lg">
+                    <Sparkles size={12} className="text-brand-gold animate-pulse" />
+                    <span>{banner.tag}</span>
+                  </div>
+                )}
+
+                {/* Bottom title bar */}
+                <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 text-white z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-2 pointer-events-none">
+                  <div className="max-w-2xl">
+                    <h2 className="text-base sm:text-xl md:text-2xl font-bold tracking-tight text-white drop-shadow-md line-clamp-1">
+                      {banner.title}
+                    </h2>
+                    {banner.subtitle && (
+                      <p className="text-xs sm:text-sm text-slate-300 drop-shadow line-clamp-1 hidden sm:block mt-1">
+                        {banner.subtitle}
+                      </p>
+                    )}
+                  </div>
+                  <div className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-brand-gold bg-brand-gold/15 backdrop-blur-md border border-brand-gold/30 px-3 py-1.5 rounded-lg whitespace-nowrap">
+                    <span>Explore Now</span>
+                    <ChevronRight size={14} />
+                  </div>
                 </div>
-              )}
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
+
+          {/* Navigation Arrows */}
+          {BANNERS.length > 1 && (
+            <>
+              <button 
+                id="btn-carousel-prev"
+                onClick={(e) => { e.stopPropagation(); prevSlide(); }}
+                aria-label="Previous Slide"
+                className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 bg-black/60 hover:bg-black/90 text-white rounded-full flex items-center justify-center backdrop-blur-md transition-all z-20 hover:scale-110 shadow-xl border border-white/20 active:scale-95"
+              >
+                <ChevronLeft size={22} />
+              </button>
+              <button 
+                id="btn-carousel-next"
+                onClick={(e) => { e.stopPropagation(); nextSlide(); }}
+                aria-label="Next Slide"
+                className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 bg-black/60 hover:bg-black/90 text-white rounded-full flex items-center justify-center backdrop-blur-md transition-all z-20 hover:scale-110 shadow-xl border border-white/20 active:scale-95"
+              >
+                <ChevronRight size={22} />
+              </button>
+            </>
+          )}
         </div>
 
-        {/* Navigation Arrows */}
-        {BANNERS.length > 1 && (
-          <>
-            <button 
-              onClick={(e) => { e.stopPropagation(); prevSlide(); }}
-              aria-label="Previous Slide"
-              className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black/80 text-white rounded-full flex items-center justify-center backdrop-blur-md transition-all z-20 hover:scale-110 shadow-lg border border-white/10"
-            >
-              <ChevronLeft size={24} />
-            </button>
-            <button 
-              onClick={(e) => { e.stopPropagation(); nextSlide(); }}
-              aria-label="Next Slide"
-              className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black/80 text-white rounded-full flex items-center justify-center backdrop-blur-md transition-all z-20 hover:scale-110 shadow-lg border border-white/10"
-            >
-              <ChevronRight size={24} />
-            </button>
-          </>
-        )}
-      </div>
-
-      {/* Indicators Dots */}
-      <div className="w-full py-3 flex justify-center items-center gap-2.5">
-        {BANNERS.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentSlide(index)}
-            aria-label={`Go to slide ${index + 1}`}
-            className={`h-2.5 rounded-full transition-all duration-300 ${
-              currentSlide === index ? 'bg-brand-gold w-7 shadow-lg shadow-brand-gold/40' : 'bg-slate-600/60 hover:bg-slate-400 w-2.5'
-            }`}
-          />
-        ))}
+        {/* Indicators Dots */}
+        <div className="w-full pt-3 pb-1 flex justify-center items-center gap-2">
+          {BANNERS.map((_, index) => (
+            <button
+              id={`carousel-dot-${index + 1}`}
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              aria-label={`Go to slide ${index + 1}`}
+              className={`h-2.5 rounded-full transition-all duration-300 ${
+                currentSlide === index ? 'bg-brand-gold w-8 shadow-md shadow-brand-gold/50' : 'bg-slate-700 hover:bg-slate-500 w-2.5'
+              }`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
 };
+
 

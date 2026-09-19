@@ -11,6 +11,9 @@ export interface Question {
   text: string;
   options: string[];
   correctAnswer: number; // Index 0-3
+  category?: 1 | 2 | 3;
+  correctAnswers?: number[];
+  solution?: string;
 }
 
 export interface Test {

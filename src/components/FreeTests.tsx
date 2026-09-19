@@ -3,11 +3,21 @@ import { motion, AnimatePresence } from 'motion/react';
 import { StudentMarksheetModal } from './StudentMarksheetModal';
 import { tests, Test } from '../data/testData';
 import { paidStudents } from '../data/students';
-import { ArrowLeft, CheckCircle, Clock, Play, User, Phone, Award, ChevronRight, ChevronLeft, History, BookOpen, Lock, Star, Flag, AlertTriangle, BarChart3, TrendingUp, X } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { 
+  ArrowLeft, CheckCircle, Clock, Play, User, Phone, Award, ChevronRight, ChevronLeft, 
+  History, BookOpen, Lock, Star, Flag, AlertTriangle, BarChart3, TrendingUp, X, 
+  Download, Zap, CheckCircle2, XCircle, RotateCcw, HelpCircle, FileText, Sparkles
+} from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, BarChart, Bar, ReferenceLine } from 'recharts';
 import 'katex/dist/katex.min.css';
 import Latex from 'react-latex-next';
 import { useNavigate } from 'react-router-dom';
+import { 
+  evaluateWBJEEExam, 
+  ExamEvaluationResult, 
+  getQuestionCategory
+} from '../utils/wbjeeExamEngine';
+import { generateMarksheetPDF } from '../utils/generateMarksheetPDF';
 
 type ViewState = 'list' | 'auth' | 'test' | 'result';
 
@@ -20,6 +30,9 @@ interface TestAttempt {
   total: number;
   date: string;
   userName: string;
+  percentage?: number;
+  accuracy?: number;
+  timeSeconds?: number;
 }
 
 export const FreeTests: React.FC = () => {
@@ -32,7 +45,10 @@ export const FreeTests: React.FC = () => {
   const [selectedTest, setSelectedTest] = useState<Test | null>(null);
   const [user, setUser] = useState({ name: '', mobile: '', password: '' });
   const [authError, setAuthError] = useState('');
-  const [answers, setAnswers] = useState<Record<number, number>>({});
+  const [answers, setAnswers] = useState<Record<number, number[]>>({});
+  const [timeSpentPerQuestion, setTimeSpentPerQuestion] = useState<Record<number, number>>({});
+  const [evaluationResult, setEvaluationResult] = useState<ExamEvaluationResult | null>(null);
+  const [categoryFilter, setCategoryFilter] = useState<'ALL' | 1 | 2 | 3>('ALL');
   const [score, setScore] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
@@ -53,13 +69,20 @@ export const FreeTests: React.FC = () => {
 
   React.useEffect(() => {
     let timer: ReturnType<typeof setInterval>;
-    if (view === 'test' && timeLeft > 0) {
+    if (view === 'test' && timeLeft > 0 && selectedTest) {
       timer = setInterval(() => {
         setTimeLeft(prev => prev - 1);
+        const currentQ = selectedTest.questions[currentQuestionIndex];
+        if (currentQ) {
+          setTimeSpentPerQuestion(prev => ({
+            ...prev,
+            [currentQ.id]: (prev[currentQ.id] || 0) + 1
+          }));
+        }
       }, 1000);
     }
     return () => clearInterval(timer);
-  }, [view, timeLeft]);
+  }, [view, timeLeft, selectedTest, currentQuestionIndex]);
 
   React.useEffect(() => {
     if (view === 'test' && timeLeft === 0) {
@@ -115,6 +138,9 @@ export const FreeTests: React.FC = () => {
     if (user.name && user.mobile) {
       setView('test');
       setAnswers({});
+      setTimeSpentPerQuestion({});
+      setEvaluationResult(null);
+      setCategoryFilter('ALL');
       setCurrentQuestionIndex(0);
       setTimeLeft((selectedTest?.duration || 20) * 60); // Reset timer based on test duration
       setMarkedForReview(new Set());
@@ -145,8 +171,43 @@ export const FreeTests: React.FC = () => {
   };
 
   const handleAnswer = (questionId: number, optionIndex: number) => {
-    if (view === 'review') return;
-    setAnswers(prev => ({ ...prev, [questionId]: optionIndex }));
+    if (view === 'review' || !selectedTest) return;
+    const currentQ = selectedTest.questions.find(q => q.id === questionId);
+    if (!currentQ) return;
+
+    const qIndex = selectedTest.questions.findIndex(q => q.id === questionId);
+    const cat = getQuestionCategory(currentQ, qIndex >= 0 ? qIndex : 0, selectedTest.questions.length);
+
+    setAnswers(prev => {
+      if (cat === 1 || cat === 2) {
+        // Single choice Category 1 & 2
+        return {
+          ...prev,
+          [questionId]: [optionIndex]
+        };
+      } else {
+        // Category 3 (Multi-correct): Toggle option
+        const currentSelected = prev[questionId] || [];
+        const next = currentSelected.includes(optionIndex)
+          ? currentSelected.filter(idx => idx !== optionIndex)
+          : [...currentSelected, optionIndex].sort((a, b) => a - b);
+        return {
+          ...prev,
+          [questionId]: next
+        };
+      }
+    });
+  };
+
+  const handleClearResponse = () => {
+    if (!selectedTest) return;
+    const currentQ = selectedTest.questions[currentQuestionIndex];
+    if (!currentQ) return;
+    setAnswers(prev => {
+      const next = { ...prev };
+      delete next[currentQ.id];
+      return next;
+    });
   };
 
   const handleNext = () => {
@@ -164,22 +225,29 @@ export const FreeTests: React.FC = () => {
   const handleSubmit = () => {
     if (!selectedTest) return;
     
-    let newScore = 0;
-    selectedTest.questions.forEach(q => {
-      if (answers[q.id] === q.correctAnswer) {
-        newScore++;
-      }
-    });
-    setScore(newScore);
-    
-    // Save to history
+    const totalDurationSeconds = (selectedTest.duration || 20) * 60;
+    const evaluation = evaluateWBJEEExam(
+      selectedTest.questions,
+      answers,
+      timeSpentPerQuestion,
+      totalDurationSeconds,
+      timeLeft
+    );
+
+    setEvaluationResult(evaluation);
+    setScore(evaluation.netScore);
+
+    // Save to history with WBJEE metrics
     const attempt: TestAttempt = {
       id: Date.now().toString(),
       testId: selectedTest.id,
       testTitle: selectedTest.title,
       topic: selectedTest.topic,
-      score: newScore,
-      total: selectedTest.questions.length,
+      score: evaluation.netScore,
+      total: evaluation.maxTotalScore,
+      percentage: evaluation.percentage,
+      accuracy: evaluation.accuracyRate,
+      timeSeconds: evaluation.totalTimeSeconds,
       date: new Date().toISOString(),
       userName: user.name
     };
@@ -192,6 +260,16 @@ export const FreeTests: React.FC = () => {
     window.scrollTo(0, 0);
   };
 
+  const handleDirectDownloadPDF = () => {
+    if (!selectedTest || !evaluationResult) return;
+    generateMarksheetPDF({
+      candidateName: user.name || 'Student Candidate',
+      testTitle: selectedTest.title,
+      topicTitle: selectedTest.topic || 'Mathematics',
+      evaluation: evaluationResult
+    });
+  };
+
   const handleReview = () => {
     setView('review');
     setCurrentQuestionIndex(0);
@@ -202,6 +280,8 @@ export const FreeTests: React.FC = () => {
     setView('list');
     setSelectedTest(null);
     setAnswers({});
+    setTimeSpentPerQuestion({});
+    setEvaluationResult(null);
     setScore(0);
     setCurrentQuestionIndex(0);
     window.scrollTo(0, 0);
@@ -777,145 +857,301 @@ export const FreeTests: React.FC = () => {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="flex gap-4 mb-6">
-                  <span className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border ${
-                    view === 'review' 
-                      ? answers[selectedTest.questions[currentQuestionIndex].id] === selectedTest.questions[currentQuestionIndex].correctAnswer
-                        ? 'bg-green-500/20 text-green-400 border-green-500/30'
-                        : 'bg-red-500/20 text-red-400 border-red-500/30'
-                      : 'bg-dark-800 text-brand-light border-white/5'
-                  }`}>
-                    {currentQuestionIndex + 1}
-                  </span>
-                  <div className="text-xl text-white font-medium pt-1 leading-relaxed">
-                    <Latex>{selectedTest.questions[currentQuestionIndex].text}</Latex>
-                  </div>
-                </div>
+                  {(() => {
+                    const currentQ = selectedTest.questions[currentQuestionIndex];
+                    const currentCat = getQuestionCategory(currentQ, currentQuestionIndex, selectedTest.questions.length);
+                    const timeSpentCurrent = timeSpentPerQuestion[currentQ.id] || 0;
+                    const currentSelected = answers[currentQ.id] || [];
+                    const currentResult = evaluationResult?.questionResults.find(r => r.questionId === currentQ.id);
 
-                <div className="space-y-4 ml-0 md:ml-14">
-                  {selectedTest.questions[currentQuestionIndex].options.map((option, optIndex) => {
-                    const isSelected = answers[selectedTest.questions[currentQuestionIndex].id] === optIndex;
-                    const isCorrect = selectedTest.questions[currentQuestionIndex].correctAnswer === optIndex;
-                    
-                    let optionClass = 'bg-dark-950 border-slate-800 text-slate-300 hover:border-slate-600 hover:bg-dark-800';
-                    let circleClass = 'border-slate-600';
-                    let innerCircleClass = 'bg-brand-gold';
-
-                    if (view === 'review') {
-                      if (isCorrect) {
-                        optionClass = 'bg-green-500/10 border-green-500 text-white shadow-[0_0_15px_rgba(34,197,94,0.1)]';
-                        circleClass = 'border-green-500';
-                        innerCircleClass = 'bg-green-500';
-                      } else if (isSelected && !isCorrect) {
-                        optionClass = 'bg-red-500/10 border-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.1)]';
-                        circleClass = 'border-red-500';
-                        innerCircleClass = 'bg-red-500';
-                      } else {
-                        optionClass = 'bg-dark-950 border-slate-800 text-slate-500 opacity-50';
-                      }
-                    } else if (isSelected) {
-                      optionClass = 'bg-brand-gold/10 border-brand-gold text-white shadow-[0_0_15px_rgba(212,175,55,0.15)]';
-                      circleClass = 'border-brand-gold';
-                    }
+                    // Correct answers set
+                    const correctAnswersList = currentQ.correctAnswers && currentQ.correctAnswers.length > 0 
+                      ? currentQ.correctAnswers 
+                      : [currentQ.correctAnswer];
 
                     return (
-                      <label 
-                        key={optIndex}
-                        className={`flex items-center gap-4 p-5 rounded-xl border transition-all ${view === 'review' ? 'cursor-default' : 'cursor-pointer'} ${optionClass}`}
-                      >
-                        <input
-                          type="radio"
-                          name={`q-${selectedTest.questions[currentQuestionIndex].id}`}
-                          className="hidden"
-                          checked={isSelected}
-                          onChange={() => handleAnswer(selectedTest.questions[currentQuestionIndex].id, optIndex)}
-                          disabled={view === 'review'}
-                        />
-                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${circleClass}`}>
-                          {isSelected && <div className={`w-3 h-3 rounded-full ${innerCircleClass}`} />}
-                        </div>
-                        <span className="text-lg"><Latex>{option}</Latex></span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            </AnimatePresence>
+                      <>
+                        {/* Question Header: Category info and timer */}
+                        <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-white/5">
+                          <div className="flex items-center gap-2.5 flex-wrap">
+                            <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                              currentCat === 1
+                                ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                                : currentCat === 2
+                                  ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                                  : 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
+                            }`}>
+                              Category {currentCat}
+                            </span>
+                            <span className="text-xs text-slate-300 font-medium">
+                              {currentCat === 1 && 'Single Option • +1.00 Mark | -0.25 Negative'}
+                              {currentCat === 2 && 'Single Option • +2.00 Marks | -0.50 Negative'}
+                              {currentCat === 3 && 'One or More Correct • +2.00 Marks | No Negative Mark (Partial Applies)'}
+                            </span>
+                          </div>
 
-            <div className="flex justify-between items-center mt-12 pt-6 border-t border-white/5">
+                          <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-1.5 text-xs text-slate-300 bg-dark-950 px-3 py-1.5 rounded-lg border border-white/5">
+                              <Zap size={14} className="text-brand-gold" />
+                              <span>Time on this Q: <strong className="font-mono text-white">{timeSpentCurrent}s</strong></span>
+                            </div>
+
+                            {view === 'review' && currentResult && (
+                              <div className={`px-3 py-1 rounded-lg text-xs font-bold font-mono border ${
+                                currentResult.marks > 0 
+                                  ? 'bg-green-500/20 text-green-400 border-green-500/30' 
+                                  : currentResult.marks < 0 
+                                    ? 'bg-red-500/20 text-red-400 border-red-500/30'
+                                    : 'bg-slate-800 text-slate-400 border-slate-700'
+                              }`}>
+                                Marks: {currentResult.marks > 0 ? `+${currentResult.marks.toFixed(2)}` : currentResult.marks.toFixed(2)} / {currentResult.maxMarks.toFixed(2)}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Category 3 Specific Helper Banner */}
+                        {currentCat === 3 && (
+                          <div className="mb-5 px-4 py-2.5 rounded-xl bg-purple-500/10 border border-purple-500/25 text-xs text-purple-200 flex items-start gap-2.5">
+                            <Sparkles size={16} className="text-purple-400 flex-shrink-0 mt-0.5" />
+                            <div>
+                              <strong className="font-semibold text-purple-300">WBJEE Category 3 Rules:</strong> Select one or more correct options. Full marks (+2.00) if all correct options are marked. If only some correct options and NO incorrect options are marked, proportional partial marks are awarded. Zero marks if any incorrect option is marked. No negative marking.
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Question Text */}
+                        <div className="flex gap-4 mb-6">
+                          <span className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg border ${
+                            view === 'review' 
+                              ? currentResult?.status === 'correct' || currentResult?.status === 'partial'
+                                ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                                : currentResult?.status === 'incorrect'
+                                  ? 'bg-red-500/20 text-red-400 border-red-500/30'
+                                  : 'bg-dark-800 text-slate-400 border-white/5'
+                              : 'bg-dark-800 text-brand-light border-white/5'
+                          }`}>
+                            {currentQuestionIndex + 1}
+                          </span>
+                          <div className="text-xl text-white font-medium pt-1 leading-relaxed">
+                            <Latex>{currentQ.text}</Latex>
+                          </div>
+                        </div>
+
+                        {/* Options List */}
+                        <div className="space-y-3 ml-0 md:ml-14">
+                          {currentQ.options.map((option, optIndex) => {
+                            const isSelected = currentSelected.includes(optIndex);
+                            const isCorrect = correctAnswersList.includes(optIndex);
+                            
+                            let optionClass = 'bg-dark-950 border-slate-800 text-slate-300 hover:border-slate-600 hover:bg-dark-800';
+                            let indicatorClass = 'border-slate-600';
+                            let indicatorInner = null;
+
+                            if (view === 'review') {
+                              if (isCorrect) {
+                                optionClass = 'bg-green-500/10 border-green-500 text-white shadow-[0_0_15px_rgba(34,197,94,0.15)]';
+                                indicatorClass = 'border-green-500 bg-green-500/20 text-green-400';
+                                indicatorInner = <CheckCircle2 size={16} className="text-green-400" />;
+                              } else if (isSelected && !isCorrect) {
+                                optionClass = 'bg-red-500/10 border-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.15)]';
+                                indicatorClass = 'border-red-500 bg-red-500/20 text-red-400';
+                                indicatorInner = <XCircle size={16} className="text-red-400" />;
+                              } else {
+                                optionClass = 'bg-dark-950 border-slate-800/80 text-slate-500 opacity-60';
+                              }
+                            } else if (isSelected) {
+                              optionClass = currentCat === 3
+                                ? 'bg-purple-500/15 border-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.15)]'
+                                : 'bg-brand-gold/10 border-brand-gold text-white shadow-[0_0_15px_rgba(212,175,55,0.15)]';
+                              indicatorClass = currentCat === 3 ? 'border-purple-500 bg-purple-500 text-dark-950' : 'border-brand-gold bg-brand-gold text-dark-950';
+                              indicatorInner = currentCat === 3 ? <CheckCircle size={14} className="text-white" /> : <div className="w-2.5 h-2.5 rounded-full bg-dark-950" />;
+                            }
+
+                            const optionLetter = String.fromCharCode(65 + optIndex);
+
+                            return (
+                              <label 
+                                key={optIndex}
+                                onClick={() => handleAnswer(currentQ.id, optIndex)}
+                                className={`flex items-center gap-4 p-4 md:p-5 rounded-xl border transition-all ${view === 'review' ? 'cursor-default' : 'cursor-pointer'} ${optionClass}`}
+                              >
+                                {currentCat === 3 ? (
+                                  // Checkbox indicator for Category 3
+                                  <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-colors ${indicatorClass}`}>
+                                    {indicatorInner || (isSelected && <CheckCircle size={14} className="text-white" />)}
+                                  </div>
+                                ) : (
+                                  // Radio indicator for Category 1 & 2
+                                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${indicatorClass}`}>
+                                    {indicatorInner || (isSelected && <div className="w-2.5 h-2.5 rounded-full bg-brand-gold" />)}
+                                  </div>
+                                )}
+
+                                <span className="font-mono text-xs font-bold text-slate-400 bg-dark-900 px-2 py-0.5 rounded border border-white/5">
+                                  ({optionLetter})
+                                </span>
+
+                                <span className="text-base md:text-lg flex-1">
+                                  <Latex>{option}</Latex>
+                                </span>
+
+                                {view === 'review' && isCorrect && (
+                                  <span className="text-xs font-bold text-green-400 bg-green-500/10 px-2.5 py-1 rounded-md border border-green-500/30 whitespace-nowrap">
+                                    Correct Option
+                                  </span>
+                                )}
+                                {view === 'review' && isSelected && !isCorrect && (
+                                  <span className="text-xs font-bold text-red-400 bg-red-500/10 px-2.5 py-1 rounded-md border border-red-500/30 whitespace-nowrap">
+                                    Your Choice (Incorrect)
+                                  </span>
+                                )}
+                              </label>
+                            );
+                          })}
+                        </div>
+
+                        {/* Review Mode: Step-by-step Solution */}
+                        {view === 'review' && currentQ.solution && (
+                          <motion.div 
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mt-6 ml-0 md:ml-14 p-5 rounded-xl bg-dark-950 border border-brand-gold/20 text-slate-300"
+                          >
+                            <h4 className="text-sm font-bold text-brand-gold flex items-center gap-2 mb-2">
+                              <HelpCircle size={16} />
+                              Faculty Step-by-Step Solution:
+                            </h4>
+                            <div className="text-sm leading-relaxed text-slate-200">
+                              <Latex>{currentQ.solution}</Latex>
+                            </div>
+                          </motion.div>
+                        )}
+                      </>
+                    );
+                  })()}
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Navigation and Action Buttons */}
+              <div className="flex flex-wrap justify-between items-center gap-4 mt-10 pt-6 border-t border-white/5">
                 <button
                   onClick={handlePrev}
                   disabled={currentQuestionIndex === 0}
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-slate-300 hover:text-white hover:bg-white/5"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed text-slate-300 hover:text-white hover:bg-white/5 border border-white/5"
                 >
-                  <ChevronLeft size={20} />
+                  <ChevronLeft size={18} />
                   Previous
                 </button>
 
                 {view === 'test' && (
-                  <button
-                    onClick={toggleMarkForReview}
-                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-colors ${
-                      markedForReview.has(selectedTest.questions[currentQuestionIndex].id)
-                        ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                        : 'bg-dark-800 text-slate-300 hover:text-white border border-white/5'
-                    }`}
-                  >
-                    <Flag size={18} className={markedForReview.has(selectedTest.questions[currentQuestionIndex].id) ? 'fill-current' : ''} />
-                    <span className="hidden sm:inline">Mark for Review</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {/* Clear Response */}
+                    {answers[selectedTest.questions[currentQuestionIndex].id] && (
+                      <button
+                        onClick={handleClearResponse}
+                        className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-red-400 hover:bg-red-500/10 border border-white/5 hover:border-red-500/20 transition-colors"
+                        title="Clear chosen options for this question"
+                      >
+                        <RotateCcw size={14} />
+                        Clear Response
+                      </button>
+                    )}
+
+                    <button
+                      onClick={toggleMarkForReview}
+                      className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-colors text-sm ${
+                        markedForReview.has(selectedTest.questions[currentQuestionIndex].id)
+                          ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                          : 'bg-dark-800 text-slate-300 hover:text-white border border-white/5'
+                      }`}
+                    >
+                      <Flag size={16} className={markedForReview.has(selectedTest.questions[currentQuestionIndex].id) ? 'fill-current' : ''} />
+                      <span className="hidden sm:inline">Mark for Review</span>
+                    </button>
+                  </div>
                 )}
 
                 {currentQuestionIndex === selectedTest.questions.length - 1 ? (
                   view === 'review' ? (
                     <button
                       onClick={() => setView('result')}
-                      className="flex items-center gap-2 px-8 py-3 bg-brand-gold hover:opacity-90 text-dark-950 rounded-xl font-bold shadow-lg transition-all"
+                      className="flex items-center gap-2 px-6 py-2.5 bg-brand-gold hover:opacity-90 text-dark-950 rounded-xl font-bold shadow-lg transition-all"
                     >
                       Back to Results
                     </button>
                   ) : (
                     <button
                       onClick={handleSubmit}
-                      className="flex items-center gap-2 px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold shadow-lg transition-all"
+                      className="flex items-center gap-2 px-7 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold shadow-lg transition-all"
                     >
                       Submit Test
-                      <CheckCircle size={20} />
+                      <CheckCircle size={18} />
                     </button>
                   )
                 ) : (
                   <button
                     onClick={handleNext}
-                    className="flex items-center gap-2 px-8 py-3 bg-brand-gold hover:opacity-90 text-dark-950 rounded-xl font-bold shadow-lg transition-all shadow-brand-gold/10"
+                    className="flex items-center gap-2 px-6 py-2.5 bg-brand-gold hover:opacity-90 text-dark-950 rounded-xl font-bold shadow-lg transition-all shadow-brand-gold/10"
                   >
                     Next
-                    <ChevronRight size={20} />
+                    <ChevronRight size={18} />
                   </button>
                 )}
               </div>
             </div>
           </div>
 
+          {/* Question Palette Sidebar */}
           <div className="lg:col-span-1">
             <div className="bg-dark-900 rounded-2xl p-6 border border-white/10 sticky top-24 shadow-xl">
-              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <BookOpen size={18} className="text-brand-gold" />
-                Question Palette
-              </h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base font-bold text-white flex items-center gap-2">
+                  <BookOpen size={18} className="text-brand-gold" />
+                  Question Palette
+                </h3>
+                <span className="text-xs text-slate-400 font-mono">
+                  {Object.keys(answers).length}/{selectedTest.questions.length} Solved
+                </span>
+              </div>
+
+              {/* Category Filter Tabs */}
+              <div className="flex items-center gap-1 mb-4 p-1 bg-dark-950 rounded-xl border border-white/5 text-xs font-semibold">
+                {(['ALL', 1, 2, 3] as const).map(cat => (
+                  <button
+                    key={cat}
+                    onClick={() => setCategoryFilter(cat)}
+                    className={`flex-1 py-1.5 px-1.5 rounded-lg transition-all text-center ${
+                      categoryFilter === cat
+                        ? 'bg-brand-gold text-dark-950 font-bold shadow'
+                        : 'text-slate-400 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    {cat === 'ALL' ? 'All' : `Cat ${cat}`}
+                  </button>
+                ))}
+              </div>
               
-              <div className="grid grid-cols-5 sm:grid-cols-8 lg:grid-cols-4 gap-2 mb-6">
+              {/* Filtered Question Grid */}
+              <div className="grid grid-cols-5 sm:grid-cols-8 lg:grid-cols-4 gap-2 mb-6 max-h-[320px] overflow-y-auto pr-1">
                 {selectedTest.questions.map((q, idx) => {
-                  const isAnswered = answers[q.id] !== undefined;
+                  const qCat = getQuestionCategory(q, idx, selectedTest.questions.length);
+                  if (categoryFilter !== 'ALL' && qCat !== categoryFilter) {
+                    return null;
+                  }
+
+                  const isAnswered = answers[q.id] && answers[q.id].length > 0;
                   const isMarked = markedForReview.has(q.id);
                   const isCurrent = currentQuestionIndex === idx;
                   
                   let btnClass = 'bg-dark-800 text-slate-400 border-white/5 hover:bg-dark-700';
                   
                   if (view === 'review') {
-                    const isCorrect = answers[q.id] === q.correctAnswer;
-                    if (isAnswered) {
-                      btnClass = isCorrect ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'bg-red-500/20 text-red-400 border-red-500/30';
-                    }
+                    const qRes = evaluationResult?.questionResults.find(r => r.questionId === q.id);
+                    if (qRes?.status === 'correct') btnClass = 'bg-green-500/20 text-green-400 border-green-500/40';
+                    else if (qRes?.status === 'partial') btnClass = 'bg-purple-500/25 text-purple-300 border-purple-500/40';
+                    else if (qRes?.status === 'incorrect') btnClass = 'bg-red-500/20 text-red-400 border-red-500/40';
+                    else btnClass = 'bg-dark-950 text-slate-600 border-white/5';
                   } else {
                     if (isMarked && isAnswered) btnClass = 'bg-purple-500/20 text-purple-400 border-purple-500/50';
                     else if (isMarked) btnClass = 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50';
@@ -930,83 +1166,355 @@ export const FreeTests: React.FC = () => {
                     <button
                       key={q.id}
                       onClick={() => setCurrentQuestionIndex(idx)}
-                      className={`w-full aspect-square rounded-lg flex items-center justify-center font-mono text-sm font-medium border transition-all ${btnClass}`}
+                      className={`w-full aspect-square rounded-lg flex flex-col items-center justify-center font-mono text-xs font-semibold border transition-all relative ${btnClass}`}
                     >
-                      {idx + 1}
+                      <span>{idx + 1}</span>
+                      <span className={`text-[9px] font-sans opacity-75 ${qCat === 1 ? 'text-blue-400' : qCat === 2 ? 'text-amber-400' : 'text-purple-400'}`}>
+                        C{qCat}
+                      </span>
                     </button>
                   );
                 })}
               </div>
 
-              {view === 'test' && (
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-center gap-3">
-                    <div className="w-4 h-4 rounded bg-green-500/20 border border-green-500/50"></div>
-                    <span className="text-slate-300">Answered</span>
+              {/* Status Legend */}
+              <div className="space-y-2 text-xs pt-3 border-t border-white/5">
+                <div className="flex items-center justify-between text-slate-400">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded bg-green-500/20 border border-green-500/50"></div>
+                    <span>Answered</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-4 h-4 rounded bg-yellow-500/20 border border-yellow-500/50"></div>
-                    <span className="text-slate-300">Marked for Review</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-4 h-4 rounded bg-purple-500/20 border border-purple-500/50"></div>
-                    <span className="text-slate-300">Answered & Marked</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-4 h-4 rounded bg-dark-800 border border-white/5"></div>
-                    <span className="text-slate-300">Not Answered</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded bg-yellow-500/20 border border-yellow-500/50"></div>
+                    <span>Review</span>
                   </div>
                 </div>
-              )}
+                <div className="flex items-center justify-between text-slate-400">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded bg-purple-500/20 border border-purple-500/50"></div>
+                    <span>Ans & Mark</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded bg-dark-800 border border-white/5"></div>
+                    <span>Unanswered</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </motion.div>
       )}
 
-      {/* VIEW: RESULT */}
+      {/* VIEW: RESULT WITH WBJEE CATEGORY BREAKDOWN & TIME ANALYTICS */}
       {view === 'result' && selectedTest && (
         <motion.div 
           key="result"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 0.5, type: 'spring' }}
-          className="max-w-2xl mx-auto mt-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.4 }}
+          className="max-w-5xl mx-auto mt-6 space-y-8"
         >
-          <div className="bg-dark-900 rounded-3xl p-8 md:p-12 border border-white/10 shadow-2xl text-center relative overflow-hidden">
+          {/* Main Hero Scorecard */}
+          <div className="bg-dark-900 rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-gold via-yellow-400 to-amber-500"></div>
             
-            <div className="w-24 h-24 bg-dark-800 rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-dark-950 shadow-xl relative z-10 text-brand-gold border-brand-gold/30">
-              <Award size={48} />
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pb-6 border-b border-white/10">
+              <div className="text-center sm:text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-gold/10 text-brand-gold text-xs font-bold uppercase tracking-wider mb-2 border border-brand-gold/20">
+                  <Award size={14} />
+                  WBJEE Official Marking Standard
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-white">{selectedTest.title}</h2>
+                <p className="text-slate-400 text-sm mt-1">
+                  Candidate: <strong className="text-white">{user.name}</strong> • Completed on {new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                </p>
+              </div>
+
+              {/* Action Buttons Header */}
+              <div className="flex items-center gap-3 flex-wrap justify-center">
+                <button
+                  onClick={handleDirectDownloadPDF}
+                  className="px-5 py-2.5 bg-gradient-to-r from-brand-gold via-yellow-400 to-amber-500 text-dark-950 rounded-xl font-bold transition-all shadow-lg shadow-brand-gold/20 flex items-center gap-2 text-sm hover:opacity-95"
+                >
+                  <Download size={16} />
+                  Download PDF Marksheet
+                </button>
+                <button
+                  onClick={() => setShowMarksheetModal(true)}
+                  className="px-4 py-2.5 bg-dark-800 hover:bg-dark-700 text-white rounded-xl font-medium transition-colors border border-white/10 flex items-center gap-2 text-sm"
+                >
+                  <FileText size={16} className="text-brand-gold" />
+                  View Marksheet Modal
+                </button>
+              </div>
             </div>
 
-            <h2 className="text-3xl font-bold text-white mb-2">Test Completed!</h2>
-            <p className="text-slate-400 mb-8">Great job, {user.name}</p>
+            {/* Top 4 Performance Summary Cards */}
+            {evaluationResult && (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 my-8">
+                {/* Net Score */}
+                <div className="bg-dark-950 p-5 rounded-2xl border border-brand-gold/20">
+                  <p className="text-slate-400 text-xs uppercase tracking-wider mb-1 font-semibold">Net Score</p>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-bold text-brand-gold">{evaluationResult.netScore.toFixed(2)}</span>
+                    <span className="text-slate-500 text-sm font-mono">/ {evaluationResult.maxTotalScore.toFixed(2)}</span>
+                  </div>
+                  <p className="text-xs text-yellow-400/80 mt-1 font-medium">{evaluationResult.percentage}% Score</p>
+                </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="bg-dark-950 p-6 rounded-2xl border border-white/5">
-                <p className="text-slate-400 text-sm mb-1">Total Score</p>
-                <p className="text-4xl font-bold text-brand-gold">{score} <span className="text-lg text-slate-500">/ 20</span></p>
-              </div>
-              <div className="bg-dark-950 p-6 rounded-2xl border border-white/5">
-                <p className="text-slate-400 text-sm mb-1">Percentage</p>
-                <p className="text-4xl font-bold text-yellow-400">{Math.round((score / 20) * 100)}%</p>
-              </div>
-            </div>
+                {/* Accuracy */}
+                <div className="bg-dark-950 p-5 rounded-2xl border border-white/5">
+                  <p className="text-slate-400 text-xs uppercase tracking-wider mb-1 font-semibold">Overall Accuracy</p>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-bold text-emerald-400">{evaluationResult.accuracyRate}%</span>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1">
+                    {evaluationResult.totalCorrect} Correct of {evaluationResult.totalAttempted} Attempted
+                  </p>
+                </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                {/* Exam Time */}
+                <div className="bg-dark-950 p-5 rounded-2xl border border-white/5">
+                  <p className="text-slate-400 text-xs uppercase tracking-wider mb-1 font-semibold">Total Time Taken</p>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-bold text-cyan-400">
+                      {Math.floor(evaluationResult.totalTimeSeconds / 60)}m {evaluationResult.totalTimeSeconds % 60}s
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1">Avg {evaluationResult.averageTimePerQuestion}s / question</p>
+                </div>
+
+                {/* Percentile Estimate */}
+                <div className="bg-dark-950 p-5 rounded-2xl border border-white/5">
+                  <p className="text-slate-400 text-xs uppercase tracking-wider mb-1 font-semibold">WBJEE Percentile</p>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-bold text-purple-400">{evaluationResult.percentileEstimate}</span>
+                  </div>
+                  <p className="text-xs text-purple-300/80 mt-1">Estimated Rank Track</p>
+                </div>
+              </div>
+            )}
+
+            {/* WBJEE Category Breakdown (1, 2, 3) */}
+            {evaluationResult && (
+              <div className="my-8">
+                <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                  <BarChart3 size={18} className="text-brand-gold" />
+                  WBJEE Official Category-wise Performance
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Category 1 */}
+                  <div className="bg-dark-950/80 rounded-2xl p-5 border border-blue-500/25 relative overflow-hidden">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="px-2.5 py-1 rounded-md bg-blue-500/20 text-blue-400 text-xs font-bold">
+                        Category 1 (+1 / -0.25)
+                      </span>
+                      <span className="text-xs font-mono text-slate-400">
+                        {evaluationResult.categoryBreakdown.cat1.totalQuestions} Questions
+                      </span>
+                    </div>
+                    <div className="flex items-baseline gap-1 mb-2">
+                      <span className="text-2xl font-bold text-blue-400">
+                        {evaluationResult.categoryBreakdown.cat1.marksSecured.toFixed(2)}
+                      </span>
+                      <span className="text-slate-500 text-xs">/ {evaluationResult.categoryBreakdown.cat1.maxMarks.toFixed(2)} Marks</span>
+                    </div>
+                    <div className="space-y-1.5 text-xs text-slate-300 pt-2 border-t border-white/5">
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Attempted:</span>
+                        <span>{evaluationResult.categoryBreakdown.cat1.attempted} / {evaluationResult.categoryBreakdown.cat1.totalQuestions}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Correct / Wrong:</span>
+                        <span className="text-green-400 font-semibold">{evaluationResult.categoryBreakdown.cat1.correct}</span>
+                        <span className="text-slate-500">/</span>
+                        <span className="text-red-400 font-semibold">{evaluationResult.categoryBreakdown.cat1.incorrect}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Accuracy:</span>
+                        <span className="font-semibold text-white">{evaluationResult.categoryBreakdown.cat1.accuracy}%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Time Spent:</span>
+                        <span>{Math.floor(evaluationResult.categoryBreakdown.cat1.timeSpentSeconds / 60)}m {evaluationResult.categoryBreakdown.cat1.timeSpentSeconds % 60}s</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Category 2 */}
+                  <div className="bg-dark-950/80 rounded-2xl p-5 border border-amber-500/25 relative overflow-hidden">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="px-2.5 py-1 rounded-md bg-amber-500/20 text-amber-400 text-xs font-bold">
+                        Category 2 (+2 / -0.50)
+                      </span>
+                      <span className="text-xs font-mono text-slate-400">
+                        {evaluationResult.categoryBreakdown.cat2.totalQuestions} Questions
+                      </span>
+                    </div>
+                    <div className="flex items-baseline gap-1 mb-2">
+                      <span className="text-2xl font-bold text-amber-400">
+                        {evaluationResult.categoryBreakdown.cat2.marksSecured.toFixed(2)}
+                      </span>
+                      <span className="text-slate-500 text-xs">/ {evaluationResult.categoryBreakdown.cat2.maxMarks.toFixed(2)} Marks</span>
+                    </div>
+                    <div className="space-y-1.5 text-xs text-slate-300 pt-2 border-t border-white/5">
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Attempted:</span>
+                        <span>{evaluationResult.categoryBreakdown.cat2.attempted} / {evaluationResult.categoryBreakdown.cat2.totalQuestions}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Correct / Wrong:</span>
+                        <span className="text-green-400 font-semibold">{evaluationResult.categoryBreakdown.cat2.correct}</span>
+                        <span className="text-slate-500">/</span>
+                        <span className="text-red-400 font-semibold">{evaluationResult.categoryBreakdown.cat2.incorrect}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Accuracy:</span>
+                        <span className="font-semibold text-white">{evaluationResult.categoryBreakdown.cat2.accuracy}%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Time Spent:</span>
+                        <span>{Math.floor(evaluationResult.categoryBreakdown.cat2.timeSpentSeconds / 60)}m {evaluationResult.categoryBreakdown.cat2.timeSpentSeconds % 60}s</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Category 3 */}
+                  <div className="bg-dark-950/80 rounded-2xl p-5 border border-purple-500/25 relative overflow-hidden">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="px-2.5 py-1 rounded-md bg-purple-500/20 text-purple-400 text-xs font-bold">
+                        Category 3 (+2 / 0 Multi)
+                      </span>
+                      <span className="text-xs font-mono text-slate-400">
+                        {evaluationResult.categoryBreakdown.cat3.totalQuestions} Questions
+                      </span>
+                    </div>
+                    <div className="flex items-baseline gap-1 mb-2">
+                      <span className="text-2xl font-bold text-purple-400">
+                        {evaluationResult.categoryBreakdown.cat3.marksSecured.toFixed(2)}
+                      </span>
+                      <span className="text-slate-500 text-xs">/ {evaluationResult.categoryBreakdown.cat3.maxMarks.toFixed(2)} Marks</span>
+                    </div>
+                    <div className="space-y-1.5 text-xs text-slate-300 pt-2 border-t border-white/5">
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Attempted:</span>
+                        <span>{evaluationResult.categoryBreakdown.cat3.attempted} / {evaluationResult.categoryBreakdown.cat3.totalQuestions}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Correct / Partial / Wrong:</span>
+                        <span className="text-green-400 font-semibold">{evaluationResult.categoryBreakdown.cat3.correct}</span>
+                        <span className="text-slate-500">+</span>
+                        <span className="text-purple-300 font-semibold">{evaluationResult.categoryBreakdown.cat3.partial}</span>
+                        <span className="text-slate-500">/</span>
+                        <span className="text-red-400 font-semibold">{evaluationResult.categoryBreakdown.cat3.incorrect}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Accuracy:</span>
+                        <span className="font-semibold text-white">{evaluationResult.categoryBreakdown.cat3.accuracy}%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Time Spent:</span>
+                        <span>{Math.floor(evaluationResult.categoryBreakdown.cat3.timeSpentSeconds / 60)}m {evaluationResult.categoryBreakdown.cat3.timeSpentSeconds % 60}s</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Time Analytics Section & Recharts Chart */}
+            {evaluationResult && (
+              <div className="my-8 pt-6 border-t border-white/10">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                    <Clock size={18} className="text-brand-gold" />
+                    Time & Speed Analytics
+                  </h3>
+                  <span className="text-xs text-slate-400 font-mono">
+                    Target Pace: ~60s/Question
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                  <div className="p-3 bg-dark-950 rounded-xl border border-white/5 text-center">
+                    <p className="text-[11px] text-slate-400 uppercase tracking-wider">Fastest Question</p>
+                    <p className="text-lg font-bold text-emerald-400 mt-0.5">
+                      Q{evaluationResult.timeAnalytics.fastestQuestion.index} ({evaluationResult.timeAnalytics.fastestQuestion.timeSeconds}s)
+                    </p>
+                  </div>
+                  <div className="p-3 bg-dark-950 rounded-xl border border-white/5 text-center">
+                    <p className="text-[11px] text-slate-400 uppercase tracking-wider">Slowest Question</p>
+                    <p className="text-lg font-bold text-amber-400 mt-0.5">
+                      Q{evaluationResult.timeAnalytics.slowestQuestion.index} ({evaluationResult.timeAnalytics.slowestQuestion.timeSeconds}s)
+                    </p>
+                  </div>
+                  <div className="p-3 bg-dark-950 rounded-xl border border-white/5 text-center">
+                    <p className="text-[11px] text-slate-400 uppercase tracking-wider">Time on Correct Qs</p>
+                    <p className="text-lg font-bold text-cyan-400 mt-0.5">
+                      {Math.floor(evaluationResult.timeAnalytics.timeOnCorrectSeconds / 60)}m {evaluationResult.timeAnalytics.timeOnCorrectSeconds % 60}s
+                    </p>
+                  </div>
+                  <div className="p-3 bg-dark-950 rounded-xl border border-white/5 text-center">
+                    <p className="text-[11px] text-slate-400 uppercase tracking-wider">Time on Wrong Qs</p>
+                    <p className="text-lg font-bold text-rose-400 mt-0.5">
+                      {Math.floor(evaluationResult.timeAnalytics.timeOnIncorrectSeconds / 60)}m {evaluationResult.timeAnalytics.timeOnIncorrectSeconds % 60}s
+                    </p>
+                  </div>
+                </div>
+
+                {/* Visual Chart of Question-wise Time Spent */}
+                <div className="bg-dark-950 p-4 sm:p-6 rounded-2xl border border-white/5">
+                  <p className="text-xs text-slate-400 mb-4 flex items-center justify-between">
+                    <span>Per-Question Time Consumption (seconds)</span>
+                    <span className="text-brand-gold">Gold Line: Target Pace (60s)</span>
+                  </p>
+                  <div className="h-56 w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart 
+                        data={evaluationResult.questionResults.map((r, i) => ({
+                          name: `Q${i + 1}`,
+                          seconds: r.timeSpentSeconds,
+                          status: r.status,
+                          category: `Cat ${r.category}`
+                        }))}
+                        margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.3} />
+                        <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
+                        <YAxis stroke="#94a3b8" fontSize={11} unit="s" />
+                        <RechartsTooltip 
+                          contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px', fontSize: '12px' }}
+                          formatter={(val: any, _name: any, item: any) => [`${val} seconds (${item.payload.category})`, 'Time Spent']}
+                        />
+                        <ReferenceLine y={60} stroke="#D4AF37" strokeDasharray="4 4" label={{ value: '60s Target', fill: '#D4AF37', fontSize: 10, position: 'top' }} />
+                        <Bar 
+                          dataKey="seconds" 
+                          radius={[4, 4, 0, 0]}
+                          fill="#38bdf8"
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Bottom Actions */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 border-t border-white/10">
               <button
                 onClick={handleReview}
                 className="px-8 py-3 bg-dark-800 hover:bg-dark-700 text-white rounded-xl font-medium transition-colors border border-white/10 flex items-center justify-center gap-2"
               >
-                Review Answers
+                Review Step-by-Step Solutions
               </button>
               <button
-                onClick={() => setShowMarksheetModal(true)}
+                onClick={handleDirectDownloadPDF}
                 className="px-8 py-3 bg-gradient-to-r from-brand-gold via-yellow-400 to-amber-500 text-dark-950 rounded-xl font-bold transition-all shadow-lg shadow-brand-gold/20 flex items-center justify-center gap-2"
               >
-                <Award size={20} />
-                Merit Marksheet & Certificate
+                <Download size={18} />
+                Download Marksheet PDF
               </button>
               <button
                 onClick={resetTest}
@@ -1016,27 +1524,27 @@ export const FreeTests: React.FC = () => {
               </button>
             </div>
 
-            {/* Hero Block in Result */}
+            {/* Upgrade Banner in Result */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              className="mt-12 bg-dark-950 border border-brand-gold/30 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6 text-left"
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="mt-10 bg-dark-950 border border-brand-gold/30 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6 text-left"
             >
               <div>
                 <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
                   <Star className="text-brand-gold fill-brand-gold" size={20} />
-                  Want Step-by-Step Solutions?
+                  Want Video Solutions & Unlimited Attempts?
                 </h3>
                 <p className="text-slate-400 text-sm">
-                  Upgrade to Premium Tests for detailed solutions, unlimited attempts, and performance analytics.
+                  Upgrade to Premium Tests for masterclasses, chapterwise question banks, and live mock test rankings.
                 </p>
               </div>
               <motion.button 
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => { setView('list'); setActiveTab('paid'); setSelectedExam(null); setSelectedTopic(null); }}
-                className="px-6 py-2 bg-brand-gold text-dark-950 font-bold rounded-xl transition-colors whitespace-nowrap text-sm"
+                className="px-6 py-2.5 bg-brand-gold text-dark-950 font-bold rounded-xl transition-colors whitespace-nowrap text-sm shadow-md"
               >
                 Get Premium
               </motion.button>
@@ -1103,27 +1611,28 @@ export const FreeTests: React.FC = () => {
       <StudentMarksheetModal
         isOpen={showMarksheetModal}
         onClose={() => setShowMarksheetModal(false)}
-        data={selectedTest ? {
+        data={selectedTest && evaluationResult ? {
           studentName: user.name || 'Student Candidate',
           testTitle: selectedTest.title,
           topicTitle: selectedTest.topic || 'Mathematics',
-          score: score,
-          maxScore: 20,
-          correctAnswers: Math.round(score),
-          incorrectAnswers: Math.max(0, 20 - Math.round(score)),
-          unanswered: 0,
-          percentage: Math.round((score / 20) * 100),
+          score: evaluationResult.netScore,
+          maxScore: evaluationResult.maxTotalScore,
+          correctAnswers: evaluationResult.totalCorrect,
+          incorrectAnswers: evaluationResult.totalIncorrect,
+          unanswered: evaluationResult.totalUnanswered,
+          percentage: evaluationResult.percentage,
+          evaluation: evaluationResult,
           isChallengeMode: true
         } : {
           studentName: user.name || 'Pritam Sengupta (Sample)',
-          testTitle: 'Raj Sir Academy Speed Test: Higher Calculus & Trigonometry',
-          topicTitle: 'Higher Mathematics',
-          score: 18,
-          maxScore: 20,
-          correctAnswers: 18,
-          incorrectAnswers: 2,
+          testTitle: selectedTest ? selectedTest.title : 'Raj Sir Academy Speed Test: Higher Calculus & Trigonometry',
+          topicTitle: selectedTest ? (selectedTest.topic || 'Mathematics') : 'Higher Mathematics',
+          score: score || 18,
+          maxScore: selectedTest ? selectedTest.questions.length : 20,
+          correctAnswers: Math.round(score) || 18,
+          incorrectAnswers: Math.max(0, (selectedTest ? selectedTest.questions.length : 20) - (Math.round(score) || 18)),
           unanswered: 0,
-          percentage: 90,
+          percentage: Math.round(((score || 18) / (selectedTest ? selectedTest.questions.length : 20)) * 100),
           isChallengeMode: true
         }}
       />

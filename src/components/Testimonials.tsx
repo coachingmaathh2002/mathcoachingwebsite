@@ -153,29 +153,31 @@ export const Testimonials: React.FC = () => {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-dark-900 border border-brand-gold/30 text-brand-gold text-xs font-extrabold uppercase tracking-widest mb-6 shadow-[0_0_20px_rgba(212,175,55,0.15)]">
-            <Sparkles size={14} className="fill-brand-gold" />
-            <span>Verified Student Triumphs</span>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full academic-badge mb-6">
+            <Sparkles size={14} className="text-brand-gold" />
+            <span className="text-xs font-serif-royal font-bold uppercase tracking-[0.2em] text-brand-goldLight">
+              The Hall of Excellence
+            </span>
           </div>
           
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold text-white mb-6 leading-tight">
-            Real Stories. Real Results. <br className="hidden sm:inline" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold via-yellow-300 to-amber-500">
-              Unstoppable Mastery.
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif-royal font-bold text-white mb-6 leading-tight">
+            Proven Triumphs. <br className="hidden sm:inline" />
+            <span className="text-transparent bg-clip-text bg-accent-gradient">
+              Rankers & Board Toppers.
             </span>
           </h2>
           
           <p className="text-base sm:text-lg text-slate-300 font-light leading-relaxed">
-            Discover how students transformed math phobia into top ranks, 100/100 board scores, and admissions into premier institutes under Raj Sir's guidance.
+            Authentic reflections from students who overcame conceptual obstacles to attain 98%+ in Board Examinations and top ranks in WBJEE.
           </p>
         </div>
 
         {/* Statistics Trust Bar */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-16 p-6 sm:p-8 rounded-3xl bg-dark-900/60 border border-white/10 backdrop-blur-md shadow-2xl">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-16 p-6 sm:p-8 rounded-3xl glass-luxury shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
           <div className="text-center p-2 border-r last:border-0 border-white/10">
             <div className="flex items-center justify-center gap-1.5 text-brand-gold mb-1">
               <Trophy size={20} />
-              <span className="text-2xl sm:text-3xl font-display font-bold text-white">150+</span>
+              <span className="text-2xl sm:text-3xl font-serif-royal font-bold text-white">150+</span>
             </div>
             <p className="text-xs text-slate-400 font-medium">WBJEE & JEE Rankers</p>
           </div>
@@ -183,7 +185,7 @@ export const Testimonials: React.FC = () => {
           <div className="text-center p-2 border-r last:border-0 border-white/10">
             <div className="flex items-center justify-center gap-1.5 text-brand-gold mb-1">
               <Star size={20} className="fill-brand-gold" />
-              <span className="text-2xl sm:text-3xl font-display font-bold text-white">4.9 / 5</span>
+              <span className="text-2xl sm:text-3xl font-serif-royal font-bold text-white">4.9 / 5</span>
             </div>
             <p className="text-xs text-slate-400 font-medium">Average Student Rating</p>
           </div>
@@ -191,7 +193,7 @@ export const Testimonials: React.FC = () => {
           <div className="text-center p-2 border-r last:border-0 border-white/10">
             <div className="flex items-center justify-center gap-1.5 text-brand-gold mb-1">
               <GraduationCap size={20} />
-              <span className="text-2xl sm:text-3xl font-display font-bold text-white">98%</span>
+              <span className="text-2xl sm:text-3xl font-serif-royal font-bold text-white">98%</span>
             </div>
             <p className="text-xs text-slate-400 font-medium">Board Distinction Rate</p>
           </div>
@@ -199,7 +201,7 @@ export const Testimonials: React.FC = () => {
           <div className="text-center p-2">
             <div className="flex items-center justify-center gap-1.5 text-brand-gold mb-1">
               <Users size={20} />
-              <span className="text-2xl sm:text-3xl font-display font-bold text-white">100%</span>
+              <span className="text-2xl sm:text-3xl font-serif-royal font-bold text-white">100%</span>
             </div>
             <p className="text-xs text-slate-400 font-medium">Verified Student Reviews</p>
           </div>

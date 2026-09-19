@@ -15,9 +15,12 @@ import {
   Sparkles,
   CheckCircle2,
   XCircle,
-  HelpCircle
+  HelpCircle,
+  Clock
 } from 'lucide-react';
 import jsPDF from 'jspdf';
+import { ExamEvaluationResult } from '../utils/wbjeeExamEngine';
+import { generateMarksheetPDF } from '../utils/generateMarksheetPDF';
 
 export interface MarksheetData {
   studentName: string;
@@ -32,6 +35,7 @@ export interface MarksheetData {
   testDate?: string;
   isChallengeMode?: boolean;
   registrationNo?: string;
+  evaluation?: ExamEvaluationResult;
 }
 
 interface StudentMarksheetModalProps {
@@ -104,6 +108,19 @@ export const StudentMarksheetModal: React.FC<StudentMarksheetModalProps> = ({
   };
 
   const generatePDF = () => {
+    if (data.evaluation) {
+      generateMarksheetPDF({
+        candidateName,
+        testTitle: data.testTitle,
+        topicTitle: data.topicTitle,
+        registrationNo: regNo,
+        certId,
+        testDate: testDateStr,
+        evaluation: data.evaluation
+      });
+      return;
+    }
+
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
@@ -495,9 +512,9 @@ export const StudentMarksheetModal: React.FC<StudentMarksheetModalProps> = ({
                     <span className="font-medium text-slate-800">{data.topicTitle}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-500 w-28">Test Mode:</span>
+                    <span className="font-bold text-slate-500 w-28">Exam Pattern:</span>
                     <span className="font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded text-[10px]">
-                      {data.isChallengeMode ? 'Timed Challenge (-0.25 Mark)' : 'Practice Assessment'}
+                      WBJEE Category 1, 2, 3 Marking Scheme
                     </span>
                   </div>
                 </div>
@@ -505,55 +522,123 @@ export const StudentMarksheetModal: React.FC<StudentMarksheetModalProps> = ({
 
               {/* 4. Score Metrics Breakdown Table */}
               <div className="mb-6">
-                <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3 flex items-center gap-2">
-                  <Target size={15} className="text-amber-600" />
-                  <span>Performance Assessment Breakdown</span>
+                <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3 flex items-center justify-between">
+                  <span className="flex items-center gap-2">
+                    <Target size={15} className="text-amber-600" />
+                    <span>{data.evaluation ? 'WBJEE Category-Wise Assessment Breakdown' : 'Performance Assessment Breakdown'}</span>
+                  </span>
+                  {data.evaluation && (
+                    <span className="text-[11px] text-slate-500 font-normal flex items-center gap-1">
+                      <Clock size={12} className="text-amber-600" />
+                      Total Time: <strong>{Math.floor(data.evaluation.totalTimeSeconds / 60)}m {data.evaluation.totalTimeSeconds % 60}s</strong> (Avg {data.evaluation.averageTimePerQuestion}s/Q)
+                    </span>
+                  )}
                 </h4>
 
-                <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-                  <table className="w-full text-left border-collapse text-xs">
-                    <thead>
-                      <tr className="bg-slate-900 text-white font-bold">
-                        <th className="p-3">Assessment Metric</th>
-                        <th className="p-3">Questions / Count</th>
-                        <th className="p-3 text-right">Score Weightage</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-200 font-medium">
-                      <tr className="hover:bg-slate-50">
-                        <td className="p-3 flex items-center gap-2 text-slate-800">
-                          <CheckCircle2 size={15} className="text-emerald-600" />
-                          <span>Correct Answers</span>
-                        </td>
-                        <td className="p-3 font-bold text-emerald-700">{data.correctAnswers} Questions</td>
-                        <td className="p-3 text-right font-bold text-emerald-700">+{data.correctAnswers}.00</td>
-                      </tr>
-                      <tr className="hover:bg-slate-50">
-                        <td className="p-3 flex items-center gap-2 text-slate-800">
-                          <XCircle size={15} className="text-red-500" />
-                          <span>Incorrect Answers</span>
-                        </td>
-                        <td className="p-3 font-bold text-red-600">{data.incorrectAnswers} Questions</td>
-                        <td className="p-3 text-right font-bold text-red-600">
-                          {data.isChallengeMode ? `-${(data.incorrectAnswers * 0.25).toFixed(2)}` : '0.00'}
-                        </td>
-                      </tr>
-                      <tr className="hover:bg-slate-50">
-                        <td className="p-3 flex items-center gap-2 text-slate-800">
-                          <HelpCircle size={15} className="text-slate-400" />
-                          <span>Unanswered / Skipped</span>
-                        </td>
-                        <td className="p-3 font-bold text-slate-600">{data.unanswered} Questions</td>
-                        <td className="p-3 text-right text-slate-500">0.00</td>
-                      </tr>
-                      <tr className="bg-amber-50/80 font-bold text-slate-900 border-t-2 border-amber-300">
-                        <td className="p-3 text-sm">Net Final Marks Secured</td>
-                        <td className="p-3 text-sm">{data.score} out of {data.maxScore}</td>
-                        <td className="p-3 text-right text-base text-amber-800 font-extrabold">{data.score} Marks</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                {data.evaluation ? (
+                  <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                    <table className="w-full text-left border-collapse text-xs">
+                      <thead>
+                        <tr className="bg-slate-900 text-white font-bold">
+                          <th className="p-3">Category & Scheme</th>
+                          <th className="p-3">Total Qs</th>
+                          <th className="p-3">Correct</th>
+                          <th className="p-3">Incorrect</th>
+                          <th className="p-3">Time</th>
+                          <th className="p-3 text-right">Score</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-200 font-medium">
+                        <tr className="hover:bg-slate-50">
+                          <td className="p-3 font-bold text-slate-900">
+                            Category 1 <span className="font-normal text-slate-500 text-[11px]">(+1.00 / -0.25)</span>
+                          </td>
+                          <td className="p-3 text-slate-700">{data.evaluation.categorySummaries[1].attempted} / {data.evaluation.categorySummaries[1].totalQuestions}</td>
+                          <td className="p-3 font-bold text-emerald-700">{data.evaluation.categorySummaries[1].correct}</td>
+                          <td className="p-3 font-bold text-red-600">{data.evaluation.categorySummaries[1].incorrect}</td>
+                          <td className="p-3 text-slate-600">{Math.floor(data.evaluation.categorySummaries[1].timeSpentSeconds / 60)}m {data.evaluation.categorySummaries[1].timeSpentSeconds % 60}s</td>
+                          <td className="p-3 text-right font-bold text-amber-800">{data.evaluation.categorySummaries[1].marksSecured.toFixed(2)} / {data.evaluation.categorySummaries[1].maxMarks}</td>
+                        </tr>
+                        <tr className="hover:bg-slate-50">
+                          <td className="p-3 font-bold text-slate-900">
+                            Category 2 <span className="font-normal text-slate-500 text-[11px]">(+2.00 / -0.50)</span>
+                          </td>
+                          <td className="p-3 text-slate-700">{data.evaluation.categorySummaries[2].attempted} / {data.evaluation.categorySummaries[2].totalQuestions}</td>
+                          <td className="p-3 font-bold text-emerald-700">{data.evaluation.categorySummaries[2].correct}</td>
+                          <td className="p-3 font-bold text-red-600">{data.evaluation.categorySummaries[2].incorrect}</td>
+                          <td className="p-3 text-slate-600">{Math.floor(data.evaluation.categorySummaries[2].timeSpentSeconds / 60)}m {data.evaluation.categorySummaries[2].timeSpentSeconds % 60}s</td>
+                          <td className="p-3 text-right font-bold text-amber-800">{data.evaluation.categorySummaries[2].marksSecured.toFixed(2)} / {data.evaluation.categorySummaries[2].maxMarks}</td>
+                        </tr>
+                        <tr className="hover:bg-slate-50">
+                          <td className="p-3 font-bold text-slate-900">
+                            Category 3 <span className="font-normal text-slate-500 text-[11px]">(+2.00 / 0.00 Multi)</span>
+                          </td>
+                          <td className="p-3 text-slate-700">{data.evaluation.categorySummaries[3].attempted} / {data.evaluation.categorySummaries[3].totalQuestions}</td>
+                          <td className="p-3 font-bold text-emerald-700">
+                            {data.evaluation.categorySummaries[3].correct}
+                            {data.evaluation.categorySummaries[3].partial > 0 && <span className="text-[10px] text-amber-600 ml-1">(+{data.evaluation.categorySummaries[3].partial} Part)</span>}
+                          </td>
+                          <td className="p-3 font-bold text-red-600">{data.evaluation.categorySummaries[3].incorrect}</td>
+                          <td className="p-3 text-slate-600">{Math.floor(data.evaluation.categorySummaries[3].timeSpentSeconds / 60)}m {data.evaluation.categorySummaries[3].timeSpentSeconds % 60}s</td>
+                          <td className="p-3 text-right font-bold text-amber-800">{data.evaluation.categorySummaries[3].marksSecured.toFixed(2)} / {data.evaluation.categorySummaries[3].maxMarks}</td>
+                        </tr>
+                        <tr className="bg-amber-50/90 font-bold text-slate-900 border-t-2 border-amber-300">
+                          <td className="p-3 text-sm">Net Aggregate Marks</td>
+                          <td className="p-3 text-sm">{data.evaluation.totalAttempted} / {data.evaluation.totalQuestions} Attempted</td>
+                          <td className="p-3 text-emerald-700">{data.evaluation.totalCorrect} Correct</td>
+                          <td className="p-3 text-red-600">{data.evaluation.totalIncorrect} Incorrect</td>
+                          <td className="p-3 text-slate-700">{Math.floor(data.evaluation.totalTimeSeconds / 60)}m {data.evaluation.totalTimeSeconds % 60}s</td>
+                          <td className="p-3 text-right text-base text-amber-800 font-extrabold">{data.evaluation.netScore.toFixed(2)} / {data.evaluation.maxTotalScore.toFixed(2)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                    <table className="w-full text-left border-collapse text-xs">
+                      <thead>
+                        <tr className="bg-slate-900 text-white font-bold">
+                          <th className="p-3">Assessment Metric</th>
+                          <th className="p-3">Questions / Count</th>
+                          <th className="p-3 text-right">Score Weightage</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-200 font-medium">
+                        <tr className="hover:bg-slate-50">
+                          <td className="p-3 flex items-center gap-2 text-slate-800">
+                            <CheckCircle2 size={15} className="text-emerald-600" />
+                            <span>Correct Answers</span>
+                          </td>
+                          <td className="p-3 font-bold text-emerald-700">{data.correctAnswers} Questions</td>
+                          <td className="p-3 text-right font-bold text-emerald-700">+{data.correctAnswers}.00</td>
+                        </tr>
+                        <tr className="hover:bg-slate-50">
+                          <td className="p-3 flex items-center gap-2 text-slate-800">
+                            <XCircle size={15} className="text-red-500" />
+                            <span>Incorrect Answers</span>
+                          </td>
+                          <td className="p-3 font-bold text-red-600">{data.incorrectAnswers} Questions</td>
+                          <td className="p-3 text-right font-bold text-red-600">
+                            {data.isChallengeMode ? `-${(data.incorrectAnswers * 0.25).toFixed(2)}` : '0.00'}
+                          </td>
+                        </tr>
+                        <tr className="hover:bg-slate-50">
+                          <td className="p-3 flex items-center gap-2 text-slate-800">
+                            <HelpCircle size={15} className="text-slate-400" />
+                            <span>Unanswered / Skipped</span>
+                          </td>
+                          <td className="p-3 font-bold text-slate-600">{data.unanswered} Questions</td>
+                          <td className="p-3 text-right text-slate-500">0.00</td>
+                        </tr>
+                        <tr className="bg-amber-50/80 font-bold text-slate-900 border-t-2 border-amber-300">
+                          <td className="p-3 text-sm">Net Final Marks Secured</td>
+                          <td className="p-3 text-sm">{data.score} out of {data.maxScore}</td>
+                          <td className="p-3 text-right text-base text-amber-800 font-extrabold">{data.score} Marks</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
 
               {/* 5. Percentile & Accuracy Highlight Cards */}

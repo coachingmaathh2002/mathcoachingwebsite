@@ -38,45 +38,49 @@ export const EnquiryForm: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <span className="text-brand-gold font-bold uppercase tracking-widest text-sm mb-3 block">Get In Touch</span>
-          <h2 className="text-4xl md:text-5xl font-display text-white mb-6">
-            Start Your Journey
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full academic-badge mb-4">
+            <span className="text-xs font-serif-royal font-bold uppercase tracking-[0.2em] text-brand-goldLight">
+              Admissions & Consultations
+            </span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif-royal font-bold text-white mb-4 tracking-tight">
+            Take the First Step to <span className="text-transparent bg-clip-text bg-accent-gradient">Mathematical Mastery</span>
           </h2>
-          <p className="text-lg text-slate-400 mb-12 max-w-2xl mx-auto">
-            Have questions about fees, batches, or the curriculum? Reach out to us directly.
+          <p className="text-sm sm:text-base text-slate-300 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+            Have questions regarding batch schedules, offline center seat availability, or our WBJEE fast-track syllabus? Consult directly with our academic team.
           </p>
           
           <div className="grid md:grid-cols-3 gap-6 mb-16">
-            <a href={`tel:${CONTACT_INFO.phone}`} className="group relative p-8 bg-dark-900 rounded-2xl border border-white/5 hover:border-brand-gold/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(212,175,55,0.3)] overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <a href={`tel:${CONTACT_INFO.phone}`} className="group relative p-7 glass-luxury rounded-2xl border border-white/10 hover:border-brand-gold/60 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(212,175,55,0.3)] overflow-hidden">
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-full bg-dark-800 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-gold group-hover:text-dark-950 text-brand-gold transition-colors duration-500 shadow-inner">
-                  <Phone size={24} />
+                <div className="w-13 h-13 rounded-xl bg-brand-gold/15 flex items-center justify-center mx-auto mb-4 group-hover:bg-brand-gold group-hover:text-dark-950 text-brand-gold transition-all duration-300">
+                  <Phone size={22} />
                 </div>
-                <p className="text-white font-bold text-lg mb-1">Call Us</p>
-                <p className="text-slate-400 group-hover:text-brand-light transition-colors duration-300">{CONTACT_INFO.phone}</p>
+                <p className="text-white font-serif-royal font-bold text-base mb-1">Direct Call</p>
+                <p className="text-xs text-brand-gold font-semibold transition-colors duration-300">{CONTACT_INFO.phone}</p>
+                <span className="text-[10px] text-slate-400 block mt-1">Available 9 AM - 9 PM</span>
               </div>
             </a>
             
-            <a href={`mailto:${CONTACT_INFO.email}`} className="group relative p-8 bg-dark-900 rounded-2xl border border-white/5 hover:border-brand-gold/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(212,175,55,0.3)] overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <a href={`mailto:${CONTACT_INFO.email}`} className="group relative p-7 glass-luxury rounded-2xl border border-white/10 hover:border-brand-gold/60 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(212,175,55,0.3)] overflow-hidden">
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-full bg-dark-800 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-gold group-hover:text-dark-950 text-brand-gold transition-colors duration-500 shadow-inner">
-                  <Mail size={24} />
+                <div className="w-13 h-13 rounded-xl bg-brand-gold/15 flex items-center justify-center mx-auto mb-4 group-hover:bg-brand-gold group-hover:text-dark-950 text-brand-gold transition-all duration-300">
+                  <Mail size={22} />
                 </div>
-                <p className="text-white font-bold text-lg mb-1">Email Us</p>
-                <p className="text-slate-400 group-hover:text-brand-light transition-colors duration-300">{CONTACT_INFO.email}</p>
+                <p className="text-white font-serif-royal font-bold text-base mb-1">Academic Desk</p>
+                <p className="text-xs text-brand-gold font-semibold transition-colors duration-300">{CONTACT_INFO.email}</p>
+                <span className="text-[10px] text-slate-400 block mt-1">Syllabus & Material Enquiries</span>
               </div>
             </a>
             
-            <div className="group relative p-8 bg-dark-900 rounded-2xl border border-white/5 hover:border-brand-gold/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(212,175,55,0.3)] overflow-hidden cursor-default">
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="group relative p-7 glass-luxury rounded-2xl border border-white/10 hover:border-brand-gold/60 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(212,175,55,0.3)] overflow-hidden cursor-default">
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-full bg-dark-800 flex items-center justify-center mx-auto mb-6 group-hover:bg-brand-gold group-hover:text-dark-950 text-brand-gold transition-colors duration-500 shadow-inner">
-                  <MapPin size={24} />
+                <div className="w-13 h-13 rounded-xl bg-brand-gold/15 flex items-center justify-center mx-auto mb-4 group-hover:bg-brand-gold group-hover:text-dark-950 text-brand-gold transition-all duration-300">
+                  <MapPin size={22} />
                 </div>
-                <p className="text-white font-bold text-lg mb-1">Visit Us</p>
-                <p className="text-slate-400 group-hover:text-brand-light transition-colors duration-300">{CONTACT_INFO.address}</p>
+                <p className="text-white font-serif-royal font-bold text-base mb-1">Academy Center</p>
+                <p className="text-xs text-brand-gold font-semibold transition-colors duration-300">{CONTACT_INFO.address}</p>
+                <span className="text-[10px] text-slate-400 block mt-1">West Bengal, India</span>
               </div>
             </div>
           </div>

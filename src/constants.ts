@@ -1,4 +1,9 @@
 import { Course } from './types';
+import courseSlideWbjee from './assets/images/course_slide_wbjee_1788795174986.jpg';
+import courseSlideHs12 from './assets/images/course_slide_hs12_1788795197956.jpg';
+import courseSlideHonours from './assets/images/course_slide_honours_1788795216971.jpg';
+import courseSlideMadhyamik from './assets/images/course_slide_madhyamik_1788795232604.jpg';
+import courseSlideMocktests from './assets/images/course_slide_mocktests_1788795247302.jpg';
 
 export const COURSES: Course[] = [
   {
@@ -18,7 +23,7 @@ export const COURSES: Course[] = [
     enrolledCount: 1420,
     featured: true,
     syllabusTopics: ['Algebra & Quadratic Equations', 'Geometry & Circle Theorems', 'Trigonometry Ratios', 'Mensuration 3D & Statistics'],
-    posterImage: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80'
+    posterImage: courseSlideMadhyamik
   },
   {
     id: 'wbjee',
@@ -37,7 +42,7 @@ export const COURSES: Course[] = [
     enrolledCount: 2150,
     featured: true,
     syllabusTopics: ['Calculus & Differential Equations', 'Coordinate Geometry & Conic Sections', 'Vectors & 3D Geometry', 'Algebra & Complex Numbers'],
-    posterImage: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80'
+    posterImage: courseSlideWbjee
   },
   {
     id: 'wb-12-s3',
@@ -56,7 +61,7 @@ export const COURSES: Course[] = [
     enrolledCount: 890,
     featured: true,
     syllabusTopics: ['Matrices & Determinants', 'Inverse Trigonometric Functions', 'Continuity & Differentiability', 'Application of Derivatives'],
-    posterImage: 'https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=800&q=80'
+    posterImage: courseSlideHs12
   },
   {
     id: 'ug-honours',
@@ -75,7 +80,7 @@ export const COURSES: Course[] = [
     enrolledCount: 640,
     featured: true,
     syllabusTopics: ['Real & Complex Analysis', 'Abstract Algebra & Group Theory', 'Differential Equations & Dynamics', 'Multivariable Calculus'],
-    posterImage: 'https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?auto=format&fit=crop&w=800&q=80'
+    posterImage: courseSlideHonours
   },
   {
     id: 'wb-11-s1',
@@ -94,7 +99,7 @@ export const COURSES: Course[] = [
     enrolledCount: 780,
     featured: false,
     syllabusTopics: ['Sets, Relations & Functions', 'Trigonometric Functions', 'Principle of Mathematical Induction', 'Complex Numbers'],
-    posterImage: 'https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?auto=format&fit=crop&w=800&q=80'
+    posterImage: courseSlideMadhyamik
   },
   {
     id: 'wb-11-s2',
@@ -113,7 +118,7 @@ export const COURSES: Course[] = [
     enrolledCount: 710,
     featured: false,
     syllabusTopics: ['Linear Inequalities', 'Permutations & Combinations', 'Straight Lines & Conic Sections', 'Limits & Derivatives'],
-    posterImage: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=800&q=80'
+    posterImage: courseSlideWbjee
   },
   {
     id: 'wb-12-s4',
@@ -132,7 +137,7 @@ export const COURSES: Course[] = [
     enrolledCount: 950,
     featured: false,
     syllabusTopics: ['Integrals & Definite Integration', 'Differential Equations', 'Vector Algebra & 3D Geometry', 'Probability & Linear Programming'],
-    posterImage: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80'
+    posterImage: courseSlideHs12
   },
   {
     id: 'cbse-5-12',
@@ -151,7 +156,7 @@ export const COURSES: Course[] = [
     enrolledCount: 1850,
     featured: false,
     syllabusTopics: ['NCERT Concept Clarity', 'Exemplar Problem Solving', 'Board Pattern Worksheets', 'Mental Math & Speed Building'],
-    posterImage: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=800&q=80'
+    posterImage: courseSlideMocktests
   }
 ];
 

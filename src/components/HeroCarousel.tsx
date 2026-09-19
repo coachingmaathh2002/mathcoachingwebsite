@@ -1,120 +1,124 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronRight, ChevronLeft, Sparkles } from 'lucide-react';
+import { 
+  ChevronRight, 
+  ChevronLeft, 
+  Play, 
+  Pause,
+  ExternalLink
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-import banner1Webp from '../assets/hero/mock-test-hero01.webp';
-import banner2Webp from '../assets/hero/mock-test-hero02.webp';
-import banner3Webp from '../assets/hero/mock-test-hero03.webp';
-import banner4Webp from '../assets/hero/mock-test-hero04.webp';
-import banner5Webp from '../assets/hero/mock-test-hero05.webp';
-import banner6Webp from '../assets/hero/mock-test-hero06.webp';
+// Customized Hero Images: mock-test-hero01.webp to mock-test-hero06.webp
+import hero1Webp from '../assets/hero/mock-test-hero01.webp';
+import hero2Webp from '../assets/hero/mock-test-hero02.webp';
+import hero3Webp from '../assets/hero/mock-test-hero03.webp';
+import hero4Webp from '../assets/hero/mock-test-hero04.webp';
+import hero5Webp from '../assets/hero/mock-test-hero05.webp';
+import hero6Webp from '../assets/hero/mock-test-hero06.webp';
 
-import banner1Jpg from '../assets/hero/mock-test-hero01.jpg';
-import banner2Jpg from '../assets/hero/mock-test-hero02.jpg';
-import banner3Jpg from '../assets/hero/mock-test-hero03.jpg';
-import banner4Jpg from '../assets/hero/mock-test-hero04.jpg';
-import banner5Jpg from '../assets/hero/mock-test-hero05.jpg';
-import banner6Jpg from '../assets/hero/mock-test-hero06.jpg';
-
-interface BannerItem {
+interface CustomBannerItem {
   id: string;
   webpSrc: string;
-  jpgSrc: string;
-  publicFallbackWebp: string;
-  publicFallbackJpg: string;
+  fallbackWebp: string;
+  fallbackJpg: string;
+  tabNumber: string;
+  tabLabel: string;
   title: string;
-  subtitle?: string;
-  link?: string;
-  tag?: string;
+  link: string;
 }
 
-const BANNERS: BannerItem[] = [
-  { 
-    id: 'banner-1', 
-    webpSrc: banner1Webp, 
-    jpgSrc: banner1Jpg,
-    publicFallbackWebp: '/mock-test-hero01.webp',
-    publicFallbackJpg: '/mock-test-hero01.jpg',
-    title: 'Master Mathematics for WBJEE & JEE Advanced', 
-    subtitle: 'Comprehensive Chapter-wise Problem Solving & Shortcuts',
-    link: '/assignments', 
-    tag: 'WBJEE SPECIAL' 
+const CUSTOM_BANNERS: CustomBannerItem[] = [
+  {
+    id: 'mock-test-hero-01',
+    webpSrc: hero1Webp,
+    fallbackWebp: '/mock-test-hero01.webp',
+    fallbackJpg: '/mock-test-hero01.jpg',
+    tabNumber: '01',
+    tabLabel: 'WBJEE 2026 Special',
+    title: 'WBJEE Higher Mathematics Mastery & Problem Solving Sets',
+    link: '/assignments'
   },
-  { 
-    id: 'banner-2', 
-    webpSrc: banner2Webp, 
-    jpgSrc: banner2Jpg,
-    publicFallbackWebp: '/mock-test-hero02.webp',
-    publicFallbackJpg: '/mock-test-hero02.jpg',
-    title: 'Comprehensive WBJEE Maths Practice & Mock Tests', 
-    subtitle: 'Live Timed Tests with Instant Rank Analysis',
-    link: '/tests', 
-    tag: 'MOCK TESTS' 
+  {
+    id: 'mock-test-hero-02',
+    webpSrc: hero2Webp,
+    fallbackWebp: '/mock-test-hero02.webp',
+    fallbackJpg: '/mock-test-hero02.jpg',
+    tabNumber: '02',
+    tabLabel: 'Full Mock Test',
+    title: 'Live Timed Online Mock Tests with Instant Rank Analysis',
+    link: '/tests'
   },
-  { 
-    id: 'banner-3', 
-    webpSrc: banner3Webp, 
-    jpgSrc: banner3Jpg,
-    publicFallbackWebp: '/mock-test-hero03.webp',
-    publicFallbackJpg: '/mock-test-hero03.jpg',
-    title: 'Interactive Graphing & Coordinate Geometry', 
-    subtitle: 'Conics, Circles, Straight Lines & 3D Geometry',
-    link: '/study-materials', 
-    tag: 'STUDY MODULES' 
+  {
+    id: 'mock-test-hero-03',
+    webpSrc: hero3Webp,
+    fallbackWebp: '/mock-test-hero03.webp',
+    fallbackJpg: '/mock-test-hero03.jpg',
+    tabNumber: '03',
+    tabLabel: 'Coordinate & Conics',
+    title: 'Circles, Parabola, Hyperbola & Analytical Geometry',
+    link: '/study-materials'
   },
-  { 
-    id: 'banner-4', 
-    webpSrc: banner4Webp, 
-    jpgSrc: banner4Jpg,
-    publicFallbackWebp: '/mock-test-hero04.webp',
-    publicFallbackJpg: '/mock-test-hero04.jpg',
-    title: 'Calculus & Algebra Deep Dive Series', 
-    subtitle: 'Integration, Differential Equations, Limits & Continuity',
-    link: '/assignments', 
-    tag: 'ADVANCED CALCULUS' 
+  {
+    id: 'mock-test-hero-04',
+    webpSrc: hero4Webp,
+    fallbackWebp: '/mock-test-hero04.webp',
+    fallbackJpg: '/mock-test-hero04.jpg',
+    tabNumber: '04',
+    tabLabel: 'Advanced Calculus',
+    title: 'Differential Calculus & Integral Formulations Vault',
+    link: '/assignments'
   },
-  { 
-    id: 'banner-5', 
-    webpSrc: banner5Webp, 
-    jpgSrc: banner5Jpg,
-    publicFallbackWebp: '/mock-test-hero05.webp',
-    publicFallbackJpg: '/mock-test-hero05.jpg',
-    title: 'Vector Algebra & Matrix Problem Solving', 
-    subtitle: 'High Scoring Topics with 100% Concept Clarity',
-    link: '/tests', 
-    tag: 'RANK BOOSTER' 
+  {
+    id: 'mock-test-hero-05',
+    webpSrc: hero5Webp,
+    fallbackWebp: '/mock-test-hero05.webp',
+    fallbackJpg: '/mock-test-hero05.jpg',
+    tabNumber: '05',
+    tabLabel: 'Vectors & Matrices',
+    title: 'Vectors, Determinants & Linear Algebra Practice Sets',
+    link: '/tests'
   },
-  { 
-    id: 'banner-6', 
-    webpSrc: banner6Webp, 
-    jpgSrc: banner6Jpg,
-    publicFallbackWebp: '/mock-test-hero06.webp',
-    publicFallbackJpg: '/mock-test-hero06.jpg',
-    title: 'Structured WBJEE Mock Tests & Rank Accelerators', 
-    subtitle: 'Exclusive Question Bank Curated by Raj Sir',
-    link: '/study-materials', 
-    tag: 'ACADEMY SPECIAL' 
-  },
+  {
+    id: 'mock-test-hero-06',
+    webpSrc: hero6Webp,
+    fallbackWebp: '/mock-test-hero06.webp',
+    fallbackJpg: '/mock-test-hero06.jpg',
+    tabNumber: '06',
+    tabLabel: 'Rank Booster Bank',
+    title: 'Exclusive Curated Mathematics Problem Bank by Raj Sir',
+    link: '/study-materials'
+  }
 ];
 
 export const HeroCarousel: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-
+  const [isPaused, setIsPaused] = useState(false);
   const navigate = useNavigate();
+
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
-  // Auto-slide effect
+  // Auto slide with pause on hover
   useEffect(() => {
-    if (BANNERS.length <= 1) return;
+    if (isPaused) return;
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % BANNERS.length);
+      setCurrentSlide((prev) => (prev + 1) % CUSTOM_BANNERS.length);
     }, 5000);
     return () => clearInterval(timer);
+  }, [isPaused]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') nextSlide();
+      else if (e.key === 'ArrowLeft') prevSlide();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % BANNERS.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + BANNERS.length) % BANNERS.length);
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % CUSTOM_BANNERS.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + CUSTOM_BANNERS.length) % CUSTOM_BANNERS.length);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.targetTouches[0].clientX;
@@ -127,126 +131,189 @@ export const HeroCarousel: React.FC = () => {
   const handleTouchEnd = () => {
     if (!touchStartX.current || !touchEndX.current) return;
     const distance = touchStartX.current - touchEndX.current;
-    if (distance > 50) nextSlide();
-    else if (distance < -50) prevSlide();
+    if (distance > 40) nextSlide();
+    else if (distance < -40) prevSlide();
 
     touchStartX.current = null;
     touchEndX.current = null;
   };
 
+  const handleBannerClick = (banner: CustomBannerItem) => {
+    if (banner.link.startsWith('/#')) {
+      const id = banner.link.replace('/#', '');
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        navigate('/');
+      }
+    } else {
+      navigate(banner.link);
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const activeBanner = CUSTOM_BANNERS[currentSlide];
+
   return (
-    <div id="hero-banners-section" className="w-full pt-[124px] md:pt-[134px] pb-4 z-30 relative group bg-gradient-to-b from-[#010414] via-[#020726] to-[#010414]">
-      {/* Main Carousel Frame */}
-      <div 
-        className="relative w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-6"
-      >
+    <section 
+      id="hero-banners-section" 
+      aria-label="Academy Banner Presentation"
+      className="w-full pt-[96px] sm:pt-[106px] md:pt-[116px] pb-6 z-30 relative bg-gradient-to-b from-dark-950 via-[#070b13] to-dark-950"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div className="relative w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+
+        {/* Top Header Label & Controls */}
+        <div className="flex items-center justify-between mb-2.5 px-1">
+          <div className="flex items-center gap-2">
+            <span className="flex h-2 w-2 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-gold opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-gold"></span>
+            </span>
+            <span className="text-[11px] font-serif-royal font-bold uppercase tracking-[0.2em] text-brand-goldLight">
+              Raj Sir Math Academy • Featured Highlights
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2.5 text-xs text-slate-400">
+            <button
+              onClick={() => setIsPaused(!isPaused)}
+              title={isPaused ? "Resume auto-rotation" : "Pause auto-rotation"}
+              className="p-1 rounded hover:bg-white/5 text-slate-400 hover:text-brand-gold transition-colors cursor-pointer"
+              aria-label={isPaused ? "Play slide rotation" : "Pause slide rotation"}
+            >
+              {isPaused ? <Play size={13} className="text-brand-gold" /> : <Pause size={13} />}
+            </button>
+            <div className="flex items-center gap-1 font-serif-royal text-xs">
+              <span className="font-bold text-brand-gold">{activeBanner.tabNumber}</span>
+              <span className="text-slate-600">/</span>
+              <span className="text-slate-400">0{CUSTOM_BANNERS.length}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Banner Presentation Frame - True 2.2:1 Aspect Ratio (1860x846) Matching User Images */}
         <div 
-          className="relative w-full overflow-hidden rounded-2xl border border-brand-gold/30 shadow-[0_10px_35px_rgba(0,0,0,0.7)] bg-[#02051e] touch-pan-y group/carousel"
+          className="relative w-full rounded-xl sm:rounded-2xl md:rounded-3xl border border-brand-gold/30 shadow-[0_20px_60px_rgba(0,0,0,0.9)] bg-dark-950 overflow-hidden touch-pan-y group/carousel"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
+          {/* Banner Slides Carousel */}
           <div 
             className="flex transition-transform duration-500 ease-out"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
-            {BANNERS.map((banner, index) => (
+            {CUSTOM_BANNERS.map((banner, index) => (
               <div 
-                key={banner.id || index}
-                onClick={() => navigate(banner.link || '/assignments')}
-                className="w-full flex-shrink-0 relative overflow-hidden flex items-center justify-center cursor-pointer bg-[#02051e] aspect-[16/9] sm:aspect-[21/9] md:aspect-[24/9] max-h-[480px]"
+                key={banner.id}
+                onClick={() => handleBannerClick(banner)}
+                className="w-full flex-shrink-0 relative cursor-pointer bg-dark-950 aspect-[1860/846] flex items-center justify-center overflow-hidden select-none"
+                title={`Click to explore ${banner.title}`}
               >
-                <picture className="w-full h-full block">
-                  <source srcSet={banner.webpSrc} type="image/webp" />
-                  <source srcSet={banner.jpgSrc} type="image/jpeg" />
-                  <img 
-                    src={banner.webpSrc} 
-                    alt={banner.title || `Slide ${index + 1}`} 
-                    onError={(e) => {
-                      const target = e.currentTarget;
-                      if (target.src !== banner.jpgSrc && target.src !== banner.publicFallbackJpg) {
-                        target.src = banner.jpgSrc || banner.publicFallbackJpg;
-                      }
-                    }}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover/carousel:scale-[1.02]" 
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                    decoding="async"
-                  />
-                </picture>
+                {/* 100% Uncropped, High-Fidelity Banner Image */}
+                <img 
+                  src={banner.webpSrc} 
+                  alt={banner.title} 
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (target.src !== banner.fallbackWebp && !target.src.endsWith(banner.fallbackWebp)) {
+                      target.src = banner.fallbackWebp;
+                    } else if (target.src !== banner.fallbackJpg && !target.src.endsWith(banner.fallbackJpg)) {
+                      target.src = banner.fallbackJpg;
+                    }
+                  }}
+                  className="w-full h-full object-cover block transition-transform duration-500 group-hover/carousel:scale-[1.008]" 
+                />
 
-                {/* Subtle gradient vignette overlay for improved text contrast */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-
-                {/* Tag Badge */}
-                {banner.tag && (
-                  <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-md border border-brand-gold/40 text-brand-gold text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1.5 z-10 shadow-lg">
-                    <Sparkles size={12} className="text-brand-gold animate-pulse" />
-                    <span>{banner.tag}</span>
-                  </div>
-                )}
-
-                {/* Bottom title bar */}
-                <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 text-white z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-2 pointer-events-none">
-                  <div className="max-w-2xl">
-                    <h2 className="text-base sm:text-xl md:text-2xl font-bold tracking-tight text-white drop-shadow-md line-clamp-1">
-                      {banner.title}
-                    </h2>
-                    {banner.subtitle && (
-                      <p className="text-xs sm:text-sm text-slate-300 drop-shadow line-clamp-1 hidden sm:block mt-1">
-                        {banner.subtitle}
-                      </p>
-                    )}
-                  </div>
-                  <div className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-brand-gold bg-brand-gold/15 backdrop-blur-md border border-brand-gold/30 px-3 py-1.5 rounded-lg whitespace-nowrap">
-                    <span>Explore Now</span>
-                    <ChevronRight size={14} />
-                  </div>
+                {/* Subtle Hover Action Pill (applies on hover without covering static artwork) */}
+                <div className="absolute top-3 right-3 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 pointer-events-none hidden sm:flex items-center gap-1.5 bg-dark-950/90 backdrop-blur-md border border-brand-gold/50 px-3 py-1.5 rounded-full text-brand-gold text-xs font-serif-royal font-semibold shadow-lg">
+                  <span>Explore Now</span>
+                  <ExternalLink size={12} />
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Navigation Arrows */}
-          {BANNERS.length > 1 && (
-            <>
-              <button 
-                id="btn-carousel-prev"
-                onClick={(e) => { e.stopPropagation(); prevSlide(); }}
-                aria-label="Previous Slide"
-                className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 bg-black/60 hover:bg-black/90 text-white rounded-full flex items-center justify-center backdrop-blur-md transition-all z-20 hover:scale-110 shadow-xl border border-white/20 active:scale-95"
-              >
-                <ChevronLeft size={22} />
-              </button>
-              <button 
-                id="btn-carousel-next"
-                onClick={(e) => { e.stopPropagation(); nextSlide(); }}
-                aria-label="Next Slide"
-                className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 bg-black/60 hover:bg-black/90 text-white rounded-full flex items-center justify-center backdrop-blur-md transition-all z-20 hover:scale-110 shadow-xl border border-white/20 active:scale-95"
-              >
-                <ChevronRight size={22} />
-              </button>
-            </>
-          )}
+          {/* Navigation Arrows (Subtle, sleek, non-intrusive) */}
+          <button 
+            id="btn-carousel-prev"
+            onClick={(e) => { e.stopPropagation(); prevSlide(); }}
+            aria-label="Previous Slide"
+            className="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 md:w-11 md:h-11 bg-dark-950/75 hover:bg-dark-900 text-brand-gold hover:text-white rounded-full items-center justify-center backdrop-blur-md transition-all z-20 hover:scale-110 shadow-xl border border-brand-gold/40 active:scale-95 cursor-pointer opacity-85 hover:opacity-100"
+          >
+            <ChevronLeft size={22} />
+          </button>
+          
+          <button 
+            id="btn-carousel-next"
+            onClick={(e) => { e.stopPropagation(); nextSlide(); }}
+            aria-label="Next Slide"
+            className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 md:w-11 md:h-11 bg-dark-950/75 hover:bg-dark-900 text-brand-gold hover:text-white rounded-full items-center justify-center backdrop-blur-md transition-all z-20 hover:scale-110 shadow-xl border border-brand-gold/40 active:scale-95 cursor-pointer opacity-85 hover:opacity-100"
+          >
+            <ChevronRight size={22} />
+          </button>
+
+          {/* Top Edge Gold Hairline */}
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-brand-gold/60 to-transparent pointer-events-none" />
+
+          {/* Bottom Progress Bar */}
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-dark-900/80 z-20">
+            <div 
+              className="h-full bg-gradient-to-r from-brand-gold via-yellow-300 to-brand-gold transition-all duration-500"
+              style={{ width: `${((currentSlide + 1) / CUSTOM_BANNERS.length) * 100}%` }}
+            />
+          </div>
         </div>
 
-        {/* Indicators Dots */}
-        <div className="w-full pt-3 pb-1 flex justify-center items-center gap-2">
-          {BANNERS.map((_, index) => (
-            <button
-              id={`carousel-dot-${index + 1}`}
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              aria-label={`Go to slide ${index + 1}`}
-              className={`h-2.5 rounded-full transition-all duration-300 ${
-                currentSlide === index ? 'bg-brand-gold w-8 shadow-md shadow-brand-gold/50' : 'bg-slate-700 hover:bg-slate-500 w-2.5'
-              }`}
-            />
-          ))}
+        {/* Active Banner Caption & Direct Link */}
+        <div className="mt-3 flex items-center justify-between px-1 text-slate-300">
+          <p className="text-xs sm:text-sm font-medium truncate max-w-xl flex items-center gap-2">
+            <span className="text-brand-gold font-bold font-serif-royal">{activeBanner.tabLabel}:</span>
+            <span className="text-slate-300 truncate">{activeBanner.title}</span>
+          </p>
+          <button
+            onClick={() => handleBannerClick(activeBanner)}
+            className="text-xs font-serif-royal text-brand-gold hover:text-brand-goldLight underline decoration-brand-gold/50 flex items-center gap-1 cursor-pointer whitespace-nowrap ml-2 font-semibold"
+          >
+            <span>Explore Program</span>
+            <ChevronRight size={13} />
+          </button>
         </div>
+
+        {/* Interactive 6-Banner Selector Thumbnails */}
+        <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-2.5">
+          {CUSTOM_BANNERS.map((banner, index) => {
+            const isSelected = currentSlide === index;
+            return (
+              <button
+                key={banner.id}
+                onClick={() => setCurrentSlide(index)}
+                className={`p-2 sm:p-2.5 rounded-xl text-left transition-all duration-300 border flex flex-col justify-between cursor-pointer ${
+                  isSelected 
+                    ? 'bg-dark-900/95 border-brand-gold shadow-[0_0_15px_rgba(212,175,55,0.3)] -translate-y-0.5' 
+                    : 'bg-dark-950/60 border-white/10 hover:border-white/20 hover:bg-dark-900/40 text-slate-400'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[10px] font-serif-royal font-bold tracking-wider uppercase text-slate-400">
+                    {banner.tabNumber}
+                  </span>
+                  <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-brand-gold animate-pulse' : 'bg-slate-700'}`} />
+                </div>
+                <div className={`text-xs font-serif-royal font-bold truncate ${isSelected ? 'text-brand-gold' : 'text-slate-200'}`}>
+                  {banner.tabLabel}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
       </div>
-    </div>
+    </section>
   );
 };
-
-
-

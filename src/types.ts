@@ -1,3 +1,8 @@
+export interface SyllabusUnit {
+  unitTitle: string;
+  subtopics: string[];
+}
+
 export interface Course {
   id: string;
   title: string;
@@ -16,6 +21,7 @@ export interface Course {
   badge?: string;
   enrolledCount?: number;
   syllabusTopics?: string[];
+  syllabusUnits?: SyllabusUnit[];
   featured?: boolean;
   posterImage?: string;
 }

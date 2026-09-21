@@ -143,12 +143,17 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2.5 text-xs">
               <li>
                 <button onClick={() => handleNav('/', '#courses')} className="hover:text-brand-gold hover:translate-x-1 transition-all text-left">
-                  WBCHSE Class 12 Sem 3 & 4
+                  WB Board Class 12 (Third Semester)
                 </button>
               </li>
               <li>
                 <button onClick={() => handleNav('/', '#courses')} className="hover:text-brand-gold hover:translate-x-1 transition-all text-left">
                   WBCHSE Class 11 Sem 1 & 2
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('/', '#courses')} className="hover:text-brand-gold hover:translate-x-1 transition-all text-left">
+                  WBCHSE Class 12 Sem 4
                 </button>
               </li>
               <li>

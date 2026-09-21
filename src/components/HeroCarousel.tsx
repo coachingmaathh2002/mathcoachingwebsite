@@ -138,6 +138,21 @@ export const HeroCarousel: React.FC = () => {
     touchEndX.current = null;
   };
 
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, banner: CustomBannerItem) => {
+    const target = e.currentTarget;
+    const attempt = Number(target.dataset.attempt || '0');
+    if (attempt === 0) {
+      target.dataset.attempt = '1';
+      target.src = banner.fallbackWebp;
+    } else if (attempt === 1) {
+      target.dataset.attempt = '2';
+      target.src = banner.fallbackJpg;
+    } else if (attempt === 2) {
+      target.dataset.attempt = '3';
+      target.src = `/banner-${banner.tabNumber}.jpg`;
+    }
+  };
+
   const handleBannerClick = (banner: CustomBannerItem) => {
     if (banner.link.startsWith('/#')) {
       const id = banner.link.replace('/#', '');
@@ -210,25 +225,22 @@ export const HeroCarousel: React.FC = () => {
               <div 
                 key={banner.id}
                 onClick={() => handleBannerClick(banner)}
-                className="w-full flex-shrink-0 relative cursor-pointer bg-dark-950 aspect-[1860/846] flex items-center justify-center overflow-hidden select-none"
+                className="w-full flex-shrink-0 relative cursor-pointer bg-[#050811] aspect-[1860/846] flex items-center justify-center overflow-hidden select-none"
                 title={`Click to explore ${banner.title}`}
               >
-                {/* 100% Uncropped, High-Fidelity Banner Image */}
-                <img 
-                  src={banner.webpSrc} 
-                  alt={banner.title} 
-                  loading={index === 0 ? 'eager' : 'lazy'}
-                  decoding="async"
-                  onError={(e) => {
-                    const target = e.currentTarget;
-                    if (target.src !== banner.fallbackWebp && !target.src.endsWith(banner.fallbackWebp)) {
-                      target.src = banner.fallbackWebp;
-                    } else if (target.src !== banner.fallbackJpg && !target.src.endsWith(banner.fallbackJpg)) {
-                      target.src = banner.fallbackJpg;
-                    }
-                  }}
-                  className="w-full h-full object-cover block transition-transform duration-500 group-hover/carousel:scale-[1.008]" 
-                />
+                {/* 100% Uncropped, High-Fidelity Banner Image with Picture & Multi-tier Fallback */}
+                <picture className="w-full h-full flex items-center justify-center">
+                  <source srcSet={banner.webpSrc} type="image/webp" />
+                  <source srcSet={banner.fallbackWebp} type="image/webp" />
+                  <img 
+                    src={banner.fallbackJpg} 
+                    alt={banner.title} 
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    onError={(e) => handleImageError(e, banner)}
+                    className="w-full h-full object-contain md:object-cover block transition-transform duration-500 group-hover/carousel:scale-[1.008]" 
+                  />
+                </picture>
 
                 {/* Subtle Hover Action Pill (applies on hover without covering static artwork) */}
                 <div className="absolute top-3 right-3 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 pointer-events-none hidden sm:flex items-center gap-1.5 bg-dark-950/90 backdrop-blur-md border border-brand-gold/50 px-3 py-1.5 rounded-full text-brand-gold text-xs font-serif-royal font-semibold shadow-lg">
@@ -283,34 +295,6 @@ export const HeroCarousel: React.FC = () => {
             <span>Explore Program</span>
             <ChevronRight size={13} />
           </button>
-        </div>
-
-        {/* Interactive 6-Banner Selector Thumbnails */}
-        <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-2.5">
-          {CUSTOM_BANNERS.map((banner, index) => {
-            const isSelected = currentSlide === index;
-            return (
-              <button
-                key={banner.id}
-                onClick={() => setCurrentSlide(index)}
-                className={`p-2 sm:p-2.5 rounded-xl text-left transition-all duration-300 border flex flex-col justify-between cursor-pointer ${
-                  isSelected 
-                    ? 'bg-dark-900/95 border-brand-gold shadow-[0_0_15px_rgba(212,175,55,0.3)] -translate-y-0.5' 
-                    : 'bg-dark-950/60 border-white/10 hover:border-white/20 hover:bg-dark-900/40 text-slate-400'
-                }`}
-              >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-[10px] font-serif-royal font-bold tracking-wider uppercase text-slate-400">
-                    {banner.tabNumber}
-                  </span>
-                  <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-brand-gold animate-pulse' : 'bg-slate-700'}`} />
-                </div>
-                <div className={`text-xs font-serif-royal font-bold truncate ${isSelected ? 'text-brand-gold' : 'text-slate-200'}`}>
-                  {banner.tabLabel}
-                </div>
-              </button>
-            );
-          })}
         </div>
 
       </div>

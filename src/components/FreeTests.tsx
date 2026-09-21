@@ -289,7 +289,16 @@ export const FreeTests: React.FC = () => {
 
   // Group tests by topic
   const filteredTests = tests.filter(t => activeTab === 'paid' ? t.isPaid : !t.isPaid);
-  const exams = Array.from(new Set(filteredTests.map(t => t.exam)));
+  const examOrder: Record<string, number> = {
+    'WB Class-XI First Semester': 1,
+    'WB Class-XI Second Semester': 2,
+    'WB Class-XII Third Semester': 3,
+    'WB Class-XII Fourth Semester': 4,
+    'WBJEE': 5
+  };
+  const exams = Array.from(new Set(filteredTests.map(t => t.exam))).sort(
+    (a, b) => (examOrder[a] || 99) - (examOrder[b] || 99)
+  );
   const examTests = selectedExam ? filteredTests.filter(t => t.exam === selectedExam) : [];
   const testsByTopic = examTests.reduce((acc, test) => {
     if (!acc[test.topic]) acc[test.topic] = [];

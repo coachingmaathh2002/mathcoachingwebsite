@@ -5,6 +5,7 @@ import { topic5Tests } from './tests/topic5_quadratic_equations';
 import { topic6Tests } from './tests/topic6_linear_inequalities';
 import { topic7Tests } from './tests/topic7_permutations_combinations';
 import { topic8Tests } from './tests/topic8_limits_derivatives';
+import { wbClass12Sem3Tests } from './tests/wb_class12_sem3_tests';
 
 export interface Question {
   id: number;
@@ -341,9 +342,9 @@ const baseTests: Test[] = [
   },
   {
     id: 't13',
-    title: 'ক্যালকুলাস: অন্তরজ ২ (Derivatives II)',
-    topic: 'ক্যালকুলাস (Calculus)',
-    exam: 'WB Class-XI Third Semester',
+    title: 'ক্যালকুলাস: অন্তরজ ও অবকলন (Derivatives & Differentiation)',
+    topic: '৩. কলনবিদ্যা: সন্ততা ও অবকলন (Calculus: Continuity & Derivatives)',
+    exam: 'WB Class-XII Third Semester',
     questions: [
       { id: 1, text: "$\\frac{d}{dx}(\\sin^{-1} x) = ?$", options: ["$\\frac{1}{\\sqrt{1-x^2}}$", "$-\\frac{1}{\\sqrt{1-x^2}}$", "$\\frac{1}{1+x^2}$", "$\\frac{1}{x\\sqrt{x^2-1}}$"], correctAnswer: 0 },
       { id: 2, text: "$\\frac{d}{dx}(\\tan^{-1} x) = ?$", options: ["$\\frac{1}{1+x^2}$", "$-\\frac{1}{1+x^2}$", "$\\frac{1}{\\sqrt{1-x^2}}$", "$\\frac{1}{x\\sqrt{x^2-1}}$"], correctAnswer: 0 },
@@ -369,9 +370,9 @@ const baseTests: Test[] = [
   },
   {
     id: 't14',
-    title: 'ক্যালকুলাস: লিমিট ২ (Limits II)',
-    topic: 'ক্যালকুলাস (Calculus)',
-    exam: 'WB Class-XI Third Semester',
+    title: 'ক্যালকুলাস: সীমা ও সন্ততা (Limits & Continuity Revision)',
+    topic: '৩. কলনবিদ্যা: সন্ততা ও অবকলন (Calculus: Continuity & Derivatives)',
+    exam: 'WB Class-XII Third Semester',
     questions: [
       { id: 1, text: "$\\lim_{x \\to 0} \\frac{1 - \\cos x}{x^2} = ?$", options: ["$1/2$", "1", "0", "$\\infty$"], correctAnswer: 0 },
       { id: 2, text: "$\\lim_{x \\to 0} (1 + x)^{1/x} = ?$", options: ["$e$", "1", "0", "$\\infty$"], correctAnswer: 0 },
@@ -399,7 +400,7 @@ const baseTests: Test[] = [
     id: 't15',
     title: 'জ্যামিতি: সরলরেখা (Straight Lines)',
     topic: 'জ্যামিতি (Geometry)',
-    exam: 'WB Class-XI Third Semester',
+    exam: 'WB Class-XI Second Semester',
     questions: [
       { id: 1, text: "দুটি বিন্দু $(x_1, y_1)$ এবং $(x_2, y_2)$ এর মধ্যবর্তী দূরত্ব কত?", options: ["$\\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$", "$(x_2-x_1)^2 + (y_2-y_1)^2$", "$\\sqrt{x_2^2 + y_2^2}$", "$x_1x_2 + y_1y_2$"], correctAnswer: 0 },
       { id: 2, text: "সরলরেখার ঢাল (Slope) $m$ এর সূত্র কী?", options: ["$\\frac{y_2 - y_1}{x_2 - x_1}$", "$\\frac{x_2 - x_1}{y_2 - y_1}$", "$y_2 - y_1$", "$x_2 - x_1$"], correctAnswer: 0 },
@@ -427,7 +428,7 @@ const baseTests: Test[] = [
     id: 't16',
     title: 'জ্যামিতি: কনিক সেকশন (Conic Sections)',
     topic: 'জ্যামিতি (Geometry)',
-    exam: 'WB Class-XI Fourth Semester',
+    exam: 'WB Class-XI Second Semester',
     questions: [
       { id: 1, text: "বৃত্তের সাধারণ সমীকরণ কোনটি?", options: ["$x^2 + y^2 + 2gx + 2fy + c = 0$", "$x^2/a^2 + y^2/b^2 = 1$", "$y^2 = 4ax$", "$x^2/a^2 - y^2/b^2 = 1$"], correctAnswer: 0 },
       { id: 2, text: "$x^2 + y^2 = a^2$ বৃত্তের কেন্দ্র কোথায়?", options: ["(0, 0)", "(a, 0)", "(0, a)", "(-g, -f)"], correctAnswer: 0 },
@@ -455,7 +456,7 @@ const baseTests: Test[] = [
     id: 't17',
     title: 'পরিসংখ্যান: প্রাথমিক ধারণা (Statistics Basics)',
     topic: 'পরিসংখ্যান (Statistics)',
-    exam: 'WB Class-XI Fourth Semester',
+    exam: 'WB Class-XI Second Semester',
     questions: [
       { id: 1, text: "কেন্দ্রীয় প্রবণতার (Central Tendency) সবচেয়ে নির্ভরযোগ্য পরিমাপ কোনটি?", options: ["গড় (Mean)", "মধ্যমা (Median)", "প্রচুরক (Mode)", "প্রসার (Range)"], correctAnswer: 0 },
       { id: 2, text: "গড় (Mean) নির্ণয়ের সূত্র কী?", options: ["$\\frac{\\sum x_i}{n}$", "মধ্যবর্তী মান", "সবচেয়ে বেশিবার আসা মান", "সর্বোচ্চ - সর্বনিম্ন"], correctAnswer: 0 },
@@ -483,7 +484,7 @@ const baseTests: Test[] = [
     id: 't18',
     title: 'সম্ভাব্যতা: প্রাথমিক ধারণা (Probability)',
     topic: 'সম্ভাব্যতা (Probability)',
-    exam: 'WB Class-XI Fourth Semester',
+    exam: 'WB Class-XI Second Semester',
     questions: [
       { id: 1, text: "কোনো ঘটনার সম্ভাব্যতা $P(E)$ এর মান কত হতে পারে?", options: ["$0 \\le P(E) \\le 1$", "$P(E) > 1$", "$P(E) < 0$", "$-1 \\le P(E) \\le 1$"], correctAnswer: 0 },
       { id: 2, text: "নিশ্চিত ঘটনার (Sure Event) সম্ভাব্যতা কত?", options: ["1", "0", "0.5", "অসীম"], correctAnswer: 0 },
@@ -511,7 +512,7 @@ const baseTests: Test[] = [
     id: 't19',
     title: 'গাণিতিক যুক্তি (Mathematical Reasoning)',
     topic: 'যুক্তিবিজ্ঞান (Logic)',
-    exam: 'WB Class-XI Fourth Semester',
+    exam: 'WB Class-XI Second Semester',
     questions: [
       { id: 1, text: "নিচের কোনটি একটি গাণিতিক উক্তি (Statement)?", options: ["2 + 2 = 4", "দরজাটি খোল।", "তুমি কেমন আছো?", "ওহ! কী সুন্দর!"], correctAnswer: 0 },
       { id: 2, text: "উক্তি $p$ এর না-বোধক (Negation) কে কীভাবে প্রকাশ করা হয়?", options: ["$\\sim p$", "$p'$", "$-p$", "সবগুলোই"], correctAnswer: 3 },
@@ -1077,6 +1078,7 @@ const baseTests: Test[] = [
 
 export const tests: Test[] = [
   ...baseTests,
+  ...wbClass12Sem3Tests,
   ...topic2Tests,
   ...topic3Tests,
   ...topic4Tests,

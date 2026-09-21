@@ -384,7 +384,199 @@ const integrationBengaliContent = `
 *   $\\int_0^a f(x) dx = \\int_0^a f(a-x) dx$
 `;
 
+const wb11Sem3RelationsContent = `
+## ইউনিট ১: সম্বন্ধ ও অপেক্ষক (Relations & Functions)
+### WB Board Class 12 (Third Semester) Special Notes
+
+এই ইউনিটে সম্বন্ধ, চিত্রণ বা অপেক্ষক এবং বিপরীত বৃত্তীয় অপেক্ষকসমূহ (Inverse Trigonometric Functions) সম্পর্কে আলোচনা করা হয়েছে।
+
+---
+
+### ১. সম্বন্ধ (Relations)
+একটি অশূন্য সেট $A$-এর ওপর সংজ্ঞাত সম্বন্ধ $R \\subseteq A \\times A$:
+*   **স্বসম (Reflexive):** যদি প্রত্যেক $a \\in A$-এর জন্য $(a, a) \\in R$ হয়।
+*   **প্রতিসম (Symmetric):** যদি $(a, b) \\in R \\implies (b, a) \\in R$ হয়।
+*   **সংক্রমণ (Transitive):** যদি $(a, b) \\in R$ এবং $(b, c) \\in R \\implies (a, c) \\in R$ হয়।
+*   **সমতুল্য সম্বন্ধ (Equivalence Relation):** কোনো সম্বন্ধ যদি একাধারে স্বসম, প্রতিসম এবং সংক্রমণ হয়, তবে তাকে সমতুল্যতা সম্বন্ধ বলে।
+
+---
+
+### ২. চিত্রণ বা অপেক্ষক (Mapping or Functions)
+একটি চিত্রণ $f: A \\to B$:
+*   **একৈক চিত্রণ (One-One / Injective):** $f(x_1) = f(x_2) \\implies x_1 = x_2$ (প্রত্যেক ভিন্ন উপাদানের ভিন্ন প্রতিবিম্ব থাকে)।
+*   **উপরিচিত্রণ (Onto / Surjective):** পাল্লা (Range of $f$) = উপ-অঞ্চল (Co-domain $B$)। অর্থাৎ প্রত্যেক $y \\in B$-এর জন্য অন্তত একটি প্রাক্-প্রতিবিম্ব $x \\in A$ থাকে যেখানে $f(x) = y$।
+*   **দ্বৈকৈক চিত্রণ (Bijective):** চিত্রণটি একই সাথে একৈক এবং উপরিচিত্রণ হলে তাকে দ্বৈকৈক বা বাইজেক্টিভ বলে। কেবলমাত্র বাইজেক্টিভ চিত্রণের বিপরীত চিত্রণ ($f^{-1}$) নির্ণয় করা সম্ভব।
+*   **সংযোজিত অপেক্ষক (Composition of Functions):** $(g \\circ f)(x) = g(f(x))$, যেখানে $f: A \\to B$ এবং $g: B \\to C$।
+
+---
+
+### ৩. বিপরীত বৃত্তীয় অপেক্ষকসমূহ (Inverse Trigonometric Functions)
+*   **$\\sin^{-1} x$:** অঞ্চল (Domain) $[-1, 1]$, মুখ্য মান বিস্তার (Principal Value Branch) $\\left[-\\frac{\\pi}{2}, \\frac{\\pi}{2}\\right]$
+*   **$\\cos^{-1} x$:** অঞ্চল $[-1, 1]$, মুখ্য মান বিস্তার $[0, \\pi]$
+*   **$\\tan^{-1} x$:** অঞ্চল $\\mathbb{R}$, মুখ্য মান বিস্তার $\\left(-\\frac{\\pi}{2}, \\frac{\\pi}{2}\\right)$
+*   **গুরুত্বপূর্ণ ধর্মাবলি:**
+    *   $\\sin^{-1} x + \\cos^{-1} x = \\frac{\\pi}{2} \\quad (x \\in [-1, 1])$
+    *   $\\tan^{-1} x + \\cot^{-1} x = \\frac{\\pi}{2} \\quad (x \\in \\mathbb{R})$
+    *   $\\tan^{-1} x + \\tan^{-1} y = \\tan^{-1}\\left(\\frac{x + y}{1 - xy}\\right) \\quad (xy < 1)$
+`;
+
+const wb11Sem3AlgebraContent = `
+## 📂 ইউনিট ২: বীজগণিত (Algebra)
+### WB Board Class 12 (Third Semester) Special Notes
+
+ম্যাট্রিক্সের প্রকারভেদ, ম্যাট্রিক্স প্রক্রিয়াসমূহ, ডিটারমিন্যান্ট এবং সমীকরণ সমাধান।
+
+---
+
+### ১. ম্যাট্রিক্সের প্রকারভেদ ও প্রক্রিয়াসমূহ (Matrix Operations)
+*   **প্রকারভেদ:** সারি ম্যাট্রিক্স (Row), স্তম্ভ ম্যাট্রিক্স (Column), বর্গ ম্যাট্রিক্স (Square), শূন্য ম্যাট্রিক্স (Null), একক ম্যাট্রিক্স ($I$), কর্ন ম্যাট্রিক্স (Diagonal)।
+*   **ম্যাট্রিক্স গুণন:** $A_{m \\times n}$ এবং $B_{n \\times p}$ হলে $AB_{m \\times p}$ সংজ্ঞাত হয়। মনে রাখবে সাধারণত $AB \\neq BA$ (ম্যাট্রিক্স গুণন বিনিময় নিয়ম মেনে চলে না)।
+*   **পরিবর্ত ম্যাট্রিক্স (Transpose $A^T$ বা $A'$):**
+    *   $(AB)^T = B^T A^T$ (Reversal Law)
+    *   **প্রতিসম (Symmetric):** $A^T = A$
+    *   **বিপ্রতিসম (Skew-Symmetric):** $A^T = -A$ (এর মুখ্য কর্ণের উপাদানসমূহ সর্বদাই শূন্য)।
+
+---
+
+### ২. ডিটারমিন্যান্ট বা নির্ণায়ক (Determinants)
+*   $2 \\times 2$ ও $3 \\times 3$ ডিটারমিন্যান্টের বিস্তার।
+*   **মাইনর ও কো-ফ্যাক্টর (Minors & Cofactors):** $A_{ij} = (-1)^{i+j} M_{ij}$
+*   **গুরুত্বপূর্ণ ধর্মাবলী:**
+    *   $|AB| = |A| \\cdot |B|$
+    *   $|kA| = k^n |A|$ (যেখানে $n$ হল ম্যাট্রিক্সের ক্রম/order)।
+
+---
+
+### ৩. অ্যাডজয়েন্ট, বিপরীত ম্যাট্রিক্স ও রৈখিক সমীকরণ সমাধান
+*   **Adjoint of Matrix:** $\\text{adj } A = [C_{ij}]^T$ (কো-ফ্যাক্টর ম্যাট্রিক্সের পরিবর্ত)।
+*   **উপপাদ্য:** $A \\cdot (\\text{adj } A) = (\\text{adj } A) \\cdot A = |A| I$
+*   **বিপরীত ম্যাট্রিক্স (Inverse Matrix $A^{-1}$):**
+    $$A^{-1} = \\frac{\\text{adj } A}{|A|} \\quad (|A| \\neq 0)$$
+*   **রৈখিক সমীকরণ জোটের সমাধান (Matrix Method):**
+    $$AX = B \\implies X = A^{-1} B$$
+`;
+
+const wb11Sem3CalculusContent = `
+## 📂 ইউনিট ৩: কলনবিদ্যা (Calculus)
+### WB Board Class 12 (Third Semester) Special Notes
+
+সীমা (রিভিশন), সন্ততা ও অবকলনযোগ্যতা, অবকলন এবং দ্বিতীয় ক্রমের অন্তরকলজ।
+
+---
+
+### ১. সীমা (Limits - প্রাথমিক রিভিশন)
+*   $\\lim_{x \\to 0} \\frac{\\sin x}{x} = 1$
+*   $\\lim_{x \\to 0} \\frac{e^x - 1}{x} = 1$
+*   $\\lim_{x \\to 0} \\frac{\\ln(1+x)}{x} = 1$
+*   $\\lim_{x \\to a} \\frac{x^n - a^n}{x - a} = n a^{n-1}$
+
+---
+
+### ২. সন্ততা ও অবকলনযোগ্যতা (Continuity and Differentiability)
+*   $x = a$ বিন্দুতে অপেক্ষক $f(x)$ সন্তত হবে যদি:
+    $$\\lim_{x \\to a^-} f(x) = \\lim_{x \\to a^+} f(x) = f(a)$$
+*   $x = a$ বিন্দুতে অবকলনযোগ্যতার শর্ত:
+    $$Rf'(a) = Lf'(a) \\implies \\lim_{h \\to 0^+} \\frac{f(a+h) - f(a)}{h} = \\lim_{h \\to 0^-} \\frac{f(a+h) - f(a)}{h}$$
+*   **বিশেষ দ্রষ্টব্য:** কোনো অপেক্ষক অবকলনযোগ্য হলে তা সর্বদাই সন্তত হয়, কিন্তু সন্তত হলে তা অবকলনযোগ্য নাও হতে পারে (যেমন $f(x) = |x|$ at $x = 0$)।
+
+---
+
+### ৩. অবকলন বা অন্তরকলন (Differentiation)
+*   **শৃঙ্খল নিয়ম (Chain Rule):** $\\frac{dy}{dx} = \\frac{dy}{du} \\cdot \\frac{du}{dx}$
+*   **অব্যক্ত অপেক্ষক (Implicit Differentiation):** সমীকরণের উভয় পক্ষে $x$-এর সাপেক্ষে অবকলন করে $\\frac{dy}{dx}$ পৃথক করা।
+*   **প্রাচলিক অপেক্ষক (Parametric Equations):** $x = f(t), y = g(t) \\implies \\frac{dy}{dx} = \\frac{dy/dt}{dx/dt}$
+*   **লগারিদমিক অবকলন:** যখন $y = [f(x)]^{g(x)}$ আকারে থাকে, তখন উভয় পক্ষে লগ নিয়ে অবকলন করতে হয়।
+
+---
+
+### ৪. দ্বিতীয় ক্রমের অন্তরকলজ (Second Order Derivative)
+*   $\\frac{d^2y}{dx^2} = \\frac{d}{dx}\\left(\\frac{dy}{dx}\\right)$
+*   প্রাচলিক অপেক্ষকের ক্ষেত্রে সতর্কতা:
+    $$\\frac{d^2y}{dx^2} = \\frac{d}{dt}\\left(\\frac{dy}{dx}\\right) \\cdot \\frac{dt}{dx}$$
+`;
+
+const wb11Sem3ProbabilityContent = `
+## 📂 ইউনিট ৪: সম্ভাবনা (Probability)
+### WB Board Class 12 (Third Semester) Special Notes
+
+শর্তাধীন সম্ভাবনা, গুণন উপপাদ্য এবং বেয়স উপপাদ্যের প্রমাণ ও গাণিতিক প্রয়োগ।
+
+---
+
+### ১. শর্তাধীন সম্ভাবনা (Conditional Probability)
+$B$ ঘটনাটি ঘটে গেছে এই শর্তে $A$ ঘটনাটি ঘটার সম্ভাবনা:
+$$P(A|B) = \\frac{P(A \\cap B)}{P(B)} \\quad (P(B) > 0)$$
+
+---
+
+### ২. সম্ভাবনা গুণন উপপাদ্য (Multiplication Theorem)
+*   দুটি ঘটনার ক্ষেত্রে: $P(A \\cap B) = P(B) \\cdot P(A|B) = P(A) \\cdot P(B|A)$
+*   **স্বাধীন ঘটনা (Independent Events):** যদি $A$ ও $B$ পরস্পর স্বাধীন ঘটনা হয়, তবে $P(A|B) = P(A)$ এবং:
+    $$P(A \\cap B) = P(A) \\cdot P(B)$$
+
+---
+
+### ৩. সম্পূর্ণ সম্ভাবনার উপপাদ্য (Theorem of Total Probability)
+ধরি $E_1, E_2, \\dots, E_n$ হল পারস্পরিক নিঃশেষ ও বিচ্ছিন্ন ঘটনা (Partition of Sample Space), এবং $A$ একটি যেকোনো ঘটনা। তাহলে:
+$$P(A) = \\sum_{i=1}^n P(E_i) \\cdot P(A|E_i)$$
+
+---
+
+### ৪. বেয়স উপপাদ্য (Bayes' Theorem)
+ঘটনাবলী $E_1, E_2, \\dots, E_n$ এর মধ্যে কোনো একটি ঘটেছে জানা থাকলে এবং পূর্বে ঘটনা $A$ ঘটে থাকলে:
+$$P(E_k|A) = \\frac{P(E_k) \\cdot P(A|E_k)}{\\sum_{i=1}^n P(E_i) \\cdot P(A|E_i)}$$
+*বোর্ডের পরীক্ষায় এই উপপাদ্যের বিবৃতি ও সমস্যা সমাধান ৫ নম্বরের প্রশ্নের জন্য অত্যন্ত গুরুত্বপূর্ণ।*
+`;
+
 const materials: Material[] = [
+  {
+    id: 'wb12-s3-unit1',
+    title: 'ইউনিট ১: সম্বন্ধ ও অপেক্ষক (Relations & Functions)',
+    description: 'WB Board Class 12 Third Semester: সম্বন্ধ, চিত্রণ বা অপেক্ষক এবং বিপরীত বৃত্তীয় অপেক্ষকসমূহ (Inverse Trigonometric Functions) সম্পূর্ণ নোটস।',
+    type: 'guide',
+    category: 'Class XII',
+    topic: 'Relations & Functions',
+    isPremium: false,
+    readTime: '15 min read',
+    date: '2026-06-01',
+    content: wb11Sem3RelationsContent,
+  },
+  {
+    id: 'wb12-s3-unit2',
+    title: '📂 ইউনিট ২: বীজগণিত (Algebra - Matrices & Determinants)',
+    description: 'WB Board Class 12 Third Semester: ম্যাট্রিক্সের প্রকারভেদ ও প্রক্রিয়াসমূহ, নির্ণায়ক, অ্যাডজয়েন্ট, বিপরীত ম্যাট্রিক্স ও সমীকরণ সমাধান।',
+    type: 'guide',
+    category: 'Class XII',
+    topic: 'Algebra',
+    isPremium: false,
+    readTime: '18 min read',
+    date: '2026-06-02',
+    content: wb11Sem3AlgebraContent,
+  },
+  {
+    id: 'wb12-s3-unit3',
+    title: '📂 ইউনিট ৩: কলনবিদ্যা (Calculus - Continuity & Derivatives)',
+    description: 'WB Board Class 12 Third Semester: সীমা রিভিশন, সন্ততা ও অবকলনযোগ্যতা, অবকলন এবং দ্বিতীয় ক্রমের অন্তরকলজ (Second Order Derivative)।',
+    type: 'guide',
+    category: 'Class XII',
+    topic: 'Calculus',
+    isPremium: false,
+    readTime: '20 min read',
+    date: '2026-06-03',
+    content: wb11Sem3CalculusContent,
+  },
+  {
+    id: 'wb12-s3-unit4',
+    title: '📂 ইউনিট ৪: সম্ভাবনা (Probability - Bayes\' Theorem)',
+    description: 'WB Board Class 12 Third Semester: শর্তাধীন সম্ভাবনা, গুণন উপপাদ্য এবং বেয়স উপপাদ্য (Bayes\' Theorem) বিশদ বিশ্লেষণ ও সমাধান।',
+    type: 'guide',
+    category: 'Class XII',
+    topic: 'Probability',
+    isPremium: false,
+    readTime: '16 min read',
+    date: '2026-06-04',
+    content: wb11Sem3ProbabilityContent,
+  },
   {
     id: '1',
     title: 'Algebra Formulas Cheat Sheet',

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Course } from '../types';
-import { X, Star, Clock, Users, Award, CheckCircle2, ShieldCheck, ArrowRight, Sparkles, BookOpen } from 'lucide-react';
+import { X, Star, Clock, Users, Award, CheckCircle2, ShieldCheck, ArrowRight, Sparkles, BookOpen, Folder } from 'lucide-react';
 
 interface CourseModalProps {
   course: Course | null;
@@ -126,19 +126,46 @@ export const CourseModal: React.FC<CourseModalProps> = ({ course, onClose, onEnr
             <h3 className="text-sm font-bold uppercase tracking-wider text-white mb-3 flex items-center gap-2">
               <BookOpen size={16} className="text-brand-gold" /> Syllabus & Key Coverage
             </h3>
-            <div className="grid sm:grid-cols-2 gap-2.5">
-              {(course.syllabusTopics || [
-                'Complete Chapter-wise Coverage',
-                'Mock Test Series & PYQ Solutions',
-                'Shortcut Methods & Time Saving Tricks',
-                'Personalized Doubt Resolution'
-              ]).map((topic, index) => (
-                <div key={index} className="flex items-start gap-2.5 p-3 rounded-xl bg-dark-950/40 border border-white/5 text-xs text-slate-200">
-                  <CheckCircle2 size={15} className="text-brand-gold flex-shrink-0 mt-0.5" />
-                  <span>{topic}</span>
-                </div>
-              ))}
-            </div>
+
+            {course.syllabusUnits && course.syllabusUnits.length > 0 ? (
+              <div className="space-y-3.5">
+                {course.syllabusUnits.map((unit, uIdx) => (
+                  <div 
+                    key={uIdx} 
+                    className="p-3.5 sm:p-4 rounded-2xl bg-dark-950/70 border border-brand-gold/25 hover:border-brand-gold/45 transition-colors"
+                  >
+                    <div className="flex items-center gap-2 mb-2.5">
+                      <Folder size={15} className="text-brand-gold flex-shrink-0" />
+                      <h4 className="text-xs sm:text-sm font-bold text-brand-goldLight font-serif-royal tracking-wide">
+                        {unit.unitTitle}
+                      </h4>
+                    </div>
+                    <div className="grid sm:grid-cols-2 gap-2 pl-2 sm:pl-3 border-l-2 border-brand-gold/30">
+                      {unit.subtopics.map((sub, sIdx) => (
+                        <div key={sIdx} className="flex items-start gap-2 text-xs text-slate-200">
+                          <CheckCircle2 size={13} className="text-brand-gold flex-shrink-0 mt-0.5" />
+                          <span className="leading-snug">{sub}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid sm:grid-cols-2 gap-2.5">
+                {(course.syllabusTopics || [
+                  'Complete Chapter-wise Coverage',
+                  'Mock Test Series & PYQ Solutions',
+                  'Shortcut Methods & Time Saving Tricks',
+                  'Personalized Doubt Resolution'
+                ]).map((topic, index) => (
+                  <div key={index} className="flex items-start gap-2.5 p-3 rounded-xl bg-dark-950/40 border border-white/5 text-xs text-slate-200">
+                    <CheckCircle2 size={15} className="text-brand-gold flex-shrink-0 mt-0.5" />
+                    <span>{topic}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Features Checklist */}

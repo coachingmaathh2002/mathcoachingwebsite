@@ -160,9 +160,10 @@ export const EnquiryForm: React.FC = () => {
                       className="w-full px-5 py-3 bg-dark-950 border border-slate-700 rounded-xl text-white placeholder-slate-600 focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold outline-none transition-all appearance-none shadow-inner"
                     >
                       <option value="" disabled>Select a course</option>
+                      <option value="Class 12 (Semester 3)">WB Board Class 12 (Third Semester)</option>
                       <option value="Class 10">WB Board Class 10</option>
-                      <option value="Class 11">WB Board Class 11</option>
-                      <option value="Class 12">WB Board Class 12</option>
+                      <option value="Class 11">WB Board Class 11 (Sem 1 & 2)</option>
+                      <option value="Class 12">WB Board Class 12 (Sem 4)</option>
                       <option value="WBJEE">WBJEE Competitive</option>
                       <option value="CBSE">CBSE (Class 5-12)</option>
                       <option value="UG Honours">UG Maths Honours</option>

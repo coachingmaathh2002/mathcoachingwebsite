@@ -46,21 +46,60 @@ export const COURSES: Course[] = [
   },
   {
     id: 'wb-12-s3',
-    title: 'WB Board Class 12 (Semester 3)',
-    tagline: 'Master HS Higher Mathematics with Precision',
-    description: 'Higher secondary mathematics with board exam focus, deep conceptual understanding, and problem-solving shortcuts.',
-    highlight: 'HS Part 1 preparation',
+    title: 'WB Board Class 12 (Third Semester)',
+    tagline: 'সম্বন্ধ ও অপেক্ষক, বীজগণিত, কলনবিদ্যা এবং সম্ভাবনা (New Semester System)',
+    description: 'Comprehensive curriculum for WB Board Class 12 Third Semester. In-depth mastery of Relations & Functions, Matrices & Determinants, Limits, Continuity, Differentiation, Second Order Derivatives, and Probability (Bayes Theorem & Conditional Probability) with step-by-step problem solving and WBCHSE board question patterns.',
+    highlight: 'WBCHSE Class 12 Sem 3 Prep',
     pricePlaceholder: '₹999',
     category: 'School',
     instructor: 'Raj Sir',
-    rating: 4.8,
-    reviewsCount: 215,
+    rating: 4.9,
+    reviewsCount: 260,
     difficulty: 'Advanced',
-    duration: 'Semester-Wise',
-    badge: 'NEW PATTERN',
-    enrolledCount: 890,
+    duration: 'Third Semester',
+    badge: 'SEMESTER 3',
+    enrolledCount: 940,
     featured: true,
-    syllabusTopics: ['Matrices & Determinants', 'Inverse Trigonometric Functions', 'Continuity & Differentiability', 'Application of Derivatives'],
+    syllabusTopics: [
+      'ইউনিট ১: সম্বন্ধ ও অপেক্ষক (Relations, Functions & Inverse Trig)',
+      'ইউনিট ২: বীজগণিত (Matrices, Determinants & Linear Equations)',
+      'ইউনিট ৩: কলনবিদ্যা (Limits, Continuity & Second Order Derivative)',
+      'ইউনিট ৪: সম্ভাবনা (Conditional Probability & Bayes\' Theorem)'
+    ],
+    syllabusUnits: [
+      {
+        unitTitle: 'ইউনিট ১: সম্বন্ধ ও অপেক্ষক (Relations & Functions)',
+        subtopics: [
+          'সম্বন্ধ (Relations)',
+          'চিত্রণ বা অপেক্ষক (Mapping or Functions)',
+          'বিপরীত বৃত্তীয় অপেক্ষকসমূহ (Inverse Trigonometric Functions)'
+        ]
+      },
+      {
+        unitTitle: '📂 ইউনিট ২: বীজগণিত (Algebra)',
+        subtopics: [
+          'ম্যাট্রিক্সের প্রকারভেদ ও ম্যাট্রিক্স প্রক্রিয়াসমূহ (Types of Matrices and Matrix Operations)',
+          'ডিটারমিন্যান্ট বা নির্ণায়ক (Determinants)',
+          'ম্যাট্রিক্সের অ্যাডজয়েন্ট ও বিপরীত ম্যাট্রিক্স এবং রৈখিক সমীকরণ সমাধান (Adjoint & Inverse of a Matrix and Linear Equations)'
+        ]
+      },
+      {
+        unitTitle: '📂 ইউনিট ৩: কলনবিদ্যা (Calculus)',
+        subtopics: [
+          'সীমা (Limits - প্রাথমিক রিভিশন)',
+          'সন্ততা ও অবকলনযোগ্যতা (Continuity and Differentiability)',
+          'অবকলন বা অন্তরকলন (Differentiation)',
+          'দ্বিতীয় ক্রমের অন্তরকলজ (Second Order Derivative)'
+        ]
+      },
+      {
+        unitTitle: '📂 ইউনিট ৪: সম্ভাবনা (Probability)',
+        subtopics: [
+          'শর্তাধীন সম্ভাবনা এবং গুণন উপপাদ্য (Conditional Probability & Multiplication Theorem)',
+          'বেয়স উপপাদ্য (Bayes\' Theorem)'
+        ]
+      }
+    ],
     posterImage: courseSlideHs12
   },
   {
